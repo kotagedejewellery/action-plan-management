@@ -2,16 +2,16 @@ import type { ReactNode } from "react";
 
 import { Close } from "./icons";
 
-import type { PlanStatus } from "@/presentation/data/demo-data";
 
-export function StatusBadge({ status }: { status?: PlanStatus }) {
+export function StatusBadge({ status }: { status?: string }) {
   if (!status) return <span className="text-sm text-[#90a09f]">—</span>;
-  const styles: Record<PlanStatus, string> = { Selesai: "bg-[#dff3e6] text-[#206b43]", "On Progress": "bg-[#e5efff] text-[#265b9b]", "Belum Selesai": "bg-[#fff1d7] text-[#9a5b16]" };
-  return <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${styles[status]}`}>{status}</span>;
+  const styles = status === "Selesai" ? "bg-[#dff3e6] text-[#206b43]" : status === "On Progress" ? "bg-[#e5efff] text-[#265b9b]" : "bg-[#fff1d7] text-[#9a5b16]";
+  return <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${styles}`}>{status}</span>;
 }
 
-export function AccountStatus({ status }: { status: "Active" | "Inactive" }) {
-  return <span className={`inline-flex items-center gap-1.5 text-sm font-medium ${status === "Active" ? "text-[#277145]" : "text-[#8a7770]"}`}><span className={`size-1.5 rounded-full ${status === "Active" ? "bg-[#43a365]" : "bg-[#b9a69d]"}`} />{status}</span>;
+export function AccountStatus({ status }: { status: string }) {
+  const active = status.toLowerCase() === "active";
+  return <span className={`inline-flex items-center gap-1.5 text-sm font-medium ${active ? "text-[#277145]" : "text-[#8a7770]"}`}><span className={`size-1.5 rounded-full ${active ? "bg-[#43a365]" : "bg-[#b9a69d]"}`} />{active ? "Active" : "Inactive"}</span>;
 }
 
 export function PageHeading({ title, description, action }: { title: string; description: string; action?: ReactNode }) {
