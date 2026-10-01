@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-30T00:00:00+07:00",
+  "title": "Design System: Action Plan Management System",
+  "extensions": {
+    "colorMeta": {
+      "workspace": { "role": "neutral", "displayName": "Cool Workspace", "canonical": "#f6f8f8", "tonalRamp": ["oklch(18% 0.008 190)", "oklch(30% 0.008 190)", "oklch(42% 0.008 190)", "oklch(54% 0.008 190)", "oklch(66% 0.008 190)", "oklch(78% 0.008 190)", "oklch(88% 0.008 190)", "oklch(97% 0.008 190)"] },
+      "canvas": { "role": "neutral", "displayName": "White Canvas", "canonical": "#ffffff", "tonalRamp": ["oklch(18% 0 0)", "oklch(30% 0 0)", "oklch(42% 0 0)", "oklch(54% 0 0)", "oklch(66% 0 0)", "oklch(78% 0 0)", "oklch(88% 0 0)", "oklch(100% 0 0)"] },
+      "ink": { "role": "neutral", "displayName": "Quiet Ink", "canonical": "#172b2d", "tonalRamp": ["oklch(18% 0.025 190)", "oklch(30% 0.025 190)", "oklch(42% 0.025 190)", "oklch(54% 0.025 190)", "oklch(66% 0.025 190)", "oklch(78% 0.025 190)", "oklch(88% 0.025 190)", "oklch(96% 0.025 190)"] },
+      "deep-teal": { "role": "primary", "displayName": "Deep Workspace Teal", "canonical": "#173c3a", "tonalRamp": ["oklch(18% 0.045 184)", "oklch(30% 0.045 184)", "oklch(42% 0.045 184)", "oklch(54% 0.045 184)", "oklch(66% 0.045 184)", "oklch(78% 0.045 184)", "oklch(88% 0.045 184)", "oklch(96% 0.045 184)"] },
+      "teal": { "role": "primary", "displayName": "Working Teal", "canonical": "#137d79", "tonalRamp": ["oklch(18% 0.085 184)", "oklch(30% 0.085 184)", "oklch(42% 0.085 184)", "oklch(54% 0.085 184)", "oklch(66% 0.085 184)", "oklch(78% 0.085 184)", "oklch(88% 0.085 184)", "oklch(96% 0.085 184)"] },
+      "line": { "role": "neutral", "displayName": "Structural Line", "canonical": "#dce5e4", "tonalRamp": ["oklch(18% 0.012 190)", "oklch(30% 0.012 190)", "oklch(42% 0.012 190)", "oklch(54% 0.012 190)", "oklch(66% 0.012 190)", "oklch(78% 0.012 190)", "oklch(88% 0.012 190)", "oklch(96% 0.012 190)"] },
+      "muted": { "role": "neutral", "displayName": "Supporting Copy", "canonical": "#667c7c", "tonalRamp": ["oklch(18% 0.02 190)", "oklch(30% 0.02 190)", "oklch(42% 0.02 190)", "oklch(54% 0.02 190)", "oklch(66% 0.02 190)", "oklch(78% 0.02 190)", "oklch(88% 0.02 190)", "oklch(96% 0.02 190)"] },
+      "soft-teal": { "role": "primary", "displayName": "Active Wash", "canonical": "#e3f3f0", "tonalRamp": ["oklch(18% 0.035 184)", "oklch(30% 0.035 184)", "oklch(42% 0.035 184)", "oklch(54% 0.035 184)", "oklch(66% 0.035 184)", "oklch(78% 0.035 184)", "oklch(88% 0.035 184)", "oklch(96% 0.035 184)"] },
+      "mint": { "role": "primary", "displayName": "Avatar Mint", "canonical": "#c8ebe7", "tonalRamp": ["oklch(18% 0.04 184)", "oklch(30% 0.04 184)", "oklch(42% 0.04 184)", "oklch(54% 0.04 184)", "oklch(66% 0.04 184)", "oklch(78% 0.04 184)", "oklch(88% 0.04 184)", "oklch(96% 0.04 184)"] },
+      "success-bg": { "role": "tertiary", "displayName": "Completion Wash", "canonical": "#dff3e6", "tonalRamp": ["oklch(18% 0.07 150)", "oklch(30% 0.07 150)", "oklch(42% 0.07 150)", "oklch(54% 0.07 150)", "oklch(66% 0.07 150)", "oklch(78% 0.07 150)", "oklch(88% 0.07 150)", "oklch(96% 0.07 150)"] },
+      "success-text": { "role": "tertiary", "displayName": "Completion Green", "canonical": "#206b43", "tonalRamp": ["oklch(18% 0.07 150)", "oklch(30% 0.07 150)", "oklch(42% 0.07 150)", "oklch(54% 0.07 150)", "oklch(66% 0.07 150)", "oklch(78% 0.07 150)", "oklch(88% 0.07 150)", "oklch(96% 0.07 150)"] },
+      "progress-bg": { "role": "secondary", "displayName": "Progress Wash", "canonical": "#e5efff", "tonalRamp": ["oklch(18% 0.07 255)", "oklch(30% 0.07 255)", "oklch(42% 0.07 255)", "oklch(54% 0.07 255)", "oklch(66% 0.07 255)", "oklch(78% 0.07 255)", "oklch(88% 0.07 255)", "oklch(96% 0.07 255)"] },
+      "progress-text": { "role": "secondary", "displayName": "Progress Blue", "canonical": "#265b9b", "tonalRamp": ["oklch(18% 0.07 255)", "oklch(30% 0.07 255)", "oklch(42% 0.07 255)", "oklch(54% 0.07 255)", "oklch(66% 0.07 255)", "oklch(78% 0.07 255)", "oklch(88% 0.07 255)", "oklch(96% 0.07 255)"] },
+      "pending-bg": { "role": "tertiary", "displayName": "Pending Wash", "canonical": "#fff1d7", "tonalRamp": ["oklch(18% 0.075 75)", "oklch(30% 0.075 75)", "oklch(42% 0.075 75)", "oklch(54% 0.075 75)", "oklch(66% 0.075 75)", "oklch(78% 0.075 75)", "oklch(88% 0.075 75)", "oklch(96% 0.075 75)"] },
+      "pending-text": { "role": "tertiary", "displayName": "Pending Amber", "canonical": "#9a5b16", "tonalRamp": ["oklch(18% 0.075 75)", "oklch(30% 0.075 75)", "oklch(42% 0.075 75)", "oklch(54% 0.075 75)", "oklch(66% 0.075 75)", "oklch(78% 0.075 75)", "oklch(88% 0.075 75)", "oklch(96% 0.075 75)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Login Statement", "purpose": "Large welcome statement on the authentication panel." },
+      "title": { "displayName": "Page Title", "purpose": "Dashboard and dialog headings." },
+      "body": { "displayName": "Operational Body", "purpose": "Descriptions, field values, and table data." },
+      "label": { "displayName": "Data Label", "purpose": "Table headers and compact navigation labels." }
+    },
+    "shadows": [
+      { "name": "surface-lift", "value": "0 18px 36px -32px rgba(23,60,58,0.35)", "purpose": "Data tables and monitoring user-picker card." },
+      { "name": "login-frame", "value": "0 24px 60px -38px rgba(26,55,54,0.38)", "purpose": "Login application frame." },
+      { "name": "dialog-lift", "value": "0 -20px 56px -25px rgba(23,60,58,0.55)", "purpose": "Modal dialog or mobile sheet." }
+    ],
+    "motion": [
+      { "name": "state-transition", "value": "transition: color, background-color, border-color 150ms ease", "purpose": "Buttons, navigation, and inputs communicate interactive state without motion decoration." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The primary save or create action for a page or dialog.",
+      "html": "<button class=\"ds-btn-primary\">Tambah Action Plan</button>",
+      "css": ".ds-btn-primary{height:44px;padding:0 16px;border:0;border-radius:12px;background:#137d79;color:#fff;font:600 14px/1.2 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;cursor:pointer;transition:background-color 150ms ease}.ds-btn-primary:hover{background:#0e6865}.ds-btn-primary:focus-visible{outline:3px solid #79d3ca;outline-offset:3px}.ds-btn-primary:active{background:#0e6865}"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "A compact text field used to filter Action Plans and users.",
+      "html": "<label class=\"ds-search\"><span class=\"ds-search-label\">Cari Action Plan</span><input class=\"ds-input\" type=\"search\" placeholder=\"Cari Action Plan\"></label>",
+      "css": ".ds-search{display:block;width:288px;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}.ds-search-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}.ds-input{box-sizing:border-box;width:100%;height:40px;padding:0 12px;border:1px solid #dce5e4;border-radius:12px;background:#fff;color:#172b2d;font:400 14px/1.2 inherit;outline:none;transition:border-color 150ms ease}.ds-input::placeholder{color:#9aa9a8}.ds-input:focus{border-color:#137d79}.ds-input:focus-visible{outline:3px solid #79d3ca;outline-offset:3px}"
+    },
+    {
+      "name": "Navigation Item",
+      "kind": "nav",
+      "refersTo": "navigation-active",
+      "description": "A 44px sidebar route row; use the active wash only for the current page.",
+      "html": "<a class=\"ds-nav-item ds-nav-item-active\" href=\"#\"><span class=\"ds-nav-icon\">□</span>Action Plan</a>",
+      "css": ".ds-nav-item{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:12px;color:#59706f;font:500 14px/1 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-decoration:none;transition:background-color 150ms ease,color 150ms ease}.ds-nav-item:hover{background:#f1f5f4;color:#244542}.ds-nav-item:focus-visible{outline:3px solid #79d3ca;outline-offset:3px}.ds-nav-item-active{background:#e3f3f0;color:#116b67}.ds-nav-icon{font-size:18px;line-height:1}"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "status-progress",
+      "description": "A written state label for plan progress; background and text color always remain paired.",
+      "html": "<span class=\"ds-badge ds-badge-progress\">On Progress</span>",
+      "css": ".ds-badge{display:inline-flex;padding:4px 10px;border-radius:999px;font:600 12px/1.2 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}.ds-badge-progress{background:#e5efff;color:#265b9b}.ds-badge-success{background:#dff3e6;color:#206b43}.ds-badge-pending{background:#fff1d7;color:#9a5b16}"
+    },
+    {
+      "name": "Data Surface",
+      "kind": "card",
+      "refersTo": "surface-card",
+      "description": "The bordered white container for tables and monitoring controls.",
+      "html": "<article class=\"ds-card\"><p class=\"ds-card-title\">Action Plan</p><p class=\"ds-card-copy\">Rencana kerja dan pembaruan progres.</p></article>",
+      "css": ".ds-card{padding:20px;border:1px solid #dce5e4;border-radius:16px;background:#fff;box-shadow:0 18px 36px -32px rgba(23,60,58,.35);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}.ds-card-title{margin:0;color:#244542;font-size:14px;font-weight:600}.ds-card-copy{margin:6px 0 0;color:#667c7c;font-size:14px;line-height:1.5}"
+    },
+    {
+      "name": "Dialog Frame",
+      "kind": "custom",
+      "refersTo": "dialog-frame",
+      "description": "A focused editing container that is centered on desktop and becomes a bottom sheet on small screens.",
+      "html": "<div class=\"ds-dialog-backdrop\"><section class=\"ds-dialog\" role=\"dialog\"><div><h2 class=\"ds-dialog-title\">Edit Action Plan</h2><p class=\"ds-dialog-copy\">Simpan progres yang cukup jelas agar mudah dipantau kembali.</p></div><button class=\"ds-dialog-close\" aria-label=\"Tutup dialog\">×</button></section></div>",
+      "css": ".ds-dialog-backdrop{display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(23,60,58,.3);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}.ds-dialog{display:flex;justify-content:space-between;gap:20px;box-sizing:border-box;width:min(100%,576px);padding:24px;border-radius:16px;background:#fff;box-shadow:0 -20px 56px -25px rgba(23,60,58,.55)}.ds-dialog-title{margin:0;color:#173c3a;font-size:20px;line-height:1.2;letter-spacing:-.025em}.ds-dialog-copy{margin:6px 0 0;color:#667c7c;font-size:14px;line-height:1.5}.ds-dialog-close{width:36px;height:36px;border:0;border-radius:8px;background:transparent;color:#667c7c;font-size:24px;cursor:pointer}.ds-dialog-close:hover{background:#f1f5f4}.ds-dialog-close:focus-visible{outline:3px solid #79d3ca;outline-offset:3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Calm Operations Desk",
+    "overview": "This is a desktop-first internal workspace that makes routine planning and status updates feel orderly rather than bureaucratic. A reserved teal foundation, cool near-white canvas, compact system typography, and gently rounded controls keep attention on task data and decisions.\n\nThe system is intentionally quiet: color communicates navigation, actions, and status; borders and subtle tonal shifts organize content before shadows do. It stays practical on smaller screens by replacing the Action Plan table with a stacked record view and moving dialogs to the bottom edge.",
+    "keyCharacteristics": [
+      "Calm teal identity with low-contrast neutral surfaces.",
+      "Compact, scan-first tables for operational data.",
+      "Gentle 12–16px rounding for controls and containers.",
+      "Color-coded statuses with readable text rather than icon-only signals."
+    ],
+    "rules": [
+      { "name": "The Meaningful Accent Rule", "body": "Teal is reserved for the selected path, a primary action, an interactive result link, or keyboard focus. Status hues only describe state.", "section": "colors" },
+      { "name": "The Scan-First Rule", "body": "Page and record names carry medium-to-semibold weight; supporting information stays smaller and muted so a busy day’s work can be skimmed in rows.", "section": "typography" },
+      { "name": "The Border-First Rule", "body": "Resting hierarchy comes from pale borders and background contrast; shadows provide containment, not decoration.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use `teal` for a clear primary action, the active route, focus borders, and external result links.",
+      "Do keep operational records in aligned, lightly divided rows with 20px horizontal cell padding on desktop.",
+      "Do pair every status background with its established dark text color and a written label.",
+      "Do preserve the system sans-serif stack and compact, medium-weight hierarchy.",
+      "Do use 12px rounding for inputs and primary controls, 16px rounding for main surfaces, and pills only for compact labels."
+    ],
+    "donts": [
+      "Don't introduce decorative gradients, oversized imagery, or promotional dashboard graphics into this operational UI.",
+      "Don't use strong shadows when a pale border and the workspace/canvas contrast already establishes grouping.",
+      "Don't use teal as a general text color; reserve it for interactive or selected meaning.",
+      "Don't let desktop table columns collapse into unreadable fragments; use the established card treatment for the Action Plan list on narrow screens."
+    ]
+  }
+}
