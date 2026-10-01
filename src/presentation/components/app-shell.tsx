@@ -6,11 +6,12 @@ import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import type { Actor } from "@/domain/models";
 import { useFeedback } from "./feedback";
-import { Calendar, Close, Grid, LogOut, Menu, Users } from "./icons";
+import { Calendar, Close, Grid, History, LogOut, Menu, Users } from "./icons";
 import { ConfirmDialog } from "./workspace-ui";
 
 const baseNavigation = [
   { href: "/action-plans", label: "Action Plan", icon: Calendar, roles: ["user"] },
+  { href: "/history", label: "Riwayat", icon: History, roles: ["user"] },
   { href: "/monitoring", label: "Monitoring", icon: Grid, roles: ["admin"] },
   { href: "/users", label: "Users", icon: Users, roles: ["admin"] },
 ];

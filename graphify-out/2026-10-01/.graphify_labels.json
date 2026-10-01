@@ -1,5 +1,4 @@
 {
-  "0": "use-cases.ts",
   "1": "Product Requirements Document — Action Plan Management System",
   "2": "System Architecture — Action Plan Management System",
   "3": "Tech Stack — Action Plan Management System",
@@ -7,7 +6,7 @@
   "5": "icons.tsx",
   "6": "package.json",
   "7": "Aturan Kerja Proyek",
-  "8": "currentActor",
+  "8": "use-cases.ts",
   "9": "feedback.tsx",
   "10": "connected-action-plan-workspace.tsx",
   "11": "dependencies",
@@ -16,7 +15,6 @@
   "14": "Design System: Action Plan Management System",
   "15": "{ GET, POST }",
   "16": "repositories.ts",
-  "17": "auth.ts",
   "18": "devDependencies",
   "19": "bootstrap-admin.mjs",
   "20": "scripts",

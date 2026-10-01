@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import bcrypt from "bcryptjs";
 
 import { AppError } from "@/application/errors";
-import { authenticateUser, createUser, requireAdmin, saveOwnActionPlan } from "@/application/use-cases";
+import { authenticateUser, createUser, deleteOwnActionPlan, listVisiblePlans, requireAdmin, saveOwnActionPlan } from "@/application/use-cases";
 import type { ActionPlanRepository, StatusRepository, UserRepository } from "@/application/ports";
 import type { ActionPlan, User } from "@/domain/models";
 
@@ -27,10 +27,23 @@ describe("access and account use cases", () => {
   });
 
   it("prevents a non-user actor from changing Action Plans", async () => {
-    const plans: ActionPlanRepository = { list: async () => [], findById: async () => null, create: async (_sheet, plan) => plan, update: async (_sheet, plan) => plan };
-    const statuses: StatusRepository = { list: async () => [{ id: "open", label: "Open", isActive: true, createdAt: "", updatedAt: "" }], create: async (status) => status, update: async (status) => status };
+    const plans: ActionPlanRepository = { list: async () => [], findById: async () => null, create: async (_sheet, plan) => plan, update: async (_sheet, plan) => plan, softDelete: async () => undefined };
+    const statuses: StatusRepository = { list: async () => [{ id: "open", label: "Open", isActive: true, isCompleted: false, createdAt: "", updatedAt: "" }], create: async (status) => status, update: async (status) => status };
     const plan: ActionPlan = { id: "plan-1", date: "2026-01-01", task: "Task", morningStatus: "Open", createdAt: "", updatedAt: "" };
     await expect(saveOwnActionPlan(plans, statuses, { id: "admin", name: "Admin", email: "admin@test", role: "admin", status: "active", sheetName: "" }, plan)).rejects.toBeInstanceOf(AppError);
     expect(() => requireAdmin({ id: "user", name: "User", email: "user@test", role: "user", status: "active", sheetName: "" })).toThrow(AppError);
+  });
+
+  it("moves completed plans to history and soft deletes only the owner's plan", async () => {
+    const activePlan: ActionPlan = { id: "active", date: "2026-01-02", task: "Active", morningStatus: "On Progress", afternoonStatus: "On Progress", createdAt: "", updatedAt: "" };
+    const completedPlan: ActionPlan = { id: "done", date: "2026-01-01", task: "Done", morningStatus: "On Progress", afternoonStatus: "Selesai", createdAt: "", updatedAt: "" };
+    const deleted: string[] = [];
+    const plans: ActionPlanRepository = { list: async () => [activePlan, completedPlan], findById: async (_sheet, id) => id === "done" ? completedPlan : null, create: async (_sheet, plan) => plan, update: async (_sheet, plan) => plan, softDelete: async (_sheet, id) => { deleted.push(id); } };
+    const statuses: StatusRepository = { list: async () => [{ id: "done", label: "Selesai", isActive: true, isCompleted: true, createdAt: "", updatedAt: "" }], create: async (status) => status, update: async (status) => status };
+    const actor = await user();
+    await expect(listVisiblePlans(plans, statuses, actor, null, "active")).resolves.toEqual([activePlan]);
+    await expect(listVisiblePlans(plans, statuses, actor, null, "history")).resolves.toEqual([completedPlan]);
+    await deleteOwnActionPlan(plans, actor, "done");
+    expect(deleted).toEqual(["done"]);
   });
 });

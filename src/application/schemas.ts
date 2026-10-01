@@ -21,4 +21,4 @@ export const actionPlanInputSchema = z.object({
   updatedAt: z.string().datetime().optional(),
 });
 
-export const statusInputSchema = z.object({ label: z.string().trim().min(1, "Nama status wajib diisi.").max(50) });
+export const statusInputSchema = z.object({ label: z.string().trim().min(1, "Nama status wajib diisi.").max(50), isCompleted: z.boolean().optional().default(false) });

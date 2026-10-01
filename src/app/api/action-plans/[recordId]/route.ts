@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { AppError } from "@/application/errors";
 import { actionPlanInputSchema } from "@/application/schemas";
-import { saveOwnActionPlan } from "@/application/use-cases";
+import { deleteOwnActionPlan, saveOwnActionPlan } from "@/application/use-cases";
 import { actionPlans, statuses } from "@/infrastructure/container";
 import { currentActor } from "@/presentation/server/actor";
 
@@ -15,4 +15,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
     const plan = await saveOwnActionPlan(actionPlans, statuses, actor, { ...current, date: input.date, task: input.task, morningStatus: input.morningStatus, afternoonStatus: input.afternoonStatus || undefined, resultLink: input.resultLink || undefined, note: input.note || undefined, updatedAt: new Date().toISOString() }, input.updatedAt);
     return NextResponse.json(plan);
   } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Terjadi kesalahan." }, { status: error instanceof AppError && error.code === "CONFLICT" ? 409 : 400 }); }
+}
+
+export async function DELETE(_request: Request, { params }: { params: Promise<{ recordId: string }> }) {
+  try {
+    await deleteOwnActionPlan(actionPlans, await currentActor(), (await params).recordId);
+    return new NextResponse(null, { status: 204 });
+  } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Terjadi kesalahan." }, { status: error instanceof AppError ? 400 : 500 }); }
 }

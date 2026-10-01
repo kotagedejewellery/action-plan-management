@@ -41,11 +41,16 @@ export async function updateUser(users: UserRepository, existing: User, input: P
   return toSafeUser(await users.update(user));
 }
 
-export async function listVisiblePlans(repository: ActionPlanRepository, actor: Actor, target: User | null): Promise<ActionPlan[]> {
+export type ActionPlanScope = "active" | "history" | "all";
+
+export async function listVisiblePlans(repository: ActionPlanRepository, statuses: StatusRepository, actor: Actor, target: User | null, scope: ActionPlanScope = "all"): Promise<ActionPlan[]> {
   requireActiveActor(actor);
-  if (actor.role === "user") return repository.list(actor.sheetName);
-  if (!target || target.role !== "user") throw new AppError("User target tidak ditemukan.", "NOT_FOUND");
-  return repository.list(target.sheetName);
+  const sheetName = actor.role === "user" ? actor.sheetName : target?.role === "user" ? target.sheetName : null;
+  if (!sheetName) throw new AppError("User target tidak ditemukan.", "NOT_FOUND");
+  const plans = (await repository.list(sheetName)).filter((plan) => !plan.deletedAt);
+  if (scope === "all") return plans;
+  const completedLabels = new Set((await statuses.list()).filter((status) => status.isCompleted).map((status) => status.label));
+  return plans.filter((plan) => scope === "history" ? Boolean(plan.afternoonStatus && completedLabels.has(plan.afternoonStatus)) : !plan.afternoonStatus || !completedLabels.has(plan.afternoonStatus));
 }
 
 export async function saveOwnActionPlan(repository: ActionPlanRepository, statuses: StatusRepository, actor: Actor, plan: ActionPlan, expectedUpdatedAt?: string): Promise<ActionPlan> {
@@ -54,15 +59,24 @@ export async function saveOwnActionPlan(repository: ActionPlanRepository, status
   const allowedStatuses = new Set((await statuses.list()).filter((status) => status.isActive).map((status) => status.label));
   if (!allowedStatuses.has(plan.morningStatus) || (plan.afternoonStatus && !allowedStatuses.has(plan.afternoonStatus))) throw new AppError("Pilih status yang masih aktif.", "VALIDATION");
   const current = await repository.findById(actor.sheetName, plan.id);
+  if (current?.deletedAt) throw new AppError("Action Plan tidak ditemukan.", "NOT_FOUND");
   if (current && expectedUpdatedAt && current.updatedAt !== expectedUpdatedAt) throw new AppError("Data telah diubah pengguna lain. Muat ulang halaman sebelum menyimpan.", "CONFLICT");
   return current ? repository.update(actor.sheetName, plan) : repository.create(actor.sheetName, plan);
 }
 
-export async function createStatus(repository: StatusRepository, label: string): Promise<ActionPlanStatus> {
+export async function deleteOwnActionPlan(repository: ActionPlanRepository, actor: Actor, id: string): Promise<void> {
+  requireActiveActor(actor);
+  if (actor.role !== "user") throw new AppError("Admin tidak menghapus Action Plan pada versi ini.", "FORBIDDEN");
+  const current = await repository.findById(actor.sheetName, id);
+  if (!current || current.deletedAt) throw new AppError("Action Plan tidak ditemukan.", "NOT_FOUND");
+  await repository.softDelete(actor.sheetName, id, new Date().toISOString(), actor.id);
+}
+
+export async function createStatus(repository: StatusRepository, label: string, isCompleted = false): Promise<ActionPlanStatus> {
   const normalized = label.trim();
   const all = await repository.list();
   if (!normalized) throw new AppError("Nama status wajib diisi.", "VALIDATION");
   if (all.some((status) => status.label.toLowerCase() === normalized.toLowerCase())) throw new AppError("Status tersebut sudah tersedia.", "CONFLICT");
   const timestamp = new Date().toISOString();
-  return repository.create({ id: crypto.randomUUID(), label: normalized, isActive: true, createdAt: timestamp, updatedAt: timestamp });
+  return repository.create({ id: crypto.randomUUID(), label: normalized, isActive: true, isCompleted, createdAt: timestamp, updatedAt: timestamp });
 }

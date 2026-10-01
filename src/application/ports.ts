@@ -14,6 +14,7 @@ export interface ActionPlanRepository {
   findById(sheetName: string, id: string): Promise<ActionPlan | null>;
   create(sheetName: string, plan: ActionPlan): Promise<ActionPlan>;
   update(sheetName: string, plan: ActionPlan): Promise<ActionPlan>;
+  softDelete(sheetName: string, id: string, deletedAt: string, deletedBy: string): Promise<void>;
 }
 
 export interface StatusRepository {

@@ -23,6 +23,8 @@ export type ActionPlan = {
   afternoonStatus?: string;
   resultLink?: string;
   note?: string;
+  deletedAt?: string;
+  deletedBy?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -31,6 +33,7 @@ export type ActionPlanStatus = {
   id: string;
   label: string;
   isActive: boolean;
+  isCompleted: boolean;
   createdAt: string;
   updatedAt: string;
 };

@@ -2,16 +2,19 @@ import { NextResponse } from "next/server";
 
 import { AppError } from "@/application/errors";
 import { actionPlanInputSchema } from "@/application/schemas";
-import { listVisiblePlans, saveOwnActionPlan } from "@/application/use-cases";
+import { listVisiblePlans, saveOwnActionPlan, type ActionPlanScope } from "@/application/use-cases";
 import { actionPlans, statuses, users } from "@/infrastructure/container";
 import { currentActor } from "@/presentation/server/actor";
 
 export async function GET(request: Request) {
   try {
     const actor = await currentActor();
-    const targetId = new URL(request.url).searchParams.get("userId");
+    const params = new URL(request.url).searchParams;
+    const targetId = params.get("userId");
+    const requestedScope = params.get("scope");
+    const scope: ActionPlanScope = requestedScope === "active" || requestedScope === "history" ? requestedScope : actor.role === "user" ? "active" : "all";
     const target = targetId ? await users.findById(targetId) : actor.role === "user" ? await users.findById(actor.id) : null;
-    return NextResponse.json(await listVisiblePlans(actionPlans, actor, target));
+    return NextResponse.json(await listVisiblePlans(actionPlans, statuses, actor, target, scope));
   } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Terjadi kesalahan." }, { status: error instanceof AppError ? 403 : 400 }); }
 }
 
