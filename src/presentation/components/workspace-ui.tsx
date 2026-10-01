@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 
 import { Close } from "./icons";
 
-
 export function StatusBadge({ status }: { status?: string }) {
   if (!status) return <span className="text-sm text-[#90a09f]">—</span>;
   const styles = status === "Selesai" ? "bg-[#dff3e6] text-[#206b43]" : status === "On Progress" ? "bg-[#e5efff] text-[#265b9b]" : "bg-[#fff1d7] text-[#9a5b16]";
@@ -19,5 +18,9 @@ export function PageHeading({ title, description, action }: { title: string; des
 }
 
 export function DialogFrame({ title, description, children, onClose }: { title: string; description: string; children: ReactNode; onClose: () => void }) {
-  return <div className="fixed inset-0 z-50 flex items-end bg-[#173c3a]/30 p-0 sm:items-center sm:justify-center sm:p-6" role="presentation"><div className="w-full rounded-t-2xl bg-white p-6 shadow-[0_-20px_56px_-25px_rgba(23,60,58,0.55)] sm:max-w-xl sm:rounded-2xl" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><div className="flex items-start justify-between gap-5"><div><h2 id="dialog-title" className="text-xl font-semibold tracking-[-0.025em] text-[#173c3a]">{title}</h2><p className="mt-1.5 text-sm leading-6 text-[#667c7c]">{description}</p></div><button className="grid size-9 shrink-0 place-items-center rounded-lg text-[#667c7c] hover:bg-[#f1f5f4]" onClick={onClose} aria-label="Tutup dialog"><Close className="size-5" /></button></div>{children}</div></div>;
+  return <div className="fixed inset-0 z-50 flex items-end bg-[#173c3a]/30 p-0 sm:items-center sm:justify-center sm:p-6" role="presentation"><div className="w-full rounded-t-2xl bg-white p-6 shadow-[0_-20px_56px_-25px_rgba(23,60,58,0.55)] sm:max-w-xl sm:rounded-2xl" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><div className="flex items-start justify-between gap-5"><div><h2 id="dialog-title" className="text-xl font-semibold tracking-[-0.025em] text-[#173c3a]">{title}</h2><p className="mt-1.5 text-sm leading-6 text-[#667c7c]">{description}</p></div><button type="button" className="grid size-9 shrink-0 place-items-center rounded-lg text-[#667c7c] hover:bg-[#f1f5f4]" onClick={onClose} aria-label="Tutup dialog"><Close className="size-5" /></button></div>{children}</div></div>;
+}
+
+export function ConfirmDialog({ title, description, confirmLabel, onCancel, onConfirm, confirming = false }: { title: string; description: ReactNode; confirmLabel: string; onCancel: () => void; onConfirm: () => void; confirming?: boolean }) {
+  return <div className="fixed inset-0 z-[60] flex items-end bg-[#173c3a]/40 p-0 sm:items-center sm:justify-center sm:p-6" role="presentation"><div className="w-full rounded-t-2xl bg-white p-6 shadow-[0_-20px_56px_-25px_rgba(23,60,58,0.55)] sm:max-w-md sm:rounded-2xl" role="alertdialog" aria-modal="true" aria-labelledby="confirm-dialog-title" aria-describedby="confirm-dialog-description"><h2 id="confirm-dialog-title" className="text-xl font-semibold tracking-[-0.025em] text-[#173c3a]">{title}</h2><div id="confirm-dialog-description" className="mt-2 text-sm leading-6 text-[#667c7c]">{description}</div><div className="mt-6 flex justify-end gap-3"><button type="button" onClick={onCancel} disabled={confirming} className="h-10 rounded-xl px-4 text-sm font-semibold text-[#59706f] hover:bg-[#f1f5f4] disabled:opacity-60">Batal</button><button type="button" onClick={onConfirm} disabled={confirming} className="h-10 rounded-xl bg-[#137d79] px-4 text-sm font-semibold text-white hover:bg-[#0e6865] disabled:opacity-60">{confirming ? "Memproses..." : confirmLabel}</button></div></div></div>;
 }

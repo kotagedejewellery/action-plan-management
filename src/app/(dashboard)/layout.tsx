@@ -10,5 +10,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   } catch {
     redirect("/login");
   }
-  return <AppShell actor={actor}>{children}</AppShell>;
+  const workspacePeriod = new Intl.DateTimeFormat("id-ID", {
+    month: "long",
+    year: "numeric",
+    timeZone: "Asia/Bangkok",
+  }).format(new Date());
+  return <AppShell actor={actor} workspacePeriod={workspacePeriod}>{children}</AppShell>;
 }

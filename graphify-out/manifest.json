@@ -120,9 +120,9 @@
     "semantic_hash": ""
   },
   "src/app/(dashboard)/layout.tsx": {
-    "mtime": 1790828910.2617865,
-    "seen": 1790829010.4027727,
-    "ast_hash": "0b96cd174d910b66543b1e866fdf9474",
+    "mtime": 1790835964.1446106,
+    "seen": 1790836078.559389,
+    "ast_hash": "9149aeb86493bec8885b9d2590a1281c",
     "semantic_hash": ""
   },
   "src/app/(dashboard)/monitoring/page.tsx": {
@@ -138,9 +138,9 @@
     "semantic_hash": ""
   },
   "src/app/login/page.tsx": {
-    "mtime": 1790828863.7380905,
-    "seen": 1790829010.402791,
-    "ast_hash": "6c5ad9f7bd4837c4dffef1231bcd7b91",
+    "mtime": 1790838744.7772417,
+    "seen": 1790838801.7435608,
+    "ast_hash": "7b19f6a89e79caf275b9d9e10385e2f1",
     "semantic_hash": ""
   },
   "src/presentation/components/action-plan-workspace.tsx": {
@@ -150,9 +150,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/app-shell.tsx": {
-    "mtime": 1790829053.4049332,
-    "seen": 1790829066.7206569,
-    "ast_hash": "bac5e999c813acc9d30ebfb6fffafe1d",
+    "mtime": 1790838220.4548938,
+    "seen": 1790838399.1500854,
+    "ast_hash": "7bf609d20b3e5f702881297c9eab189d",
     "semantic_hash": ""
   },
   "src/presentation/components/icons.tsx": {
@@ -174,9 +174,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/workspace-ui.tsx": {
-    "mtime": 1790828716.3215222,
-    "seen": 1790829010.402827,
-    "ast_hash": "1524f61e5f5a87db5462d508680a573f",
+    "mtime": 1790838204.0894194,
+    "seen": 1790838399.1501167,
+    "ast_hash": "de8cb8b03b47b89f4374fe80b176116c",
     "semantic_hash": ""
   },
   "src/presentation/data/demo-data.ts": {
@@ -294,9 +294,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-action-plan-workspace.tsx": {
-    "mtime": 1790829221.0436702,
-    "seen": 1790829324.7093983,
-    "ast_hash": "c4baae4b8d875de18540171dcb082240",
+    "mtime": 1790838272.599692,
+    "seen": 1790838399.1500893,
+    "ast_hash": "e1d84cf70b7c1084e08b5aefd78af510",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-monitoring-workspace.tsx": {
@@ -306,9 +306,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-user-management-workspace.tsx": {
-    "mtime": 1790829264.073851,
-    "seen": 1790829324.7094011,
-    "ast_hash": "f8f2007980d0192dd22f7545c36ff4cc",
+    "mtime": 1790838334.992999,
+    "seen": 1790838399.150096,
+    "ast_hash": "728cf4dfd14dd49a57fccb8845e3dac7",
     "semantic_hash": ""
   },
   "src/presentation/components/login-form.tsx": {

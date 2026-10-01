@@ -5,7 +5,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import type { ActionPlan } from "@/domain/models";
 import { useFeedback } from "./feedback";
 import { ExternalLink, Pencil, Plus, Search } from "./icons";
-import { DialogFrame, PageHeading, StatusBadge } from "./workspace-ui";
+import { ConfirmDialog, DialogFrame, PageHeading, StatusBadge } from "./workspace-ui";
 
 type Draft = Omit<ActionPlan, "id" | "createdAt" | "updatedAt"> & { updatedAt?: string };
 
@@ -36,8 +36,32 @@ function PlanForm({ plan, statusOptions, onCancel, onSave }: { plan?: ActionPlan
   const { notify } = useFeedback();
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
-  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setSaving(true); setError(""); const data = new FormData(event.currentTarget); try { await onSave({ date: String(data.get("date")), task: String(data.get("task")), morningStatus: String(data.get("morningStatus")), afternoonStatus: String(data.get("afternoonStatus")) || undefined, resultLink: String(data.get("resultLink")) || undefined, note: String(data.get("note")) || undefined, updatedAt: plan?.updatedAt }, plan?.id); } catch (caught) { const message = caught instanceof Error ? caught.message : "Action Plan tidak dapat disimpan."; setError(message); notify("error", "Action Plan belum tersimpan", message); } finally { setSaving(false); } }
-  return <DialogFrame title={plan ? "Edit Action Plan" : "Tambah Action Plan"} description="Simpan progres agar mudah dipantau kembali." onClose={onCancel}><form onSubmit={submit} className="mt-6 space-y-4"><div className="grid gap-4 sm:grid-cols-2"><Field label="Tanggal"><input name="date" type="date" required defaultValue={plan?.date ?? new Date().toISOString().slice(0, 10)} /></Field><Field label="Status Pagi"><select name="morningStatus" required defaultValue={plan?.morningStatus ?? statusOptions[0]}>{statusOptions.map((status) => <option key={status}>{status}</option>)}</select></Field></div><Field label="Action Plan"><textarea name="task" required defaultValue={plan?.task} placeholder="Jelaskan pekerjaan yang akan dilakukan" rows={3} /></Field><Field label="Status Sore"><select name="afternoonStatus" defaultValue={plan?.afternoonStatus ?? ""}><option value="">Belum diperbarui</option>{statusOptions.map((status) => <option key={status}>{status}</option>)}</select></Field><Field label="Link Hasil"><input name="resultLink" type="url" defaultValue={plan?.resultLink} placeholder="https://..." /></Field><Field label="Catatan"><textarea name="note" defaultValue={plan?.note} placeholder="Tambahkan konteks bila diperlukan" rows={2} /></Field>{error && <p className="rounded-xl bg-[#fff1d7] px-3 py-2 text-sm text-[#9a5b16]" role="alert">{error}</p>}<div className="flex justify-end gap-3 border-t pt-5"><button type="button" onClick={onCancel} disabled={saving} className="h-10 rounded-xl px-4 text-sm font-semibold text-[#59706f] hover:bg-[#f1f5f4] disabled:opacity-60">Batal</button><button disabled={saving || statusOptions.length === 0} className="h-10 rounded-xl bg-[#137d79] px-4 text-sm font-semibold text-white hover:bg-[#0e6865] disabled:opacity-60">{saving ? "Menyimpan..." : "Simpan Action Plan"}</button></div></form></DialogFrame>;
+  const [dirty, setDirty] = useState(false);
+  const [discardConfirmationOpen, setDiscardConfirmationOpen] = useState(false);
+
+  const requestClose = () => {
+    if (dirty && !saving) setDiscardConfirmationOpen(true);
+    else onCancel();
+  };
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSaving(true);
+    setError("");
+    const data = new FormData(event.currentTarget);
+    try {
+      await onSave({ date: String(data.get("date")), task: String(data.get("task")), morningStatus: String(data.get("morningStatus")), afternoonStatus: String(data.get("afternoonStatus")) || undefined, resultLink: String(data.get("resultLink")) || undefined, note: String(data.get("note")) || undefined, updatedAt: plan?.updatedAt }, plan?.id);
+      setDirty(false);
+    } catch (caught) {
+      const message = caught instanceof Error ? caught.message : "Action Plan tidak dapat disimpan.";
+      setError(message);
+      notify("error", "Action Plan belum tersimpan", message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return <><DialogFrame title={plan ? "Edit Action Plan" : "Tambah Action Plan"} description="Simpan progres agar mudah dipantau kembali." onClose={requestClose}><form onSubmit={submit} onChange={() => setDirty(true)} className="mt-6 space-y-4"><div className="grid gap-4 sm:grid-cols-2"><Field label="Tanggal"><input name="date" type="date" required defaultValue={plan?.date ?? new Date().toISOString().slice(0, 10)} /></Field><Field label="Status Pagi"><select name="morningStatus" required defaultValue={plan?.morningStatus ?? statusOptions[0]}>{statusOptions.map((status) => <option key={status}>{status}</option>)}</select></Field></div><Field label="Action Plan"><textarea name="task" required defaultValue={plan?.task} placeholder="Jelaskan pekerjaan yang akan dilakukan" rows={3} /></Field><Field label="Status Sore"><select name="afternoonStatus" defaultValue={plan?.afternoonStatus ?? ""}><option value="">Belum diperbarui</option>{statusOptions.map((status) => <option key={status}>{status}</option>)}</select></Field><Field label="Link Hasil"><input name="resultLink" type="url" defaultValue={plan?.resultLink} placeholder="https://..." /></Field><Field label="Catatan"><textarea name="note" defaultValue={plan?.note} placeholder="Tambahkan konteks bila diperlukan" rows={2} /></Field>{error && <p className="rounded-xl bg-[#fff1d7] px-3 py-2 text-sm text-[#9a5b16]" role="alert">{error}</p>}<div className="flex justify-end gap-3 border-t pt-5"><button type="button" onClick={requestClose} disabled={saving} className="h-10 rounded-xl px-4 text-sm font-semibold text-[#59706f] hover:bg-[#f1f5f4] disabled:opacity-60">Batal</button><button disabled={saving || statusOptions.length === 0} className="h-10 rounded-xl bg-[#137d79] px-4 text-sm font-semibold text-white hover:bg-[#0e6865] disabled:opacity-60">{saving ? "Menyimpan..." : "Simpan Action Plan"}</button></div></form></DialogFrame>{discardConfirmationOpen && <ConfirmDialog title="Batalkan perubahan?" description="Perubahan Action Plan yang belum disimpan akan hilang." confirmLabel="Batalkan perubahan" onCancel={() => setDiscardConfirmationOpen(false)} onConfirm={onCancel} />}</>;
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) { return <label className="block text-sm font-medium text-[#294846]"><span>{label}</span><span className="mt-2 block [&_input]:h-11 [&_input]:w-full [&_input]:rounded-xl [&_input]:border [&_input]:px-3 [&_input]:text-sm [&_input]:outline-none [&_input:focus]:border-[#137d79] [&_select]:h-11 [&_select]:w-full [&_select]:rounded-xl [&_select]:border [&_select]:bg-white [&_select]:px-3 [&_select]:text-sm [&_select]:outline-none [&_select:focus]:border-[#137d79] [&_textarea]:w-full [&_textarea]:resize-none [&_textarea]:rounded-xl [&_textarea]:border [&_textarea]:p-3 [&_textarea]:text-sm [&_textarea]:outline-none [&_textarea:focus]:border-[#137d79]">{children}</span></label>; }
