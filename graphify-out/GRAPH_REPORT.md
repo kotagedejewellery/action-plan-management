@@ -1,30 +1,31 @@
 # Graph Report - action-plan-management  (2026-10-01)
 
 ## Corpus Check
-- 55 files · ~17,788 words
+- 55 files · ~17,966 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 3 file(s) not represented in the graph (top: (none) 1, .ico 1, .css 1)
 
 ## Summary
-- 394 nodes · 888 edges · 20 communities (16 shown, 4 thin omitted)
-- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 40 edges (avg confidence: 0.88)
+- 395 nodes · 890 edges · 21 communities (17 shown, 4 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 40 edges (avg confidence: 0.88)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0f875557`
+- Built from commit: `0dbadc9b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
+- feedback.tsx
 - Product Requirements Document — Action Plan Management System
 - System Architecture — Action Plan Management System
 - Tech Stack — Action Plan Management System
 - compilerOptions
-- feedback.tsx
+- icons.tsx
 - package.json
 - Aturan Kerja Proyek
 - use-cases.ts
-- icons.tsx
+- connected-action-plan-workspace.tsx
 - dependencies
 - README.md
 - postcss.config.mjs
@@ -40,7 +41,7 @@
 ## God Nodes (most connected - your core abstractions)
 1. `currentActor()` - 27 edges
 2. `AppError` - 21 edges
-3. `ConnectedActionPlanWorkspace()` - 18 edges
+3. `ConnectedActionPlanWorkspace()` - 19 edges
 4. `Icon()` - 17 edges
 5. `next` - 16 edges
 6. `compilerOptions` - 16 edges
@@ -64,7 +65,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (20 total, 4 thin omitted)
+## Communities (21 total, 4 thin omitted)
+
+### Community 0 - "feedback.tsx"
+Cohesion: 0.22
+Nodes (9): src_app_globals, metadata, RootLayout(), Feedback, FeedbackContext, FeedbackContextValue, FeedbackProvider(), FeedbackType (+1 more)
 
 ### Community 1 - "Product Requirements Document — Action Plan Management System"
 Cohesion: 0.06
@@ -82,9 +87,9 @@ Nodes (11): 1. Prinsip pemilihan, 2. Stack yang digunakan, 3. Keputusan implemen
 Cohesion: 0.11
 Nodes (18): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+10 more)
 
-### Community 5 - "feedback.tsx"
-Cohesion: 0.10
-Nodes (19): next-auth, src_app_globals, metadata, RootLayout(), LoginPage(), Feedback, FeedbackContext, FeedbackContextValue (+11 more)
+### Community 5 - "icons.tsx"
+Cohesion: 0.14
+Nodes (23): next-auth, DashboardLayout(), LoginPage(), AppShell(), baseNavigation, ArrowRight(), Calendar(), CheckMark() (+15 more)
 
 ### Community 6 - "package.json"
 Cohesion: 0.17
@@ -92,11 +97,11 @@ Nodes (11): name, private, version, lucide-react, react-dom, tailwindcss, @tailw
 
 ### Community 8 - "use-cases.ts"
 Cohesion: 0.11
-Nodes (43): nextConfig, bcryptjs, next, zod, DELETE(), PATCH(), GET(), POST() (+35 more)
+Nodes (44): nextConfig, bcryptjs, next, zod, DELETE(), PATCH(), GET(), POST() (+36 more)
 
-### Community 10 - "icons.tsx"
-Cohesion: 0.08
-Nodes (57): react, DashboardLayout(), SafeUser, ActionPlanWorkspace(), Field(), PlanForm(), statusOptions, AppShell() (+49 more)
+### Community 10 - "connected-action-plan-workspace.tsx"
+Cohesion: 0.09
+Nodes (45): react, SafeUser, ActionPlanWorkspace(), Field(), PlanForm(), statusOptions, ConnectedActionPlanWorkspace(), displayDate() (+37 more)
 
 ### Community 11 - "dependencies"
 Cohesion: 0.22
@@ -111,8 +116,8 @@ Cohesion: 0.09
 Nodes (22): Buttons, Cards / Containers, Colors, Components, Design System: Action Plan Management System, Dialogs, Do:, Do's and Don'ts (+14 more)
 
 ### Community 16 - "repositories.ts"
-Cohesion: 0.07
-Nodes (29): 2. Clean Architecture, Application, Domain, Infrastructure, Presentation, ActionPlanRepository, StatusRepository, UserRepository (+21 more)
+Cohesion: 0.08
+Nodes (28): 2. Clean Architecture, Application, Domain, Infrastructure, Presentation, ActionPlanRepository, StatusRepository, UserRepository (+20 more)
 
 ### Community 18 - "devDependencies"
 Cohesion: 0.20
@@ -138,17 +143,17 @@ Nodes (3): eslintConfig, eslint, eslint-config-next
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Users()` connect `Product Requirements Document — Action Plan Management System` to `icons.tsx`, `Tech Stack — Action Plan Management System`?**
+- **Why does `Users()` connect `Product Requirements Document — Action Plan Management System` to `Tech Stack — Action Plan Management System`, `icons.tsx`?**
   _High betweenness centrality (0.113) - this node is a cross-community bridge._
-- **Why does `next` connect `use-cases.ts` to `icons.tsx`, `feedback.tsx`, `package.json`?**
+- **Why does `next` connect `use-cases.ts` to `feedback.tsx`, `icons.tsx`, `package.json`?**
   _High betweenness centrality (0.083) - this node is a cross-community bridge._
 - **Why does `user()` connect `Product Requirements Document — Action Plan Management System` to `use-cases.ts`?**
-  _High betweenness centrality (0.083) - this node is a cross-community bridge._
+  _High betweenness centrality (0.082) - this node is a cross-community bridge._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**
   _136 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Product Requirements Document — Action Plan Management System` be split into smaller, more focused modules?**
   _Cohesion score 0.06349206349206349 - nodes in this community are weakly interconnected._
 - **Should `compilerOptions` be split into smaller, more focused modules?**
   _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
-- **Should `feedback.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
+- **Should `icons.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.135632183908046 - nodes in this community are weakly interconnected._

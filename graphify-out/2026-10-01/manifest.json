@@ -300,9 +300,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-monitoring-workspace.tsx": {
-    "mtime": 1790829281.131369,
-    "seen": 1790829324.7093997,
-    "ast_hash": "9eb86406d83362ce9c43c98492da73a1",
+    "mtime": 1790845629.3165958,
+    "seen": 1790845663.861697,
+    "ast_hash": "a34ba92e6078af9b639e1c1a02fbc20e",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-user-management-workspace.tsx": {
