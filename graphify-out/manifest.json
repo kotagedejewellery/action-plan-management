@@ -372,9 +372,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-dashboard-workspace.tsx": {
-    "mtime": 1791168670.1941526,
-    "seen": 1791168707.0431402,
-    "ast_hash": "947916719f3be5e5f0d061df8efcffc8",
+    "mtime": 1791172979.6325479,
+    "seen": 1791173071.704735,
+    "ast_hash": "783611edac19fe66b45fde9aba65619e",
     "semantic_hash": ""
   },
   "tests/unit/dashboard-analytics.test.ts": {
@@ -384,9 +384,9 @@
     "semantic_hash": ""
   },
   ".github/workflows/deploy.yml": {
-    "mtime": 1791169576.2475007,
-    "seen": 1791169604.5114172,
-    "ast_hash": "fd955246467bf94e0d1a1ff735b5352a",
+    "mtime": 1791171483.0226254,
+    "seen": 1791172671.237441,
+    "ast_hash": "312a07b7465aaf0e1aa808792b7ead0a",
     "semantic_hash": ""
   }
 }

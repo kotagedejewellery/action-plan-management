@@ -1,17 +1,17 @@
 # Graph Report - action-plan-management  (2026-10-05)
 
 ## Corpus Check
-- 59 files · ~19,866 words
+- 59 files · ~20,001 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 3 file(s) not represented in the graph (top: (none) 1, .ico 1, .css 1)
 
 ## Summary
-- 417 nodes · 960 edges · 22 communities (19 shown, 3 thin omitted)
+- 417 nodes · 961 edges · 22 communities (19 shown, 3 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 42 edges (avg confidence: 0.88)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `08213f82`
+- Built from commit: `4f9110d1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -145,8 +145,8 @@ Cohesion: 0.15
 Nodes (16): ref_node_path, vitest, calendarDates(), DashboardPlan, DashboardSummary, summarizeDashboard(), UserSummary, ConnectedDashboardWorkspace() (+8 more)
 
 ## Knowledge Gaps
-- **140 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+135 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 171 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **139 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+134 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 170 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
@@ -155,11 +155,11 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `Users()` connect `Product Requirements Document — Action Plan Management System` to `Tech Stack — Action Plan Management System`, `icons.tsx`?**
   _High betweenness centrality (0.108) - this node is a cross-community bridge._
 - **Why does `next` connect `currentActor` to `feedback.tsx`, `icons.tsx`, `package.json`?**
-  _High betweenness centrality (0.081) - this node is a cross-community bridge._
+  _High betweenness centrality (0.080) - this node is a cross-community bridge._
 - **Why does `user()` connect `Product Requirements Document — Action Plan Management System` to `use-cases.ts`?**
   _High betweenness centrality (0.079) - this node is a cross-community bridge._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**
-  _140 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _139 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Product Requirements Document — Action Plan Management System` be split into smaller, more focused modules?**
   _Cohesion score 0.06349206349206349 - nodes in this community are weakly interconnected._
 - **Should `compilerOptions` be split into smaller, more focused modules?**

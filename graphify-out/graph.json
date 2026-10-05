@@ -235,7 +235,7 @@
       "file_type": "code",
       "norm_label": "preset",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L12"
+      "source_location": "L13"
     },
     {
       "id": "src_presentation_components_icons_iconprops",
@@ -1355,7 +1355,7 @@
       "file_type": "code",
       "norm_label": "connecteddashboardworkspace()",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L32"
+      "source_location": "L33"
     },
     {
       "id": "src_presentation_components_connected_dashboard_workspace_connecteddashboardworkspace_setperiod",
@@ -1367,7 +1367,7 @@
       "file_type": "code",
       "norm_label": "setperiod()",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L61"
+      "source_location": "L62"
     },
     {
       "id": "src_presentation_components_connected_dashboard_workspace_displayshortdate",
@@ -1379,7 +1379,7 @@
       "file_type": "code",
       "norm_label": "displayshortdate()",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L24"
+      "source_location": "L25"
     },
     {
       "id": "src_presentation_components_connected_dashboard_workspace_emptycopy",
@@ -1391,7 +1391,7 @@
       "file_type": "code",
       "norm_label": "emptycopy()",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L311"
+      "source_location": "L334"
     },
     {
       "id": "src_presentation_components_connected_dashboard_workspace_metric",
@@ -1403,7 +1403,7 @@
       "file_type": "code",
       "norm_label": "metric()",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L300"
+      "source_location": "L323"
     },
     {
       "id": "src_presentation_components_connected_dashboard_workspace_startofmonth",
@@ -1415,7 +1415,7 @@
       "file_type": "code",
       "norm_label": "startofmonth()",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L20"
+      "source_location": "L21"
     },
     {
       "id": "src_presentation_components_connected_dashboard_workspace_startofweek",
@@ -1427,7 +1427,7 @@
       "file_type": "code",
       "norm_label": "startofweek()",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L14"
+      "source_location": "L15"
     },
     {
       "id": "tests_unit_dashboard_analytics_test_plan",
@@ -6490,30 +6490,6 @@
     },
     {
       "source": "src_presentation_components_connected_dashboard_workspace_connecteddashboardworkspace",
-      "target": "src_presentation_components_connected_dashboard_workspace_metric",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L138",
-      "weight": 1.0
-    },
-    {
-      "source": "src_presentation_components_connected_dashboard_workspace_connecteddashboardworkspace",
-      "target": "src_presentation_components_connected_dashboard_workspace_emptycopy",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L188",
-      "weight": 1.0
-    },
-    {
-      "source": "src_presentation_components_connected_dashboard_workspace_connecteddashboardworkspace",
       "target": "src_presentation_components_connected_dashboard_workspace_displayshortdate",
       "relation": "calls",
       "_origin": "ast",
@@ -6521,7 +6497,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L214",
+      "source_location": "L179",
       "weight": 1.0
     },
     {
@@ -6533,7 +6509,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L282",
+      "source_location": "L183",
+      "weight": 1.0
+    },
+    {
+      "source": "src_presentation_components_connected_dashboard_workspace_connecteddashboardworkspace",
+      "target": "src_presentation_components_connected_dashboard_workspace_metric",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
+      "source_location": "L197",
+      "weight": 1.0
+    },
+    {
+      "source": "src_presentation_components_connected_dashboard_workspace_connecteddashboardworkspace",
+      "target": "src_presentation_components_connected_dashboard_workspace_emptycopy",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
+      "source_location": "L250",
       "weight": 1.0
     },
     {
@@ -6545,7 +6545,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -6557,7 +6557,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -6569,7 +6569,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L71",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -6581,7 +6581,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L64",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -6593,7 +6593,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L64",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -7277,7 +7277,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L61",
+      "source_location": "L62",
       "weight": 1.0
     },
     {
@@ -9286,7 +9286,7 @@
     },
     {
       "source": "src_presentation_components_connected_dashboard_workspace",
-      "target": "src_presentation_components_workspace_ui_pageheading",
+      "target": "src_domain_models_safeuser",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -9294,6 +9294,18 @@
       "context": "import",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
       "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "src_presentation_components_connected_dashboard_workspace",
+      "target": "src_presentation_components_workspace_ui_pageheading",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -9305,7 +9317,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -9317,7 +9329,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -9329,19 +9341,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "src_presentation_components_connected_dashboard_workspace",
-      "target": "src_domain_models_safeuser",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L9",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -11303,7 +11303,7 @@
     },
     {
       "source": "src_presentation_components_connected_dashboard_workspace",
-      "target": "src_presentation_components_workspace_ui",
+      "target": "src_domain_models",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -11311,6 +11311,19 @@
       "context": "import",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
       "source_location": "L10",
+      "type_only": true,
+      "weight": 1.0
+    },
+    {
+      "source": "src_presentation_components_connected_dashboard_workspace",
+      "target": "src_presentation_components_workspace_ui",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -11327,6 +11340,18 @@
     },
     {
       "source": "src_presentation_components_connected_dashboard_workspace",
+      "target": "ref_lucide_react",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_presentation_components_connected_dashboard_workspace",
       "target": "src_application_dashboard_analytics",
       "relation": "imports_from",
       "_origin": "ast",
@@ -11334,20 +11359,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "src_presentation_components_connected_dashboard_workspace",
-      "target": "src_domain_models",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L9",
-      "type_only": true,
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -14322,7 +14334,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -14333,7 +14345,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -14344,7 +14356,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -14355,7 +14367,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
@@ -14366,18 +14378,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L300",
-      "weight": 1.0
-    },
-    {
-      "source": "src_presentation_components_connected_dashboard_workspace",
-      "target": "src_presentation_components_connected_dashboard_workspace_emptycopy",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L311",
+      "source_location": "L323",
       "weight": 1.0
     },
     {
@@ -14388,7 +14389,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L32",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "src_presentation_components_connected_dashboard_workspace",
+      "target": "src_presentation_components_connected_dashboard_workspace_emptycopy",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
+      "source_location": "L334",
       "weight": 1.0
     },
     {
@@ -16118,5 +16130,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "08213f82dfe955dfc160edfa359537fb26a67787"
+  "built_at_commit": "4f9110d1845b6bcee7f76a29efe77d4d4de291de"
 }

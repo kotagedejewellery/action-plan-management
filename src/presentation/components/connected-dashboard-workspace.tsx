@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
 
 import {
   summarizeDashboard,
@@ -134,12 +135,71 @@ export function ConnectedDashboardWorkspace({
         </div>
       </div>
 
-      <dl className="mt-6 grid divide-y overflow-hidden rounded-2xl border bg-white shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)] sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
-        <Metric label="User aktif" value={summary.activeUsers} />
-        <Metric label="Action Plan" value={summary.total} />
-        <Metric label="Selesai" value={summary.completed} />
-        <Metric label="Penyelesaian" value={summary.completionRate + "%"} />
-      </dl>
+      <section
+        className="mt-6 overflow-hidden rounded-2xl bg-[#173c3a] text-white shadow-[0_18px_36px_-32px_rgba(23,60,58,0.45)]"
+        aria-live="polite"
+      >
+        <div className="flex flex-col gap-3 px-5 py-5 sm:flex-row sm:items-start sm:justify-between sm:px-6">
+          <div className="flex items-start gap-3">
+            {summary.overdue.length === 0 ? (
+              <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-[#c8ebe7]" aria-hidden="true" />
+            ) : (
+              <AlertCircle className="mt-0.5 size-5 shrink-0 text-[#ffd88c]" aria-hidden="true" />
+            )}
+            <div>
+              <h2 className="text-lg font-semibold tracking-tight">
+                {summary.overdue.length === 0
+                  ? "Operasional terkendali"
+                  : "Perlu perhatian"}
+              </h2>
+              <p className="mt-1 max-w-2xl text-sm leading-6 text-[#d6e8e6]">
+                {summary.overdue.length === 0
+                  ? "Tidak ada Action Plan sebelum hari ini yang belum berstatus final."
+                  : summary.overdue.length +
+                    " Action Plan sebelum hari ini belum berstatus final. Prioritaskan tindak lanjut berikut."}
+              </p>
+            </div>
+          </div>
+          {summary.overdue.length > 5 && (
+            <p className="shrink-0 text-sm text-[#c8ebe7]">
+              Menampilkan 5 prioritas
+            </p>
+          )}
+        </div>
+        {summary.overdue.length > 0 && (
+          <div className="border-t border-white/15">
+            {summary.overdue.slice(0, 5).map((plan) => (
+              <article
+                key={plan.id}
+                className="flex flex-col gap-3 border-b border-white/10 px-5 py-4 last:border-b-0 sm:flex-row sm:items-center sm:justify-between sm:px-6"
+              >
+                <div className="min-w-0">
+                  <p className="font-semibold">{plan.task}</p>
+                  <p className="mt-1 text-sm text-[#c8ebe7]">
+                    {plan.ownerName} · {displayShortDate(plan.date)}
+                  </p>
+                </div>
+                <div className="flex shrink-0 flex-wrap gap-2">
+                  <StatusBadge status={plan.morningStatus} />
+                  <StatusBadge status={plan.afternoonStatus} />
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="mt-6" aria-labelledby="summary-heading">
+        <h2 id="summary-heading" className="sr-only">
+          Ringkasan periode
+        </h2>
+        <dl className="grid divide-y overflow-hidden rounded-2xl border bg-white shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)] sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+          <Metric label="User aktif" value={summary.activeUsers} />
+          <Metric label="Action Plan" value={summary.total} />
+          <Metric label="Selesai" value={summary.completed} />
+          <Metric label="Penyelesaian" value={summary.completionRate + "%"} />
+        </dl>
+      </section>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
         <section className="rounded-2xl border bg-white p-5 shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)] sm:p-6">
@@ -159,8 +219,10 @@ export function ConnectedDashboardWorkspace({
                   <p className="truncate text-sm font-semibold text-[#294846]">
                     {user.name}
                   </p>
-                  <p className="shrink-0 text-xs text-[#748886]">
-                    {user.completed} dari {user.total} selesai
+                  <p className="shrink-0 text-xs font-semibold tabular-nums text-[#51716e]">
+                    {user.total === 0
+                      ? "Belum ada rencana"
+                      : user.completed + " / " + user.total + " selesai"}
                   </p>
                 </div>
                 <div className="mt-2 h-3 overflow-hidden rounded-full bg-[#e8eeee]">
@@ -254,45 +316,6 @@ export function ConnectedDashboardWorkspace({
         </section>
       </div>
 
-      <section className="mt-6 overflow-hidden rounded-2xl border bg-white shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)]">
-        <div className="border-b px-5 py-4 sm:px-6">
-          <h2 className="text-lg font-semibold text-[#244542]">
-            Perlu perhatian
-          </h2>
-          <p className="mt-1 text-sm text-[#748886]">
-            Action Plan sebelum hari ini yang belum berstatus final.
-          </p>
-        </div>
-        {summary.overdue.length === 0 ? (
-          <EmptyCopy text="Tidak ada Action Plan terlambat pada periode ini." />
-        ) : (
-          <div className="divide-y">
-            {summary.overdue.slice(0, 5).map((plan) => (
-              <article
-                key={plan.id}
-                className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6"
-              >
-                <div className="min-w-0">
-                  <p className="font-semibold text-[#294846]">{plan.task}</p>
-                  <p className="mt-1 text-sm text-[#748886]">
-                    {plan.ownerName} - {displayShortDate(plan.date)}
-                  </p>
-                </div>
-                <div className="flex shrink-0 flex-wrap gap-2">
-                  <StatusBadge status={plan.morningStatus} />
-                  <StatusBadge status={plan.afternoonStatus} />
-                </div>
-              </article>
-            ))}
-            {summary.overdue.length > 5 && (
-              <p className="px-5 py-3 text-sm text-[#748886] sm:px-6">
-                Menampilkan 5 dari {summary.overdue.length} Action Plan yang
-                perlu perhatian.
-              </p>
-            )}
-          </div>
-        )}
-      </section>
     </section>
   );
 }
