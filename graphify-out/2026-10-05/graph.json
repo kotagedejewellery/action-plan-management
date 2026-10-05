@@ -708,6 +708,40 @@
       "_origin": "ast"
     },
     {
+      "id": "src_app_api_integrations_google_drive_callback_route",
+      "label": "callback/route.ts",
+      "file_type": "code",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_api_integrations_google_drive_callback_route_get",
+      "label": "GET()",
+      "file_type": "code",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L10",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_api_integrations_google_drive_connect_route",
+      "label": "connect/route.ts",
+      "file_type": "code",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_api_integrations_google_drive_connect_route_get",
+      "label": "GET()",
+      "file_type": "code",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L9",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
       "id": "src_app_api_statuses_route",
       "label": "statuses/route.ts",
       "file_type": "code",
@@ -1676,6 +1710,50 @@
       "_origin": "ast"
     },
     {
+      "id": "src_infrastructure_google_drive_oauth",
+      "label": "oauth.ts",
+      "file_type": "code",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_infrastructure_google_drive_oauth_required",
+      "label": "required()",
+      "file_type": "code",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L5",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_infrastructure_google_drive_oauth_googledriveoauthclient",
+      "label": "googleDriveOAuthClient()",
+      "file_type": "code",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L11",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_infrastructure_google_drive_oauth_googledriveclient",
+      "label": "googleDriveClient()",
+      "file_type": "code",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L15",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_infrastructure_google_drive_oauth_drivefolderid",
+      "label": "driveFolderId()",
+      "file_type": "code",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L21",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
       "id": "src_infrastructure_google_sheets_client",
       "label": "client.ts",
       "file_type": "code",
@@ -1707,24 +1785,6 @@
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/client.ts",
       "source_location": "L13",
-      "_callable": true,
-      "_origin": "ast"
-    },
-    {
-      "id": "src_infrastructure_google_sheets_client_driveclient",
-      "label": "driveClient()",
-      "file_type": "code",
-      "source_file": "src/infrastructure/google-sheets/client.ts",
-      "source_location": "L18",
-      "_callable": true,
-      "_origin": "ast"
-    },
-    {
-      "id": "src_infrastructure_google_sheets_client_drivefolderid",
-      "label": "driveFolderId()",
-      "file_type": "code",
-      "source_file": "src/infrastructure/google-sheets/client.ts",
-      "source_location": "L23",
       "_callable": true,
       "_origin": "ast"
     },
@@ -3214,6 +3274,14 @@
       "_origin": "ast"
     },
     {
+      "id": "tests_unit_schemas_test",
+      "label": "schemas.test.ts",
+      "file_type": "code",
+      "source_file": "tests/unit/schemas.test.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
       "id": "tests_unit_use_cases_test",
       "label": "use-cases.test.ts",
       "file_type": "code",
@@ -4295,6 +4363,14 @@
       "external": true,
       "source_file": "",
       "_origin": "semantic"
+    },
+    {
+      "id": "src_infrastructure_google_drive_oauth_drivescope",
+      "label": "src_infrastructure_google_drive_oauth_drivescope",
+      "file_type": "concept",
+      "type": "external",
+      "external": true,
+      "source_file": ""
     }
   ],
   "links": [
@@ -6589,6 +6665,235 @@
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/auth/[...nextauth]/route.ts",
       "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "ref_next",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "src_application_errors",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "src_application_errors_apperror",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "src_application_use_cases",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "src_application_use_cases_requireadmin",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "src_infrastructure_google_drive_oauth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "src_infrastructure_google_drive_oauth_googledriveoauthclient",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "src_presentation_server_actor",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "src_presentation_server_actor_currentactor",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "ref_googleapis",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route",
+      "target": "src_app_api_integrations_google_drive_callback_route_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route",
+      "target": "ref_node_crypto",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route",
+      "target": "ref_next",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route",
+      "target": "src_application_use_cases",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route",
+      "target": "src_application_use_cases_requireadmin",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route",
+      "target": "src_infrastructure_google_drive_oauth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route",
+      "target": "src_infrastructure_google_drive_oauth_drivescope",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route",
+      "target": "src_infrastructure_google_drive_oauth_googledriveoauthclient",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route",
+      "target": "src_presentation_server_actor",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route",
+      "target": "src_presentation_server_actor_currentactor",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route",
+      "target": "src_app_api_integrations_google_drive_connect_route_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -8955,7 +9260,7 @@
     },
     {
       "source": "src_infrastructure_google_drive_attachments",
-      "target": "src_infrastructure_google_sheets_client",
+      "target": "src_infrastructure_google_drive_oauth",
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -8966,7 +9271,7 @@
     },
     {
       "source": "src_infrastructure_google_drive_attachments",
-      "target": "src_infrastructure_google_sheets_client_driveclient",
+      "target": "src_infrastructure_google_drive_oauth_drivefolderid",
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -8977,7 +9282,7 @@
     },
     {
       "source": "src_infrastructure_google_drive_attachments",
-      "target": "src_infrastructure_google_sheets_client_drivefolderid",
+      "target": "src_infrastructure_google_drive_oauth_googledriveclient",
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -9013,6 +9318,101 @@
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-drive/attachments.ts",
       "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_drive_oauth",
+      "target": "ref_googleapis",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_drive_oauth",
+      "target": "src_infrastructure_google_drive_oauth_required",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_drive_oauth",
+      "target": "src_infrastructure_google_drive_oauth_googledriveoauthclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_drive_oauth",
+      "target": "src_infrastructure_google_drive_oauth_googledriveclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_drive_oauth",
+      "target": "src_infrastructure_google_drive_oauth_drivefolderid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_drive_oauth_googledriveoauthclient",
+      "target": "src_infrastructure_google_drive_oauth_required",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_drive_oauth_googledriveclient",
+      "target": "src_infrastructure_google_drive_oauth_googledriveoauthclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_drive_oauth_googledriveclient",
+      "target": "src_infrastructure_google_drive_oauth_required",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_drive_oauth_drivefolderid",
+      "target": "src_infrastructure_google_drive_oauth_required",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-drive/oauth.ts",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9058,26 +9458,6 @@
       "_origin": "ast"
     },
     {
-      "source": "src_infrastructure_google_sheets_client",
-      "target": "src_infrastructure_google_sheets_client_driveclient",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/infrastructure/google-sheets/client.ts",
-      "source_location": "L18",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "src_infrastructure_google_sheets_client",
-      "target": "src_infrastructure_google_sheets_client_drivefolderid",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/infrastructure/google-sheets/client.ts",
-      "source_location": "L23",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
       "source": "src_infrastructure_google_sheets_client_spreadsheetid",
       "target": "src_infrastructure_google_sheets_client_required",
       "relation": "calls",
@@ -9096,17 +9476,6 @@
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/client.ts",
       "source_location": "L14",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "src_infrastructure_google_sheets_client_driveclient",
-      "target": "src_infrastructure_google_sheets_client_required",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/infrastructure/google-sheets/client.ts",
-      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -13545,6 +13914,39 @@
       "_origin": "ast"
     },
     {
+      "source": "tests_unit_schemas_test",
+      "target": "ref_vitest",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/schemas.test.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tests_unit_schemas_test",
+      "target": "src_application_schemas",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/schemas.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tests_unit_schemas_test",
+      "target": "src_application_schemas_actionplaninputschema",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/schemas.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "tests_unit_use_cases_test",
       "target": "ref_vitest",
       "relation": "imports_from",
@@ -15193,6 +15595,72 @@
       "_origin": "ast"
     },
     {
+      "source": "src_app_api_integrations_google_drive_callback_route_get",
+      "target": "src_application_use_cases_requireadmin",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route_get",
+      "target": "src_presentation_server_actor_currentactor",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_callback_route_get",
+      "target": "src_infrastructure_google_drive_oauth_googledriveoauthclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route_get",
+      "target": "src_application_use_cases_requireadmin",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route_get",
+      "target": "src_presentation_server_actor_currentactor",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_integrations_google_drive_connect_route_get",
+      "target": "src_infrastructure_google_drive_oauth_googledriveoauthclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/integrations/google-drive/connect/route.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "src_app_api_statuses_route_get",
       "target": "src_presentation_server_actor_currentactor",
       "relation": "calls",
@@ -16196,6 +16664,18 @@
       "_origin": "ast"
     },
     {
+      "source": "src_app_api_integrations_google_drive_callback_route_get",
+      "target": "src_application_errors_apperror",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/api/integrations/google-drive/callback/route.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "src_app_api_users_userid_route_patch",
       "target": "src_application_errors_apperror",
       "relation": "calls",
@@ -16413,7 +16893,7 @@
     },
     {
       "source": "src_infrastructure_google_drive_attachments_googledriveattachmentstorage_upload",
-      "target": "src_infrastructure_google_sheets_client_driveclient",
+      "target": "src_infrastructure_google_drive_oauth_googledriveclient",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -16425,7 +16905,7 @@
     },
     {
       "source": "src_infrastructure_google_drive_attachments_googledriveattachmentstorage_upload",
-      "target": "src_infrastructure_google_sheets_client_drivefolderid",
+      "target": "src_infrastructure_google_drive_oauth_drivefolderid",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -16437,7 +16917,7 @@
     },
     {
       "source": "src_infrastructure_google_drive_attachments_googledriveattachmentstorage_download",
-      "target": "src_infrastructure_google_sheets_client_driveclient",
+      "target": "src_infrastructure_google_drive_oauth_googledriveclient",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
