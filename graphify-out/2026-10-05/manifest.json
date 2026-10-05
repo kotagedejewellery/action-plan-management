@@ -282,9 +282,9 @@
     "semantic_hash": ""
   },
   "src/infrastructure/google-sheets/client.ts": {
-    "mtime": 1791191348.0418572,
-    "seen": 1791191444.918028,
-    "ast_hash": "1098f85b90e59a294c5801771686a57c",
+    "mtime": 1791191481.9460719,
+    "seen": 1791191492.2988565,
+    "ast_hash": "645402d92c54f6d85d0225bc779e7f61",
     "semantic_hash": ""
   },
   "src/infrastructure/google-sheets/repositories.ts": {

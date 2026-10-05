@@ -9,28 +9,55 @@ const WEEKLY_PLANS_SHEET = "Weekly Plans";
 
 type Row = { values: string[]; rowNumber: number };
 const value = (input: unknown) => String(input ?? "");
+const READ_CACHE_TTL_MS = 5_000;
+type CachedRead = { expiresAt: number; value: Promise<string[][]> };
+const readCache = new Map<string, CachedRead>();
+
+// ponytail: local cache assumes one app container; use a shared cache if replicas are added.
+function clearReadCache() {
+  readCache.clear();
+}
+
+function readValues(range: string): Promise<string[][]> {
+  const key = `values:${range}`;
+  const cached = readCache.get(key);
+  if (cached && cached.expiresAt > Date.now()) return cached.value;
+
+  const entry: CachedRead = { expiresAt: Date.now() + READ_CACHE_TTL_MS, value: Promise.resolve([]) };
+  entry.value = sheetsClient().spreadsheets.values.get({ spreadsheetId: spreadsheetId(), range })
+    .then((response) => (response.data.values ?? []).map((entry) => entry.map(value)))
+    .catch((error: unknown) => {
+      if (readCache.get(key) === entry) readCache.delete(key);
+      throw error;
+    });
+  readCache.set(key, entry);
+  return entry.value;
+}
 
 async function rows(range: string): Promise<Row[]> {
-  const response = await sheetsClient().spreadsheets.values.get({ spreadsheetId: spreadsheetId(), range });
-  return (response.data.values ?? []).slice(1).map((entry, index) => ({ values: entry.map(value), rowNumber: index + 2 }));
+  return (await readValues(range)).slice(1).map((values, index) => ({ values, rowNumber: index + 2 }));
 }
 
 async function append(range: string, values: string[]) {
   await sheetsClient().spreadsheets.values.append({ spreadsheetId: spreadsheetId(), range, valueInputOption: "RAW", requestBody: { values: [values] } });
+  clearReadCache();
 }
 
 async function appendMany(range: string, values: string[][]) {
-  if (values.length) await sheetsClient().spreadsheets.values.append({ spreadsheetId: spreadsheetId(), range, valueInputOption: "RAW", requestBody: { values } });
+  if (values.length) {
+    await sheetsClient().spreadsheets.values.append({ spreadsheetId: spreadsheetId(), range, valueInputOption: "RAW", requestBody: { values } });
+    clearReadCache();
+  }
 }
 
 async function replace(range: string, values: string[]) {
   await sheetsClient().spreadsheets.values.update({ spreadsheetId: spreadsheetId(), range, valueInputOption: "RAW", requestBody: { values: [values] } });
+  clearReadCache();
 }
 
 async function ensureHeaders(sheetName: string, headers: string[]) {
   const rangeSheetName = sheetName.includes(" ") ? `'${sheetName}'` : sheetName;
-  const response = await sheetsClient().spreadsheets.values.get({ spreadsheetId: spreadsheetId(), range: `${rangeSheetName}!1:1` });
-  const current = (response.data.values?.[0] ?? []).map(value);
+  const current = (await readValues(`${rangeSheetName}!1:1`))[0] ?? [];
   if (headers.some((header, index) => current[index] !== header)) await replace(`${rangeSheetName}!A1:${String.fromCharCode(64 + headers.length)}1`, headers);
 }
 
@@ -68,6 +95,7 @@ export class GoogleSheetsUserRepository implements UserRepository {
     const existing = await api.spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });
     if (existing.data.sheets?.some((sheet) => sheet.properties?.title === sheetName)) return;
     await api.spreadsheets.batchUpdate({ spreadsheetId: spreadsheetId(), requestBody: { requests: [{ addSheet: { properties: { title: sheetName, gridProperties: { frozenRowCount: 1 } } } }] } });
+    clearReadCache();
     await replace(`${sheetName}!A1:M1`, PLAN_HEADERS);
   }
 }
@@ -88,6 +116,7 @@ export class GoogleSheetsWeeklyPlanRepository implements WeeklyPlanRepository {
     const existing = await api.spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });
     if (!existing.data.sheets?.some((sheet) => sheet.properties?.title === WEEKLY_PLANS_SHEET)) {
       await api.spreadsheets.batchUpdate({ spreadsheetId: spreadsheetId(), requestBody: { requests: [{ addSheet: { properties: { title: WEEKLY_PLANS_SHEET, gridProperties: { frozenRowCount: 1 } } } }] } });
+      clearReadCache();
     }
     await ensureHeaders(WEEKLY_PLANS_SHEET, WEEKLY_PLAN_HEADERS);
   }

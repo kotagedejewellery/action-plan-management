@@ -120,9 +120,9 @@
     "semantic_hash": ""
   },
   "src/app/(dashboard)/layout.tsx": {
-    "mtime": 1790835964.1446106,
-    "seen": 1790836078.559389,
-    "ast_hash": "9149aeb86493bec8885b9d2590a1281c",
+    "mtime": 1791194740.9482727,
+    "seen": 1791194950.9562802,
+    "ast_hash": "ed4d0e9bf8daf9b4abc5b5f8a2a6820a",
     "semantic_hash": ""
   },
   "src/app/(dashboard)/monitoring/page.tsx": {
@@ -288,9 +288,9 @@
     "semantic_hash": ""
   },
   "src/infrastructure/google-sheets/repositories.ts": {
-    "mtime": 1791183930.6699119,
-    "seen": 1791185676.9356487,
-    "ast_hash": "07cca9793653ce72cc3b95c18cae4114",
+    "mtime": 1791194836.5733218,
+    "seen": 1791194950.956344,
+    "ast_hash": "25ff9091ad47fc0aebc48b460730e5fb",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-action-plan-workspace.tsx": {
@@ -312,9 +312,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/login-form.tsx": {
-    "mtime": 1790829271.7327025,
-    "seen": 1790829324.7094064,
-    "ast_hash": "c853d8d748148a222d630641e3b6c0bd",
+    "mtime": 1791194740.9456244,
+    "seen": 1791194950.9563673,
+    "ast_hash": "d1d4770578fc93460d20ed1baadaaefc",
     "semantic_hash": ""
   },
   "src/presentation/server/actor.ts": {
@@ -453,6 +453,18 @@
     "mtime": 1791191348.0456662,
     "seen": 1791191444.9180248,
     "ast_hash": "abd00b439640ae1443ec880bc225de0a",
+    "semantic_hash": ""
+  },
+  "src/app/(dashboard)/error.tsx": {
+    "mtime": 1791194740.9506447,
+    "seen": 1791194950.956275,
+    "ast_hash": "20d53ef602bd69102d36db111766160b",
+    "semantic_hash": ""
+  },
+  "src/presentation/components/data-unavailable.tsx": {
+    "mtime": 1791194740.949583,
+    "seen": 1791194950.9563608,
+    "ast_hash": "d3e06be3a033f505581b01cddf3b3f7d",
     "semantic_hash": ""
   }
 }

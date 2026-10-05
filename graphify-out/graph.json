@@ -512,6 +512,23 @@
       "_origin": "ast"
     },
     {
+      "id": "src_app_dashboard_error",
+      "label": "error.tsx",
+      "file_type": "code",
+      "source_file": "src/app/(dashboard)/error.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_dashboard_error_dashboarderror",
+      "label": "DashboardError()",
+      "file_type": "code",
+      "source_file": "src/app/(dashboard)/error.tsx",
+      "source_location": "L5",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
       "id": "src_app_dashboard_history_page",
       "label": "history/page.tsx",
       "file_type": "code",
@@ -541,7 +558,7 @@
       "label": "DashboardLayout()",
       "file_type": "code",
       "source_file": "src/app/(dashboard)/layout.tsx",
-      "source_location": "L6",
+      "source_location": "L8",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1840,11 +1857,47 @@
       "_origin": "ast"
     },
     {
+      "id": "src_infrastructure_google_sheets_repositories_cachedread",
+      "label": "CachedRead",
+      "file_type": "code",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L13",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_infrastructure_google_sheets_repositories_readcache",
+      "label": "readCache",
+      "file_type": "code",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_infrastructure_google_sheets_repositories_clearreadcache",
+      "label": "clearReadCache()",
+      "file_type": "code",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L17",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_infrastructure_google_sheets_repositories_readvalues",
+      "label": "readValues()",
+      "file_type": "code",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L21",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
       "id": "src_infrastructure_google_sheets_repositories_rows",
       "label": "rows()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L13",
+      "source_location": "L37",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1853,7 +1906,7 @@
       "label": "append()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L18",
+      "source_location": "L41",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1862,7 +1915,7 @@
       "label": "appendMany()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L22",
+      "source_location": "L46",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1871,7 +1924,7 @@
       "label": "replace()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L26",
+      "source_location": "L53",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1880,7 +1933,7 @@
       "label": "ensureHeaders()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L30",
+      "source_location": "L58",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1889,7 +1942,7 @@
       "label": "userFrom()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L37",
+      "source_location": "L64",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1898,7 +1951,7 @@
       "label": "planFrom()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L42",
+      "source_location": "L69",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1907,7 +1960,7 @@
       "label": "weeklyPlanFrom()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L49",
+      "source_location": "L76",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1916,7 +1969,7 @@
       "label": "weeklyRange()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L56",
+      "source_location": "L83",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1925,7 +1978,7 @@
       "label": "GoogleSheetsUserRepository",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L60",
+      "source_location": "L87",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast"
@@ -1935,7 +1988,7 @@
       "label": ".list()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L61",
+      "source_location": "L88",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1944,7 +1997,7 @@
       "label": ".findById()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L62",
+      "source_location": "L89",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1953,7 +2006,7 @@
       "label": ".findByEmail()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L63",
+      "source_location": "L90",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1962,7 +2015,7 @@
       "label": ".create()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L64",
+      "source_location": "L91",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1971,7 +2024,7 @@
       "label": ".update()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L65",
+      "source_location": "L92",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1980,7 +2033,7 @@
       "label": ".createActionPlanSheet()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L66",
+      "source_location": "L93",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1989,7 +2042,7 @@
       "label": "GoogleSheetsActionPlanRepository",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L75",
+      "source_location": "L103",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast"
@@ -1999,7 +2052,7 @@
       "label": ".ensureSchema()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L76",
+      "source_location": "L104",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2008,7 +2061,7 @@
       "label": ".list()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L77",
+      "source_location": "L105",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2017,7 +2070,7 @@
       "label": ".findById()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L78",
+      "source_location": "L106",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2026,7 +2079,7 @@
       "label": ".create()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L79",
+      "source_location": "L107",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2035,7 +2088,7 @@
       "label": ".createMany()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L80",
+      "source_location": "L108",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2044,7 +2097,7 @@
       "label": ".update()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L81",
+      "source_location": "L109",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2053,7 +2106,7 @@
       "label": ".softDelete()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L82",
+      "source_location": "L110",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2062,7 +2115,7 @@
       "label": "GoogleSheetsWeeklyPlanRepository",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L85",
+      "source_location": "L113",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast"
@@ -2072,7 +2125,7 @@
       "label": ".ensureSchema()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L86",
+      "source_location": "L114",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2081,7 +2134,7 @@
       "label": ".list()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L95",
+      "source_location": "L124",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2090,7 +2143,7 @@
       "label": ".findById()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L96",
+      "source_location": "L125",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2099,7 +2152,7 @@
       "label": ".create()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L97",
+      "source_location": "L126",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2108,7 +2161,7 @@
       "label": ".update()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L98",
+      "source_location": "L127",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2117,7 +2170,7 @@
       "label": ".softDelete()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L105",
+      "source_location": "L134",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2126,7 +2179,7 @@
       "label": "GoogleSheetsStatusRepository",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L113",
+      "source_location": "L142",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast"
@@ -2136,7 +2189,7 @@
       "label": ".ensureSchema()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L114",
+      "source_location": "L143",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2145,7 +2198,7 @@
       "label": ".list()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L115",
+      "source_location": "L144",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2154,7 +2207,7 @@
       "label": ".create()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L116",
+      "source_location": "L145",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2163,7 +2216,7 @@
       "label": ".update()",
       "file_type": "code",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L117",
+      "source_location": "L146",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2737,6 +2790,33 @@
       "file_type": "code",
       "source_file": "src/presentation/components/connected-weekly-plan-workspace.tsx",
       "source_location": "L157",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_presentation_components_data_unavailable",
+      "label": "data-unavailable.tsx",
+      "file_type": "code",
+      "source_file": "src/presentation/components/data-unavailable.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_presentation_components_data_unavailable_dataunavailableprops",
+      "label": "DataUnavailableProps",
+      "file_type": "code",
+      "source_file": "src/presentation/components/data-unavailable.tsx",
+      "source_location": "L3",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_presentation_components_data_unavailable_dataunavailable",
+      "label": "DataUnavailable()",
+      "file_type": "code",
+      "source_file": "src/presentation/components/data-unavailable.tsx",
+      "source_location": "L5",
       "_callable": true,
       "_origin": "ast"
     },
@@ -5362,6 +5442,38 @@
       "_origin": "ast"
     },
     {
+      "source": "src_app_dashboard_error",
+      "target": "src_presentation_components_data_unavailable",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/(dashboard)/error.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_dashboard_error",
+      "target": "src_presentation_components_data_unavailable_dataunavailable",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/(dashboard)/error.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_dashboard_error",
+      "target": "src_app_dashboard_error_dashboarderror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/(dashboard)/error.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "src_app_dashboard_history_page",
       "target": "ref_next",
       "relation": "imports_from",
@@ -5528,12 +5640,34 @@
     },
     {
       "source": "src_app_dashboard_layout",
-      "target": "src_presentation_components_app_shell",
+      "target": "src_application_errors",
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/(dashboard)/layout.tsx",
       "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_dashboard_layout",
+      "target": "src_application_errors_apperror",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/(dashboard)/layout.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_dashboard_layout",
+      "target": "src_presentation_components_app_shell",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/(dashboard)/layout.tsx",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -5544,7 +5678,29 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/(dashboard)/layout.tsx",
-      "source_location": "L3",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_dashboard_layout",
+      "target": "src_presentation_components_data_unavailable",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/(dashboard)/layout.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_dashboard_layout",
+      "target": "src_presentation_components_data_unavailable_dataunavailable",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/(dashboard)/layout.tsx",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -5555,7 +5711,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/(dashboard)/layout.tsx",
-      "source_location": "L4",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -5566,7 +5722,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/(dashboard)/layout.tsx",
-      "source_location": "L4",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -5576,7 +5732,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/(dashboard)/layout.tsx",
-      "source_location": "L6",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9677,7 +9833,7 @@
     },
     {
       "source": "src_infrastructure_google_sheets_repositories",
-      "target": "src_infrastructure_google_sheets_repositories_rows",
+      "target": "src_infrastructure_google_sheets_repositories_cachedread",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
@@ -9687,47 +9843,37 @@
     },
     {
       "source": "src_infrastructure_google_sheets_repositories",
-      "target": "src_infrastructure_google_sheets_repositories_append",
+      "target": "src_infrastructure_google_sheets_repositories_readcache",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L18",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "src_infrastructure_google_sheets_repositories",
-      "target": "src_infrastructure_google_sheets_repositories_appendmany",
+      "target": "src_infrastructure_google_sheets_repositories_clearreadcache",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L22",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "src_infrastructure_google_sheets_repositories",
-      "target": "src_infrastructure_google_sheets_repositories_replace",
+      "target": "src_infrastructure_google_sheets_repositories_readvalues",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L26",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "src_infrastructure_google_sheets_repositories",
-      "target": "src_infrastructure_google_sheets_repositories_ensureheaders",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L30",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "src_infrastructure_google_sheets_repositories",
-      "target": "src_infrastructure_google_sheets_repositories_userfrom",
+      "target": "src_infrastructure_google_sheets_repositories_rows",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
@@ -9737,11 +9883,61 @@
     },
     {
       "source": "src_infrastructure_google_sheets_repositories",
+      "target": "src_infrastructure_google_sheets_repositories_append",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories",
+      "target": "src_infrastructure_google_sheets_repositories_appendmany",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories",
+      "target": "src_infrastructure_google_sheets_repositories_replace",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories",
+      "target": "src_infrastructure_google_sheets_repositories_ensureheaders",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories",
+      "target": "src_infrastructure_google_sheets_repositories_userfrom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories",
       "target": "src_infrastructure_google_sheets_repositories_planfrom",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L42",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9751,7 +9947,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L49",
+      "source_location": "L76",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9761,7 +9957,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L56",
+      "source_location": "L83",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9771,7 +9967,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L60",
+      "source_location": "L87",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9781,7 +9977,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L61",
+      "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9791,7 +9987,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L62",
+      "source_location": "L89",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9801,7 +9997,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L63",
+      "source_location": "L90",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9811,7 +10007,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L64",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9821,7 +10017,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L65",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9831,7 +10027,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L66",
+      "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9841,7 +10037,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L75",
+      "source_location": "L103",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9851,7 +10047,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L76",
+      "source_location": "L104",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9861,7 +10057,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L77",
+      "source_location": "L105",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9871,7 +10067,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L78",
+      "source_location": "L106",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9881,7 +10077,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L79",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9891,7 +10087,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L80",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9901,7 +10097,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L81",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9911,7 +10107,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L82",
+      "source_location": "L110",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9921,7 +10117,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L85",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9931,7 +10127,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L86",
+      "source_location": "L114",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9941,7 +10137,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L95",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9951,7 +10147,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L96",
+      "source_location": "L125",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9961,7 +10157,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L97",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9971,7 +10167,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L98",
+      "source_location": "L127",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9981,7 +10177,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L105",
+      "source_location": "L134",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9991,7 +10187,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L113",
+      "source_location": "L142",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10001,7 +10197,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L114",
+      "source_location": "L143",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10011,7 +10207,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L115",
+      "source_location": "L144",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10021,7 +10217,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L116",
+      "source_location": "L145",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10031,19 +10227,30 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L117",
+      "source_location": "L146",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
-      "source": "src_infrastructure_google_sheets_repositories_rows",
+      "source": "src_infrastructure_google_sheets_repositories_readvalues",
       "target": "src_infrastructure_google_sheets_repositories_value",
       "relation": "indirect_call",
       "context": "argument",
       "confidence": "INFERRED",
       "confidence_score": 0.85,
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L15",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories_rows",
+      "target": "src_infrastructure_google_sheets_repositories_readvalues",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10054,7 +10261,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L19",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories_append",
+      "target": "src_infrastructure_google_sheets_repositories_clearreadcache",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L43",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10065,7 +10283,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L23",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories_appendmany",
+      "target": "src_infrastructure_google_sheets_repositories_clearreadcache",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L49",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10076,19 +10305,29 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L27",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories_replace",
+      "target": "src_infrastructure_google_sheets_repositories_clearreadcache",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L55",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "src_infrastructure_google_sheets_repositories_ensureheaders",
-      "target": "src_infrastructure_google_sheets_repositories_value",
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
+      "target": "src_infrastructure_google_sheets_repositories_readvalues",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L33",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10099,7 +10338,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L34",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10111,7 +10350,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.85,
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L61",
+      "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10122,7 +10361,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L61",
+      "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10133,7 +10372,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L64",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10144,7 +10383,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L65",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10155,7 +10394,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L65",
+      "source_location": "L92",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories_googlesheetsuserrepository_createactionplansheet",
+      "target": "src_infrastructure_google_sheets_repositories_clearreadcache",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L98",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10166,7 +10416,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L71",
+      "source_location": "L99",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10177,7 +10427,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L76",
+      "source_location": "L104",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10188,7 +10438,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L77",
+      "source_location": "L105",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10200,7 +10450,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.85,
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L77",
+      "source_location": "L105",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10211,7 +10461,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L77",
+      "source_location": "L105",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10222,7 +10472,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L79",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10233,7 +10483,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L79",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10244,7 +10494,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L80",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10255,7 +10505,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L80",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10266,7 +10516,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L81",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10277,7 +10527,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L81",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10288,7 +10538,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L81",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10299,7 +10549,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L82",
+      "source_location": "L110",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10310,7 +10560,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L82",
+      "source_location": "L110",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10321,7 +10571,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L82",
+      "source_location": "L110",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories_googlesheetsweeklyplanrepository_ensureschema",
+      "target": "src_infrastructure_google_sheets_repositories_clearreadcache",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L119",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10332,7 +10593,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L92",
+      "source_location": "L121",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10343,7 +10604,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L95",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10355,7 +10616,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.85,
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L95",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10366,7 +10627,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L95",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10377,7 +10638,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L95",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10388,7 +10649,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L97",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10399,7 +10660,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L97",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10410,7 +10671,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L97",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10421,7 +10682,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L99",
+      "source_location": "L128",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10432,7 +10693,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L100",
+      "source_location": "L129",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10443,7 +10704,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L100",
+      "source_location": "L129",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10454,7 +10715,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L102",
+      "source_location": "L131",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10465,7 +10726,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L106",
+      "source_location": "L135",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10476,7 +10737,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L107",
+      "source_location": "L136",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10487,7 +10748,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L107",
+      "source_location": "L136",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10498,7 +10759,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L109",
+      "source_location": "L138",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10509,7 +10770,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L114",
+      "source_location": "L143",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10520,7 +10781,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L115",
+      "source_location": "L144",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10531,7 +10792,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L115",
+      "source_location": "L144",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10542,7 +10803,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L116",
+      "source_location": "L145",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10553,7 +10814,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L116",
+      "source_location": "L145",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10564,7 +10825,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L117",
+      "source_location": "L146",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10575,7 +10836,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L117",
+      "source_location": "L146",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10586,7 +10847,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L117",
+      "source_location": "L146",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -12659,6 +12920,26 @@
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-weekly-plan-workspace.tsx",
       "source_location": "L154",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_presentation_components_data_unavailable",
+      "target": "src_presentation_components_data_unavailable_dataunavailableprops",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/data-unavailable.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_presentation_components_data_unavailable",
+      "target": "src_presentation_components_data_unavailable_dataunavailable",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/data-unavailable.tsx",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -15382,7 +15663,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/(dashboard)/layout.tsx",
-      "source_location": "L9",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -15915,73 +16196,7 @@
       "_origin": "ast"
     },
     {
-      "source": "src_infrastructure_google_sheets_repositories_rows",
-      "target": "src_infrastructure_google_sheets_client_sheetsclient",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L14",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "src_infrastructure_google_sheets_repositories_rows",
-      "target": "src_infrastructure_google_sheets_client_spreadsheetid",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L14",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "src_infrastructure_google_sheets_repositories_append",
-      "target": "src_infrastructure_google_sheets_client_sheetsclient",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L19",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "src_infrastructure_google_sheets_repositories_append",
-      "target": "src_infrastructure_google_sheets_client_spreadsheetid",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L19",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "src_infrastructure_google_sheets_repositories_appendmany",
-      "target": "src_infrastructure_google_sheets_client_sheetsclient",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L23",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "src_infrastructure_google_sheets_repositories_appendmany",
-      "target": "src_infrastructure_google_sheets_client_spreadsheetid",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L23",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "src_infrastructure_google_sheets_repositories_replace",
+      "source": "src_infrastructure_google_sheets_repositories_readvalues",
       "target": "src_infrastructure_google_sheets_client_sheetsclient",
       "relation": "calls",
       "context": "call",
@@ -15992,7 +16207,7 @@
       "_origin": "ast"
     },
     {
-      "source": "src_infrastructure_google_sheets_repositories_replace",
+      "source": "src_infrastructure_google_sheets_repositories_readvalues",
       "target": "src_infrastructure_google_sheets_client_spreadsheetid",
       "relation": "calls",
       "context": "call",
@@ -16003,24 +16218,68 @@
       "_origin": "ast"
     },
     {
-      "source": "src_infrastructure_google_sheets_repositories_ensureheaders",
+      "source": "src_infrastructure_google_sheets_repositories_append",
       "target": "src_infrastructure_google_sheets_client_sheetsclient",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L32",
+      "source_location": "L42",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
-      "source": "src_infrastructure_google_sheets_repositories_ensureheaders",
+      "source": "src_infrastructure_google_sheets_repositories_append",
       "target": "src_infrastructure_google_sheets_client_spreadsheetid",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L32",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories_appendmany",
+      "target": "src_infrastructure_google_sheets_client_sheetsclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories_appendmany",
+      "target": "src_infrastructure_google_sheets_client_spreadsheetid",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories_replace",
+      "target": "src_infrastructure_google_sheets_client_sheetsclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_infrastructure_google_sheets_repositories_replace",
+      "target": "src_infrastructure_google_sheets_client_spreadsheetid",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/infrastructure/google-sheets/repositories.ts",
+      "source_location": "L54",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16372,7 +16631,7 @@
       "context": "type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L60",
+      "source_location": "L87",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16383,7 +16642,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L64",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16394,7 +16653,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L65",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16405,7 +16664,7 @@
       "context": "type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L75",
+      "source_location": "L103",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16416,7 +16675,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L79",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16427,7 +16686,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L80",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16438,7 +16697,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L81",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16449,7 +16708,7 @@
       "context": "type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L85",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16460,7 +16719,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L97",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16471,7 +16730,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L98",
+      "source_location": "L127",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16482,7 +16741,7 @@
       "context": "type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L113",
+      "source_location": "L142",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16493,7 +16752,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L116",
+      "source_location": "L145",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16504,7 +16763,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L117",
+      "source_location": "L146",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16545,6 +16804,18 @@
       "_origin": "ast"
     },
     {
+      "source": "src_app_dashboard_error_dashboarderror",
+      "target": "src_presentation_components_data_unavailable_dataunavailable",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/(dashboard)/error.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "src_app_dashboard_history_page_historypage",
       "target": "src_presentation_components_connected_action_plan_workspace_connectedactionplanworkspace",
       "relation": "calls",
@@ -16558,13 +16829,25 @@
     },
     {
       "source": "src_app_dashboard_layout_dashboardlayout",
+      "target": "src_presentation_components_data_unavailable_dataunavailable",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/(dashboard)/layout.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_dashboard_layout_dashboardlayout",
       "target": "src_presentation_components_app_shell_appshell",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/app/(dashboard)/layout.tsx",
-      "source_location": "L18",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16936,7 +17219,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L67",
+      "source_location": "L94",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16948,7 +17231,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L68",
+      "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16960,7 +17243,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L87",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16972,7 +17255,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/infrastructure/google-sheets/repositories.ts",
-      "source_location": "L88",
+      "source_location": "L116",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17524,7 +17807,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/login-form.tsx",
-      "source_location": "L27",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast"
     },
