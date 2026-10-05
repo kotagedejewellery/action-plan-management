@@ -22,6 +22,28 @@ export type ActionPlan = {
   morningStatus: string;
   afternoonStatus?: string;
   resultLink?: string;
+  attachments?: ActionPlanAttachment[];
+  note?: string;
+  weeklyPlanId?: string;
+  deletedAt?: string;
+  deletedBy?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ActionPlanAttachment = {
+  id: string;
+  name: string;
+  mimeType: string;
+};
+
+export type WeeklyPlan = {
+  id: string;
+  userId: string;
+  title: string;
+  weekStart: string;
+  weekEnd: string;
+  plannedActionPlanIds: string[];
   note?: string;
   deletedAt?: string;
   deletedBy?: string;

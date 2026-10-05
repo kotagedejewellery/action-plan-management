@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import type { DashboardPlan } from "@/application/dashboard-analytics";
 import { listVisiblePlans, requireAdmin } from "@/application/use-cases";
 import { toSafeUser } from "@/domain/models";
-import { actionPlans, statuses, users } from "@/infrastructure/container";
+import { actionPlans, statuses, users, weeklyPlans } from "@/infrastructure/container";
 import { ConnectedDashboardWorkspace } from "@/presentation/components/connected-dashboard-workspace";
 import { currentActor } from "@/presentation/server/actor";
 
@@ -52,6 +52,7 @@ export default async function DashboardPage() {
     <ConnectedDashboardWorkspace
       users={userList.map(toSafeUser)}
       plans={plansByUser.flat()}
+      weeklyPlans={await weeklyPlans.list()}
       completedStatusLabels={completedStatusLabels}
       today={todayInBangkok()}
     />

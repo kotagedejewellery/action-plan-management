@@ -114,9 +114,9 @@
     "semantic_hash": ""
   },
   "src/app/(dashboard)/action-plans/page.tsx": {
-    "mtime": 1790843207.9009764,
-    "seen": 1790843245.6417663,
-    "ast_hash": "b9568e053fa409f42e4795acae29d1ad",
+    "mtime": 1791174495.024652,
+    "seen": 1791175021.2878342,
+    "ast_hash": "910aad5b05e076bfa20251e041105b8a",
     "semantic_hash": ""
   },
   "src/app/(dashboard)/layout.tsx": {
@@ -150,9 +150,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/app-shell.tsx": {
-    "mtime": 1791168250.112137,
-    "seen": 1791168266.2369947,
-    "ast_hash": "3648de87abdb5108202866a640ae4957",
+    "mtime": 1791174495.0266519,
+    "seen": 1791175021.2878842,
+    "ast_hash": "673d6529c12d7d8eaf696324d1279737",
     "semantic_hash": ""
   },
   "src/presentation/components/icons.tsx": {
@@ -204,15 +204,15 @@
     "semantic_hash": ""
   },
   "src/app/api/action-plans/[recordId]/route.ts": {
-    "mtime": 1790842898.0687683,
-    "seen": 1790843245.6417751,
-    "ast_hash": "381ce5c1b067503a9d848bbac4f06ccb",
+    "mtime": 1791174209.2297137,
+    "seen": 1791175021.2878482,
+    "ast_hash": "ba3293100421eef929b02b298a3ca41e",
     "semantic_hash": ""
   },
   "src/app/api/action-plans/route.ts": {
-    "mtime": 1790843104.243414,
-    "seen": 1790843245.6417768,
-    "ast_hash": "c5209064e1bf7524e335ecf9ca5951f7",
+    "mtime": 1791174209.228713,
+    "seen": 1791175021.2878501,
+    "ast_hash": "7f26dcb60331f02ccb4d462ebabfb5c9",
     "semantic_hash": ""
   },
   "src/app/api/auth/[...nextauth]/route.ts": {
@@ -246,21 +246,21 @@
     "semantic_hash": ""
   },
   "src/application/ports.ts": {
-    "mtime": 1790842815.1039486,
-    "seen": 1790843245.641792,
-    "ast_hash": "440a8d2122a75dbe3d457752ee89e855",
+    "mtime": 1791185343.3864467,
+    "seen": 1791185676.935623,
+    "ast_hash": "432d391bc252bf966d49e633d0a83355",
     "semantic_hash": ""
   },
   "src/application/schemas.ts": {
-    "mtime": 1790842880.1066663,
-    "seen": 1790843245.6417935,
-    "ast_hash": "a67d33bd4e993b7cb90aa30a22c6e1f7",
+    "mtime": 1791183930.6755605,
+    "seen": 1791185676.9356263,
+    "ast_hash": "9000f176eb5a6f975fa444a46fd18855",
     "semantic_hash": ""
   },
   "src/application/use-cases.ts": {
-    "mtime": 1790842828.9719481,
-    "seen": 1790843245.6417952,
-    "ast_hash": "4bc8f7e023a30ca9c90373a0368307ba",
+    "mtime": 1791183930.673977,
+    "seen": 1791185676.9356294,
+    "ast_hash": "d11906ac61bf5ee501ca14bb98ac654a",
     "semantic_hash": ""
   },
   "src/auth.ts": {
@@ -270,33 +270,33 @@
     "semantic_hash": ""
   },
   "src/domain/models.ts": {
-    "mtime": 1790842812.9198515,
-    "seen": 1790843245.6417985,
-    "ast_hash": "14e2645b7bf32ee7430f8150b25c26ea",
+    "mtime": 1791183150.8793712,
+    "seen": 1791183790.4319987,
+    "ast_hash": "55384b2e0b11823d045fe7c3db58f309",
     "semantic_hash": ""
   },
   "src/infrastructure/container.ts": {
-    "mtime": 1790828268.657672,
-    "seen": 1790829010.4028056,
-    "ast_hash": "238d12bc65aabc08f1591d160ffbf109",
+    "mtime": 1791183619.6419902,
+    "seen": 1791183790.4320002,
+    "ast_hash": "35bf5207779df569da91cdf2aa46983e",
     "semantic_hash": ""
   },
   "src/infrastructure/google-sheets/client.ts": {
-    "mtime": 1790828263.8382533,
-    "seen": 1790829010.402807,
-    "ast_hash": "645402d92c54f6d85d0225bc779e7f61",
+    "mtime": 1791183150.8821,
+    "seen": 1791183790.432003,
+    "ast_hash": "754b061870b63a0016399386f64e69a7",
     "semantic_hash": ""
   },
   "src/infrastructure/google-sheets/repositories.ts": {
-    "mtime": 1790842864.0418956,
-    "seen": 1790843245.6418033,
-    "ast_hash": "bf461c44bdc1e76c913bc8d66f56e51d",
+    "mtime": 1791183930.6699119,
+    "seen": 1791185676.9356487,
+    "ast_hash": "07cca9793653ce72cc3b95c18cae4114",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-action-plan-workspace.tsx": {
-    "mtime": 1790846070.6916718,
-    "seen": 1790846110.6460893,
-    "ast_hash": "16a71c14a290ef4eb5291f7a99cf7b48",
+    "mtime": 1791185343.3899984,
+    "seen": 1791185676.935659,
+    "ast_hash": "e66229123c1a1922fc1a69f7188f7b37",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-monitoring-workspace.tsx": {
@@ -330,9 +330,9 @@
     "semantic_hash": ""
   },
   "tests/unit/use-cases.test.ts": {
-    "mtime": 1790843056.5173914,
-    "seen": 1790843245.6418269,
-    "ast_hash": "adffbe9b4780bb29887c4ebd7d32c3a1",
+    "mtime": 1791184980.3940146,
+    "seen": 1791185676.9357128,
+    "ast_hash": "abe4f818505e3dd09baaa8c52d3a8ec1",
     "semantic_hash": ""
   },
   "vitest.config.ts": {
@@ -354,15 +354,15 @@
     "semantic_hash": ""
   },
   "src/app/(dashboard)/history/page.tsx": {
-    "mtime": 1790843210.2767057,
-    "seen": 1790843245.6417685,
-    "ast_hash": "4929ae9af94edd7023f159c1dd3906fc",
+    "mtime": 1791174619.9947422,
+    "seen": 1791175021.2878392,
+    "ast_hash": "efb33a2ad6f1a7650ea5262dc88084c9",
     "semantic_hash": ""
   },
   "src/app/(dashboard)/dashboard/page.tsx": {
-    "mtime": 1791168250.05098,
-    "seen": 1791168266.236946,
-    "ast_hash": "b5575120493485f4386a2368f74308b5",
+    "mtime": 1791185255.1348076,
+    "seen": 1791185676.935541,
+    "ast_hash": "acc77ae3f0654ef33a1347ccae10ed18",
     "semantic_hash": ""
   },
   "src/application/dashboard-analytics.ts": {
@@ -372,9 +372,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-dashboard-workspace.tsx": {
-    "mtime": 1791168670.1941526,
-    "seen": 1791168707.0431402,
-    "ast_hash": "947916719f3be5e5f0d061df8efcffc8",
+    "mtime": 1791185255.137851,
+    "seen": 1791185676.935662,
+    "ast_hash": "17b0a19c3c3b1b25a66c15aff47af144",
     "semantic_hash": ""
   },
   "tests/unit/dashboard-analytics.test.ts": {
@@ -387,6 +387,48 @@
     "mtime": 1791171483.0226254,
     "seen": 1791172671.237441,
     "ast_hash": "312a07b7465aaf0e1aa808792b7ead0a",
+    "semantic_hash": ""
+  },
+  "src/app/(dashboard)/weekly-plans/page.tsx": {
+    "mtime": 1791180892.0450728,
+    "seen": 1791182466.3035436,
+    "ast_hash": "3a5f5a1fd6966e5491c212862366e952",
+    "semantic_hash": ""
+  },
+  "src/app/api/weekly-plans/route.ts": {
+    "mtime": 1791174209.2342317,
+    "seen": 1791175021.2878587,
+    "ast_hash": "a2a276a3728ae458f0d9f18c784aac47",
+    "semantic_hash": ""
+  },
+  "src/presentation/components/connected-weekly-plan-workspace.tsx": {
+    "mtime": 1791185156.536651,
+    "seen": 1791185676.9356728,
+    "ast_hash": "e60283abd22ff2745f7b5f9adc99d10f",
+    "semantic_hash": ""
+  },
+  "src/app/api/action-plans/[recordId]/attachments/route.ts": {
+    "mtime": 1791183619.644763,
+    "seen": 1791183790.4319682,
+    "ast_hash": "21c74a059f16c9d3c7c04f0f0cc35401",
+    "semantic_hash": ""
+  },
+  "src/infrastructure/google-drive/attachments.ts": {
+    "mtime": 1791185343.387447,
+    "seen": 1791185676.935643,
+    "ast_hash": "45f321b07d931c1221137d4e4ffe1ace",
+    "semantic_hash": ""
+  },
+  "src/app/api/action-plans/[recordId]/attachments/[attachmentId]/route.ts": {
+    "mtime": 1791185605.2382445,
+    "seen": 1791185676.9355664,
+    "ast_hash": "472f74d9605810012b1a8deacf5ba0c9",
+    "semantic_hash": ""
+  },
+  "src/app/api/weekly-plans/[weeklyPlanId]/route.ts": {
+    "mtime": 1791183930.676148,
+    "seen": 1791185676.9355967,
+    "ast_hash": "dd83644c1f8ad46e2777edd08a0f5fed",
     "semantic_hash": ""
   }
 }

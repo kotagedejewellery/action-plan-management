@@ -7,7 +7,7 @@ import {
   summarizeDashboard,
   type DashboardPlan,
 } from "@/application/dashboard-analytics";
-import type { SafeUser } from "@/domain/models";
+import type { SafeUser, WeeklyPlan } from "@/domain/models";
 import { PageHeading, StatusBadge } from "./workspace-ui";
 
 type Preset = "week" | "month" | "custom";
@@ -33,11 +33,13 @@ function displayShortDate(value: string) {
 export function ConnectedDashboardWorkspace({
   users,
   plans,
+  weeklyPlans,
   completedStatusLabels,
   today,
 }: {
   users: SafeUser[];
   plans: DashboardPlan[];
+  weeklyPlans: WeeklyPlan[];
   completedStatusLabels: string[];
   today: string;
 }) {
@@ -58,6 +60,13 @@ export function ConnectedDashboardWorkspace({
   );
   const maxUserTotal = Math.max(...summary.byUser.map((user) => user.total), 1);
   const maxDailyTotal = Math.max(...summary.trend.map((day) => day.total), 1);
+  const activeTrendDays = summary.trend.filter((day) => day.total > 0);
+  const weeklySummary = useMemo(() => weeklyPlans.filter((plan) => !plan.deletedAt && plan.weekStart <= dateTo && plan.weekEnd >= dateFrom).map((plan) => {
+    const children = plans.filter((daily) => daily.weeklyPlanId === plan.id && !daily.deletedAt);
+    const completed = children.filter((daily) => Boolean(daily.afternoonStatus && completedStatusLabels.includes(daily.afternoonStatus))).length;
+    const total = plan.plannedActionPlanIds.length || children.length;
+    return { ...plan, ownerName: users.find((user) => user.id === plan.userId)?.name ?? "User", completed, total };
+  }).sort((a, b) => a.weekEnd.localeCompare(b.weekEnd)), [weeklyPlans, plans, completedStatusLabels, users, dateFrom, dateTo]);
 
   function setPeriod(nextPreset: Exclude<Preset, "custom">) {
     setPreset(nextPreset);
@@ -201,8 +210,13 @@ export function ConnectedDashboardWorkspace({
         </dl>
       </section>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-        <section className="rounded-2xl border bg-white p-5 shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)] sm:p-6">
+      <section className="mt-6 rounded-2xl border bg-white p-5 shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)] sm:p-6" aria-labelledby="weekly-heading">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between"><div><h2 id="weekly-heading" className="text-lg font-semibold text-[#244542]">Rencana mingguan</h2><p className="mt-1 text-sm text-[#748886]">Target mingguan yang periodenya beririsan dengan filter Dashboard.</p></div><p className="text-sm font-semibold text-[#176d69]">{weeklySummary.length} rencana</p></div>
+        {weeklySummary.length ? <div className="mt-5 divide-y rounded-xl border">{weeklySummary.map((plan) => <article key={plan.id} className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"><div className="min-w-0"><p className="font-semibold text-[#294846]">{plan.title}</p><p className="mt-1 text-sm text-[#748886]">{plan.ownerName} · {displayShortDate(plan.weekStart)} – {displayShortDate(plan.weekEnd)}</p></div><p className="shrink-0 text-sm font-semibold tabular-nums text-[#176d69]">{plan.completed} / {plan.total} selesai</p></article>)}</div> : <EmptyCopy text="Tidak ada rencana mingguan pada periode ini." />}
+      </section>
+
+      <div className="mt-6 grid gap-6 xl:items-start xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+        <section className="rounded-2xl border bg-white p-5 shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)] sm:p-6 xl:self-start">
           <div>
             <h2 className="text-lg font-semibold text-[#244542]">
               Progres per User
@@ -260,59 +274,11 @@ export function ConnectedDashboardWorkspace({
               Total rencana kerja dan bagian yang sudah selesai setiap hari.
             </p>
           </div>
-          <div className="mt-6 overflow-x-auto">
-            <div
-              className="grid min-w-[360px] items-end gap-1.5"
-              style={{
-                gridTemplateColumns:
-                  "repeat(" + summary.trend.length + ", minmax(0, 1fr))",
-              }}
-            >
-              {summary.trend.map((day) => (
-                <div
-                  key={day.date}
-                  className="min-w-0"
-                  title={
-                    displayShortDate(day.date) +
-                    ": " +
-                    day.completed +
-                    " dari " +
-                    day.total +
-                    " selesai"
-                  }
-                >
-                  <div className="relative h-28">
-                    <div
-                      className="absolute inset-x-0 bottom-0 rounded-t bg-[#e8eeee]"
-                      style={{
-                        height: String((day.total / maxDailyTotal) * 100) + "%",
-                      }}
-                    />
-                    <div
-                      className="absolute inset-x-0 bottom-0 rounded-t bg-[#137d79]"
-                      style={{
-                        height:
-                          String((day.completed / maxDailyTotal) * 100) + "%",
-                      }}
-                    />
-                  </div>
-                  <p className="mt-2 truncate text-center text-xs text-[#778a88]">
-                    {new Date(day.date + "T00:00:00").getUTCDate()}
-                  </p>
-                </div>
-              ))}
+          {activeTrendDays.length < 2 ? (
+            <div className="mt-6 border-y border-[#dce5e4] py-5">
+              {activeTrendDays[0] ? <><p className="text-sm font-semibold text-[#294846]">Aktivitas pada {displayShortDate(activeTrendDays[0].date)}</p><p className="mt-1 text-sm text-[#748886]">{activeTrendDays[0].total} Action Plan · {activeTrendDays[0].completed} selesai</p></> : <p className="text-sm text-[#748886]">Belum ada Action Plan pada periode ini.</p>}
             </div>
-          </div>
-          <div className="mt-4 flex gap-4 text-xs text-[#748886]">
-            <span className="inline-flex items-center gap-2">
-              <i className="size-2 rounded-full bg-[#137d79]" />
-              Selesai
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <i className="size-2 rounded-full bg-[#e8eeee]" />
-              Total
-            </span>
-          </div>
+          ) : <><div className="mt-6 overflow-x-auto"><div className="grid min-w-[360px] items-end gap-1.5" style={{ gridTemplateColumns: "repeat(" + summary.trend.length + ", minmax(0, 1fr))" }}>{summary.trend.map((day) => <div key={day.date} className="min-w-0" title={displayShortDate(day.date) + ": " + day.completed + " dari " + day.total + " selesai"}><div className="relative h-40"><div className="absolute inset-x-0 bottom-0 rounded-t bg-[#e8eeee]" style={{ height: String((day.total / maxDailyTotal) * 100) + "%" }} /><div className="absolute inset-x-0 bottom-0 rounded-t bg-[#137d79]" style={{ height: String((day.completed / maxDailyTotal) * 100) + "%" }} /></div><p className="mt-2 truncate text-center text-xs text-[#778a88]">{new Date(day.date + "T00:00:00").getUTCDate()}</p></div>)}</div></div><div className="mt-4 flex gap-4 text-xs text-[#748886]"><span className="inline-flex items-center gap-2"><i className="size-2 rounded-full bg-[#137d79]" />Selesai</span><span className="inline-flex items-center gap-2"><i className="size-2 rounded-full bg-[#e8eeee]" />Total</span></div></>}
         </section>
       </div>
 

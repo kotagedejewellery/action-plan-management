@@ -18,7 +18,21 @@ export const actionPlanInputSchema = z.object({
   afternoonStatus: z.string().trim().optional(),
   resultLink: z.union([z.string().url("Link Hasil harus berupa URL."), z.literal("")]).optional(),
   note: z.string().trim().optional(),
+  weeklyPlanId: z.union([z.string().uuid(), z.literal("")]).optional(),
   updatedAt: z.string().datetime().optional(),
+});
+
+export const weeklyPlanInputSchema = z.object({
+  title: z.string().trim().min(1, "Judul rencana mingguan wajib diisi."),
+  weekStart: z.string().date("Tanggal mulai minggu tidak valid."),
+  weekdays: z.array(z.coerce.number().int().min(1).max(5)).min(1, "Pilih minimal satu hari kerja.").refine((days) => new Set(days).size === days.length, "Hari kerja tidak boleh duplikat."),
+  morningStatus: z.string().trim().min(1, "Status pagi wajib dipilih."),
+  note: z.string().trim().optional(),
+});
+
+export const weeklyPlanUpdateSchema = z.object({
+  title: z.string().trim().min(1, "Judul rencana mingguan wajib diisi."),
+  note: z.string().trim().optional(),
 });
 
 export const statusInputSchema = z.object({ label: z.string().trim().min(1, "Nama status wajib diisi.").max(50), isCompleted: z.boolean().optional().default(false) });

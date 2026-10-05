@@ -14,3 +14,14 @@ export function sheetsClient() {
   const auth = new google.auth.JWT({ email: required("GOOGLE_SERVICE_ACCOUNT_EMAIL"), key: required("GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY").replace(/\\n/g, "\n"), scopes: ["https://www.googleapis.com/auth/spreadsheets"] });
   return google.sheets({ version: "v4", auth });
 }
+
+export function driveClient() {
+  const auth = new google.auth.JWT({ email: required("GOOGLE_SERVICE_ACCOUNT_EMAIL"), key: required("GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY").replace(/\\n/g, "\n"), scopes: ["https://www.googleapis.com/auth/drive.file"] });
+  return google.drive({ version: "v3", auth });
+}
+
+export function driveFolderId() {
+  const value = process.env.GOOGLE_DRIVE_FOLDER_ID;
+  if (!value) throw new Error("Environment variable GOOGLE_DRIVE_FOLDER_ID belum dikonfigurasi.");
+  return value;
+}

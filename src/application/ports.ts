@@ -1,4 +1,4 @@
-import type { ActionPlan, ActionPlanStatus, User } from "@/domain/models";
+import type { ActionPlan, ActionPlanAttachment, ActionPlanStatus, User, WeeklyPlan } from "@/domain/models";
 
 export interface UserRepository {
   list(): Promise<User[]>;
@@ -13,8 +13,22 @@ export interface ActionPlanRepository {
   list(sheetName: string): Promise<ActionPlan[]>;
   findById(sheetName: string, id: string): Promise<ActionPlan | null>;
   create(sheetName: string, plan: ActionPlan): Promise<ActionPlan>;
+  createMany(sheetName: string, plans: ActionPlan[]): Promise<ActionPlan[]>;
   update(sheetName: string, plan: ActionPlan): Promise<ActionPlan>;
   softDelete(sheetName: string, id: string, deletedAt: string, deletedBy: string): Promise<void>;
+}
+
+export interface WeeklyPlanRepository {
+  list(): Promise<WeeklyPlan[]>;
+  findById(id: string): Promise<WeeklyPlan | null>;
+  create(plan: WeeklyPlan): Promise<WeeklyPlan>;
+  update(plan: WeeklyPlan): Promise<WeeklyPlan>;
+  softDelete(id: string, deletedAt: string, deletedBy: string): Promise<void>;
+}
+
+export interface AttachmentStorage {
+  upload(input: { name: string; mimeType: string; content: Buffer }): Promise<ActionPlanAttachment>;
+  download(id: string): Promise<Buffer>;
 }
 
 export interface StatusRepository {

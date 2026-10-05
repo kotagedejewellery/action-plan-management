@@ -25,6 +25,7 @@ const baseNavigation = [
     icon: Calendar,
     roles: ["user"],
   },
+  { href: "/weekly-plans", label: "Rencana Mingguan", icon: Calendar, roles: ["user"] },
   { href: "/history", label: "Riwayat", icon: History, roles: ["user"] },
   { href: "/dashboard", label: "Dashboard", icon: Chart, roles: ["admin"] },
   { href: "/monitoring", label: "Monitoring", icon: Grid, roles: ["admin"] },
