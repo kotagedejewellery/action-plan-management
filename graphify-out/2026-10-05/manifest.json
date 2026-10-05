@@ -150,15 +150,15 @@
     "semantic_hash": ""
   },
   "src/presentation/components/app-shell.tsx": {
-    "mtime": 1791168250.112137,
-    "seen": 1791168266.2369947,
-    "ast_hash": "3648de87abdb5108202866a640ae4957",
+    "mtime": 1790842930.424261,
+    "seen": 1790843245.6418061,
+    "ast_hash": "23ca8dc3b0af04b0c4efbe991126bd89",
     "semantic_hash": ""
   },
   "src/presentation/components/icons.tsx": {
-    "mtime": 1791168250.072227,
-    "seen": 1791168266.2370038,
-    "ast_hash": "8a1af9126b896507090a504062590b7f",
+    "mtime": 1790842928.2251296,
+    "seen": 1790843245.6418145,
+    "ast_hash": "ec8dd80fdaccbe485253bfd9231f5bd8",
     "semantic_hash": ""
   },
   "src/presentation/components/monitoring-workspace.tsx": {
@@ -357,36 +357,6 @@
     "mtime": 1790843210.2767057,
     "seen": 1790843245.6417685,
     "ast_hash": "4929ae9af94edd7023f159c1dd3906fc",
-    "semantic_hash": ""
-  },
-  "src/app/(dashboard)/dashboard/page.tsx": {
-    "mtime": 1791168250.05098,
-    "seen": 1791168266.236946,
-    "ast_hash": "b5575120493485f4386a2368f74308b5",
-    "semantic_hash": ""
-  },
-  "src/application/dashboard-analytics.ts": {
-    "mtime": 1791168249.9276402,
-    "seen": 1791168266.2369776,
-    "ast_hash": "3630cea6527860e8035e3407f5e3773b",
-    "semantic_hash": ""
-  },
-  "src/presentation/components/connected-dashboard-workspace.tsx": {
-    "mtime": 1791168670.1941526,
-    "seen": 1791168707.0431402,
-    "ast_hash": "947916719f3be5e5f0d061df8efcffc8",
-    "semantic_hash": ""
-  },
-  "tests/unit/dashboard-analytics.test.ts": {
-    "mtime": 1791168249.9576402,
-    "seen": 1791168266.2370157,
-    "ast_hash": "df14635c593044869eec7d6acccdc17b",
-    "semantic_hash": ""
-  },
-  ".github/workflows/deploy.yml": {
-    "mtime": 1791169576.2475007,
-    "seen": 1791169604.5114172,
-    "ast_hash": "fd955246467bf94e0d1a1ff735b5352a",
     "semantic_hash": ""
   }
 }
