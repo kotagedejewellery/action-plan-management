@@ -2352,7 +2352,7 @@
       "label": "setPeriod()",
       "file_type": "code",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L70",
+      "source_location": "L71",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2361,7 +2361,7 @@
       "label": "Metric()",
       "file_type": "code",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L336",
+      "source_location": "L289",
       "_callable": true,
       "_origin": "ast"
     },
@@ -2370,7 +2370,7 @@
       "label": "EmptyCopy()",
       "file_type": "code",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L347",
+      "source_location": "L300",
       "_callable": true,
       "_origin": "ast"
     },
@@ -11207,7 +11207,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L70",
+      "source_location": "L71",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -11217,7 +11217,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L336",
+      "source_location": "L289",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -11227,7 +11227,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L347",
+      "source_location": "L300",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -11249,7 +11249,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L92",
+      "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -11260,7 +11260,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L187",
+      "source_location": "L188",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -11271,7 +11271,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L205",
+      "source_location": "L206",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -11282,7 +11282,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L214",
+      "source_location": "L215",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -11293,7 +11293,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L73",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -11304,7 +11304,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L73",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16815,7 +16815,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L80",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16827,7 +16827,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-dashboard-workspace.tsx",
-      "source_location": "L191",
+      "source_location": "L192",
       "weight": 1.0,
       "_origin": "ast"
     },

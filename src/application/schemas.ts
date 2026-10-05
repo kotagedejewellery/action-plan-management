@@ -18,7 +18,7 @@ export const actionPlanInputSchema = z.object({
   afternoonStatus: z.string().trim().optional(),
   resultLink: z.union([z.string().url("Link Hasil harus berupa URL."), z.literal("")]).optional(),
   note: z.string().trim().optional(),
-  weeklyPlanId: z.union([z.string().uuid(), z.literal("")]).optional(),
+  weeklyPlanId: z.preprocess((value) => value === null || value === "" || value === "null" ? undefined : value, z.string().uuid().optional()),
   updatedAt: z.string().datetime().optional(),
 });
 

@@ -3214,6 +3214,14 @@
       "_origin": "ast"
     },
     {
+      "id": "tests_unit_schemas_test",
+      "label": "schemas.test.ts",
+      "file_type": "code",
+      "source_file": "tests/unit/schemas.test.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
       "id": "tests_unit_use_cases_test",
       "label": "use-cases.test.ts",
       "file_type": "code",
@@ -13541,6 +13549,39 @@
       "confidence": "EXTRACTED",
       "source_file": "tests/unit/dashboard-analytics.test.ts",
       "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tests_unit_schemas_test",
+      "target": "ref_vitest",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/schemas.test.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tests_unit_schemas_test",
+      "target": "src_application_schemas",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/schemas.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tests_unit_schemas_test",
+      "target": "src_application_schemas_actionplaninputschema",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/schemas.test.ts",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast"
     },

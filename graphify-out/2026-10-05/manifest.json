@@ -294,9 +294,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-action-plan-workspace.tsx": {
-    "mtime": 1791185343.3899984,
-    "seen": 1791185676.935659,
-    "ast_hash": "e66229123c1a1922fc1a69f7188f7b37",
+    "mtime": 1791188815.0478327,
+    "seen": 1791188869.8405313,
+    "ast_hash": "9f28a7d6732c1107c8116744e0a2cc3b",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-monitoring-workspace.tsx": {
@@ -372,9 +372,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-dashboard-workspace.tsx": {
-    "mtime": 1791185255.137851,
-    "seen": 1791185676.935662,
-    "ast_hash": "17b0a19c3c3b1b25a66c15aff47af144",
+    "mtime": 1791187600.7856278,
+    "seen": 1791187673.5502698,
+    "ast_hash": "53927ad38270b5987c514c2fa2feac23",
     "semantic_hash": ""
   },
   "tests/unit/dashboard-analytics.test.ts": {
