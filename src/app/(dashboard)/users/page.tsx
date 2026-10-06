@@ -8,7 +8,7 @@ import { currentActor } from "@/presentation/server/actor";
 
 export default async function UsersPage() {
   const actor = await currentActor();
-  try { requireAdmin(actor); } catch { redirect("/monitoring"); }
+  try { requireAdmin(actor); } catch { redirect("/action-plans"); }
   const [allUsers, allStatuses] = await Promise.all([users.list(), statuses.list()]);
   return <ConnectedUserManagementWorkspace initialUsers={allUsers.map(toSafeUser)} initialStatuses={allStatuses} />;
 }

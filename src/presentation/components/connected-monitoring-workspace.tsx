@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 
 import type { ActionPlan, SafeUser } from "@/domain/models";
 import { useFeedback } from "./feedback";
 import { ExternalLink, Search } from "./icons";
-import { PageHeading, StatusBadge } from "./workspace-ui";
+import { DialogFrame, PageHeading, StatusBadge } from "./workspace-ui";
 
 type Scope = "all" | "active" | "history";
 
@@ -18,22 +19,44 @@ function displayDate(value: string) {
   }).format(new Date(`${value}T00:00:00`));
 }
 
+function displayTimestamp(value: string) {
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Asia/Bangkok",
+  }).format(new Date(value));
+}
+
 export function ConnectedMonitoringWorkspace({
   users,
   initialPlans,
+  initialSelectedId,
+  initialRecordId,
+  initialDateFrom,
+  initialDateTo,
 }: {
   users: SafeUser[];
   initialPlans: ActionPlan[];
+  initialSelectedId: string;
+  initialRecordId: string;
+  initialDateFrom: string;
+  initialDateTo: string;
 }) {
   const { notify } = useFeedback();
-  const [selectedId, setSelectedId] = useState(users[0]?.id ?? "");
+  const [selectedId, setSelectedId] = useState(initialSelectedId || users[0]?.id || "");
   const [plans, setPlans] = useState(initialPlans);
   const [scope, setScope] = useState<Scope>("all");
   const [query, setQuery] = useState("");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
+  const [dateFrom, setDateFrom] = useState(initialDateFrom);
+  const [dateTo, setDateTo] = useState(initialDateTo);
+  const [detailId, setDetailId] = useState(initialRecordId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const requestId = useRef(0);
+  const requestController = useRef<AbortController | null>(null);
   const selected = users.find((user) => user.id === selectedId);
   const filteredPlans = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -48,33 +71,47 @@ export function ConnectedMonitoringWorkspace({
     });
   }, [plans, query, dateFrom, dateTo]);
   const hasFilters = Boolean(query || dateFrom || dateTo);
+  const selectedPlan = plans.find((plan) => plan.id === detailId);
+  const imageAttachments = selectedPlan?.attachments?.filter((attachment) => attachment.mimeType.startsWith("image/")) ?? [];
+  const documentAttachments = selectedPlan?.attachments?.filter((attachment) => !attachment.mimeType.startsWith("image/")) ?? [];
+
+  useEffect(() => () => requestController.current?.abort(), []);
 
   async function loadPlans(userId: string, nextScope: Scope) {
+    const currentRequestId = ++requestId.current;
+    requestController.current?.abort();
+    const controller = new AbortController();
+    requestController.current = controller;
     setLoading(true);
     setError("");
     try {
       const response = await fetch(
         `/api/action-plans?userId=${encodeURIComponent(userId)}&scope=${nextScope}`,
+        { signal: controller.signal },
       );
       const body = await response.json();
+      if (currentRequestId !== requestId.current) return;
       if (!response.ok)
         throw new Error(body.error ?? "Data tidak dapat dimuat.");
       setPlans(body);
     } catch (caught) {
+      if (currentRequestId !== requestId.current || (caught instanceof Error && caught.name === "AbortError")) return;
       const message =
         caught instanceof Error ? caught.message : "Data tidak dapat dimuat.";
       setError(message);
       notify("error", "Monitoring belum dimuat", message);
     } finally {
-      setLoading(false);
+      if (currentRequestId === requestId.current) setLoading(false);
     }
   }
 
   function selectUser(id: string) {
+    setDetailId("");
     setSelectedId(id);
     void loadPlans(id, scope);
   }
   function selectScope(nextScope: Scope) {
+    setDetailId("");
     setScope(nextScope);
     if (selectedId) void loadPlans(selectedId, nextScope);
   }
@@ -234,7 +271,7 @@ export function ConnectedMonitoringWorkspace({
             )}
             <div className="mt-6 overflow-hidden rounded-2xl border bg-white shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)]">
               <div className="hidden overflow-x-auto md:block">
-                <table className="w-full min-w-[760px] text-left">
+                <table className="w-full min-w-[840px] text-left">
                   <thead className="border-b bg-[#f7faf9] text-xs font-semibold tracking-[0.04em] text-[#708381]">
                     <tr>
                       <th className="px-5 py-3.5">TANGGAL</th>
@@ -242,6 +279,7 @@ export function ConnectedMonitoringWorkspace({
                       <th className="px-5 py-3.5">PAGI</th>
                       <th className="px-5 py-3.5">SORE</th>
                       <th className="px-5 py-3.5">HASIL</th>
+                      <th className="px-5 py-3.5 text-right">DETAIL</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -280,6 +318,9 @@ export function ConnectedMonitoringWorkspace({
                             <span className="text-sm text-[#9aa9a8]">—</span>
                           )}
                         </td>
+                        <td className="px-5 py-4 text-right">
+                          <button type="button" onClick={() => setDetailId(plan.id)} className="h-9 rounded-lg px-3 text-sm font-semibold text-[#137d79] hover:bg-[#e8f3f1] focus:outline-none focus:ring-3 focus:ring-[#c8ebe7] focus:ring-offset-2">Lihat</button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -297,16 +338,10 @@ export function ConnectedMonitoringWorkspace({
                           {plan.task}
                         </h2>
                       </div>
-                      {plan.resultLink && (
-                        <a
-                          href={plan.resultLink}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex h-9 shrink-0 items-center gap-1 rounded-lg px-2 text-sm font-medium text-[#137d79] hover:bg-[#e8f3f1] hover:underline"
-                        >
-                          Buka <ExternalLink className="size-3.5" />
-                        </a>
-                      )}
+                      <div className="flex shrink-0 gap-1">
+                        <button type="button" onClick={() => setDetailId(plan.id)} className="inline-flex h-9 items-center rounded-lg px-2 text-sm font-semibold text-[#137d79] hover:bg-[#e8f3f1] focus:outline-none focus:ring-3 focus:ring-[#c8ebe7]">Detail</button>
+                        {plan.resultLink && <a href={plan.resultLink} target="_blank" rel="noreferrer" className="inline-flex h-9 items-center gap-1 rounded-lg px-2 text-sm font-medium text-[#137d79] hover:bg-[#e8f3f1] hover:underline">Buka <ExternalLink className="size-3.5" /></a>}
+                      </div>
                     </div>
                     <div className="mt-4 flex flex-wrap gap-2">
                       <StatusBadge status={plan.morningStatus} />
@@ -333,6 +368,25 @@ export function ConnectedMonitoringWorkspace({
                 </div>
               )}
             </div>
+            {selectedPlan && (
+              <DialogFrame title="Detail Action Plan" description={`${selected?.name ?? "User"} · ${displayDate(selectedPlan.date)}`} onClose={() => setDetailId("")}>
+                <div className="mt-6 space-y-6">
+                  <section>
+                    <h3 className="text-sm font-semibold text-[#294846]">Action Plan</h3>
+                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-[#516967]">{selectedPlan.task}</p>
+                  </section>
+                  <dl className="grid gap-4 border-y border-[#dce5e4] py-4 sm:grid-cols-2">
+                    <div><dt className="text-xs font-semibold tracking-[0.04em] text-[#718583]">STATUS PAGI</dt><dd className="mt-2"><StatusBadge status={selectedPlan.morningStatus} /></dd></div>
+                    <div><dt className="text-xs font-semibold tracking-[0.04em] text-[#718583]">STATUS SORE</dt><dd className="mt-2"><StatusBadge status={selectedPlan.afternoonStatus} /></dd></div>
+                  </dl>
+                  {selectedPlan.note && <section><h3 className="text-sm font-semibold text-[#294846]">Catatan</h3><p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-[#667c7c]">{selectedPlan.note}</p></section>}
+                  {selectedPlan.resultLink && <section><h3 className="text-sm font-semibold text-[#294846]">Link hasil</h3><a href={selectedPlan.resultLink} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[#137d79] hover:underline">Buka hasil <ExternalLink className="size-3.5" /></a></section>}
+                  {imageAttachments.length > 0 && <section><h3 className="text-sm font-semibold text-[#294846]">Lampiran gambar</h3><div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">{imageAttachments.map((attachment) => <figure key={attachment.id} className="overflow-hidden rounded-xl border bg-[#f7faf9]"><Image unoptimized src={`/api/action-plans/${selectedPlan.id}/attachments/${attachment.id}?userId=${encodeURIComponent(selectedId)}`} alt={`Lampiran: ${attachment.name}`} width={240} height={240} className="aspect-square w-full object-cover" /><figcaption className="truncate px-2 py-2 text-xs text-[#667c7c]">{attachment.name}</figcaption></figure>)}</div></section>}
+                  {documentAttachments.length > 0 && <section><h3 className="text-sm font-semibold text-[#294846]">Dokumen</h3><ul className="mt-3 divide-y rounded-xl border bg-[#f7faf9]">{documentAttachments.map((attachment) => <li key={attachment.id} className="truncate px-3 py-2 text-sm text-[#516967]" title={attachment.mimeType}>{attachment.name}</li>)}</ul></section>}
+                  <dl className="grid gap-3 border-t border-[#dce5e4] pt-4 text-xs text-[#748886] sm:grid-cols-2"><div><dt>Dibuat</dt><dd className="mt-1 font-medium text-[#516967]">{displayTimestamp(selectedPlan.createdAt)}</dd></div><div><dt>Terakhir diperbarui</dt><dd className="mt-1 font-medium text-[#516967]">{displayTimestamp(selectedPlan.updatedAt)}</dd></div></dl>
+                </div>
+              </DialogFrame>
+            )}
           </div>
         </div>
       )}

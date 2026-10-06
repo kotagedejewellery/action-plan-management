@@ -1,6 +1,34 @@
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import { Close } from "./icons";
+
+function focusableElements(container: HTMLElement) {
+  return Array.from(container.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter((element) => element.offsetParent !== null);
+}
+
+function useDialogFocus(onClose: () => void, captureKeys = false) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
+  useEffect(() => {
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const frame = requestAnimationFrame(() => focusableElements(dialogRef.current ?? document.body)[0]?.focus());
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (captureKeys && (event.key === "Escape" || event.key === "Tab")) event.stopImmediatePropagation();
+      if (event.key === "Escape") { event.preventDefault(); onCloseRef.current(); return; }
+      if (event.key !== "Tab" || !dialogRef.current) return;
+      const elements = focusableElements(dialogRef.current);
+      if (!elements.length) return;
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    document.addEventListener("keydown", handleKeyDown, captureKeys);
+    return () => { cancelAnimationFrame(frame); document.removeEventListener("keydown", handleKeyDown, captureKeys); previousFocus?.focus(); };
+  }, [captureKeys]);
+  return dialogRef;
+}
 
 export function StatusBadge({ status }: { status?: string }) {
   if (!status) return <span className="text-sm text-[#90a09f]">—</span>;
@@ -18,10 +46,12 @@ export function PageHeading({ title, description, action }: { title: string; des
 }
 
 export function DialogFrame({ title, description, children, onClose }: { title: string; description: string; children: ReactNode; onClose: () => void }) {
-  return <div className="fixed inset-0 z-50 flex items-end bg-[#173c3a]/30 p-0 sm:items-center sm:justify-center sm:p-6" role="presentation"><div className="w-full rounded-t-2xl bg-white p-6 shadow-[0_-20px_56px_-25px_rgba(23,60,58,0.55)] sm:max-w-xl sm:rounded-2xl" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><div className="flex items-start justify-between gap-5"><div><h2 id="dialog-title" className="text-xl font-semibold tracking-[-0.025em] text-[#173c3a]">{title}</h2><p className="mt-1.5 text-sm leading-6 text-[#667c7c]">{description}</p></div><button type="button" className="grid size-9 shrink-0 place-items-center rounded-lg text-[#667c7c] hover:bg-[#f1f5f4]" onClick={onClose} aria-label="Tutup dialog"><Close className="size-5" /></button></div>{children}</div></div>;
+  const dialogRef = useDialogFocus(onClose);
+  return <div className="fixed inset-0 z-50 flex items-end bg-[#173c3a]/30 p-0 sm:items-center sm:justify-center sm:p-6" role="presentation"><div ref={dialogRef} tabIndex={-1} className="w-full rounded-t-2xl bg-white p-6 shadow-[0_-20px_56px_-25px_rgba(23,60,58,0.55)] sm:max-w-xl sm:rounded-2xl" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><div className="flex items-start justify-between gap-5"><div><h2 id="dialog-title" className="text-xl font-semibold tracking-[-0.025em] text-[#173c3a]">{title}</h2><p className="mt-1.5 text-sm leading-6 text-[#667c7c]">{description}</p></div><button type="button" className="grid size-9 shrink-0 place-items-center rounded-lg text-[#667c7c] hover:bg-[#f1f5f4]" onClick={onClose} aria-label="Tutup dialog"><Close className="size-5" /></button></div>{children}</div></div>;
 }
 
 export function ConfirmDialog({ title, description, confirmLabel, onCancel, onConfirm, confirming = false, destructive = false }: { title: string; description: ReactNode; confirmLabel: string; onCancel: () => void; onConfirm: () => void; confirming?: boolean; destructive?: boolean }) {
   const confirmClass = destructive ? "bg-[#a34c3f] hover:bg-[#8b3c31]" : "bg-[#137d79] hover:bg-[#0e6865]";
-  return <div className="fixed inset-0 z-[60] flex items-end bg-[#173c3a]/40 p-0 sm:items-center sm:justify-center sm:p-6" role="presentation"><div className="w-full rounded-t-2xl bg-white p-6 shadow-[0_-20px_56px_-25px_rgba(23,60,58,0.55)] sm:max-w-md sm:rounded-2xl" role="alertdialog" aria-modal="true" aria-labelledby="confirm-dialog-title" aria-describedby="confirm-dialog-description"><h2 id="confirm-dialog-title" className="text-xl font-semibold tracking-[-0.025em] text-[#173c3a]">{title}</h2><div id="confirm-dialog-description" className="mt-2 text-sm leading-6 text-[#667c7c]">{description}</div><div className="mt-6 flex justify-end gap-3"><button type="button" onClick={onCancel} disabled={confirming} className="h-10 rounded-xl px-4 text-sm font-semibold text-[#59706f] hover:bg-[#f1f5f4] disabled:opacity-60">Batal</button><button type="button" onClick={onConfirm} disabled={confirming} className={`h-10 rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-60 ${confirmClass}`}>{confirming ? "Memproses..." : confirmLabel}</button></div></div></div>;
+  const dialogRef = useDialogFocus(() => { if (!confirming) onCancel(); }, true);
+  return <div className="fixed inset-0 z-[60] flex items-end bg-[#173c3a]/40 p-0 sm:items-center sm:justify-center sm:p-6" role="presentation"><div ref={dialogRef} tabIndex={-1} className="w-full rounded-t-2xl bg-white p-6 shadow-[0_-20px_56px_-25px_rgba(23,60,58,0.55)] sm:max-w-md sm:rounded-2xl" role="alertdialog" aria-modal="true" aria-busy={confirming} aria-labelledby="confirm-dialog-title" aria-describedby="confirm-dialog-description"><h2 id="confirm-dialog-title" className="text-xl font-semibold tracking-[-0.025em] text-[#173c3a]">{title}</h2><div id="confirm-dialog-description" className="mt-2 text-sm leading-6 text-[#667c7c]">{description}</div><div className="mt-6 flex justify-end gap-3"><button type="button" onClick={onCancel} disabled={confirming} className="h-10 rounded-xl px-4 text-sm font-semibold text-[#59706f] hover:bg-[#f1f5f4] disabled:opacity-60">Batal</button><button type="button" onClick={onConfirm} disabled={confirming} className={`h-10 rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-60 ${confirmClass}`}>{confirming ? "Memproses..." : confirmLabel}</button></div></div></div>;
 }

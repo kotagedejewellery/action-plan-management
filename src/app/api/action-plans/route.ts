@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { AppError } from "@/application/errors";
+import { apiError } from "@/presentation/server/api-error";
 import { actionPlanInputSchema } from "@/application/schemas";
 import { listVisiblePlans, saveOwnActionPlan, type ActionPlanScope } from "@/application/use-cases";
 import { actionPlans, statuses, users, weeklyPlans } from "@/infrastructure/container";
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     const scope: ActionPlanScope = requestedScope === "active" || requestedScope === "history" ? requestedScope : actor.role === "user" ? "active" : "all";
     const target = targetId ? await users.findById(targetId) : actor.role === "user" ? await users.findById(actor.id) : null;
     return NextResponse.json(await listVisiblePlans(actionPlans, statuses, actor, target, scope));
-  } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Terjadi kesalahan." }, { status: error instanceof AppError ? 403 : 400 }); }
+  } catch (error) { return apiError(error); }
 }
 
 export async function POST(request: Request) {
@@ -25,5 +25,5 @@ export async function POST(request: Request) {
     const timestamp = new Date().toISOString();
     const plan = await saveOwnActionPlan(actionPlans, statuses, weeklyPlans, actor, { id: crypto.randomUUID(), date: input.date, task: input.task, morningStatus: input.morningStatus, afternoonStatus: input.afternoonStatus || undefined, resultLink: input.resultLink || undefined, note: input.note || undefined, weeklyPlanId: input.weeklyPlanId || undefined, createdAt: timestamp, updatedAt: timestamp });
     return NextResponse.json(plan, { status: 201 });
-  } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Terjadi kesalahan." }, { status: error instanceof AppError ? 400 : 500 }); }
+  } catch (error) { return apiError(error); }
 }

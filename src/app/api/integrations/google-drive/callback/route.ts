@@ -2,8 +2,9 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { AppError } from "@/application/errors";
+import { apiError } from "@/presentation/server/api-error";
 import { requireAdmin } from "@/application/use-cases";
-import { googleDriveOAuthClient } from "@/infrastructure/google-drive/oauth";
+import { configuredDriveFolderId, googleDriveOAuthClient } from "@/infrastructure/google-drive/oauth";
 import { currentActor } from "@/presentation/server/actor";
 import { google } from "googleapis";
 
@@ -21,13 +22,17 @@ export async function GET(request: Request) {
     const { tokens } = await auth.getToken(code);
     if (!tokens.refresh_token) throw new AppError("Google tidak mengembalikan Refresh Token. Cabut akses aplikasi di Akun Google lalu ulangi koneksi.", "VALIDATION");
     auth.setCredentials(tokens);
-    const folder = await google.drive({ version: "v3", auth }).files.create({ requestBody: { name: "Action Plan Attachments", mimeType: "application/vnd.google-apps.folder" }, fields: "id" });
-    if (!folder.data.id) throw new Error("Google Drive tidak mengembalikan Folder ID.");
+    const existingFolderId = configuredDriveFolderId();
+    const folder = existingFolderId ? null : await google.drive({ version: "v3", auth }).files.create({ requestBody: { name: "Action Plan Attachments", mimeType: "application/vnd.google-apps.folder" }, fields: "id" });
+    const folderId = existingFolderId ?? folder?.data.id;
+    if (!folderId) throw new Error("Google Drive tidak mengembalikan Folder ID.");
 
-    const response = NextResponse.json({ message: "Google Drive terhubung. Simpan kedua nilai berikut di environment server dan jangan bagikan Refresh Token.", GOOGLE_OAUTH_REFRESH_TOKEN: tokens.refresh_token, GOOGLE_DRIVE_FOLDER_ID: folder.data.id }, { headers: { "cache-control": "no-store", "referrer-policy": "no-referrer" } });
+    const response = NextResponse.json({ message: "Google Drive terhubung. Simpan nilai ini di environment server segera; endpoint koneksi akan terkunci setelah Refresh Token dikonfigurasi.", GOOGLE_OAUTH_REFRESH_TOKEN: tokens.refresh_token, GOOGLE_DRIVE_FOLDER_ID: folderId }, { headers: { "cache-control": "no-store", "referrer-policy": "no-referrer" } });
     response.cookies.delete("google-drive-oauth-state");
     return response;
   } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Koneksi Google Drive gagal." }, { status: error instanceof AppError ? 400 : 500, headers: { "cache-control": "no-store" } });
+    const response = apiError(error);
+    response.headers.set("cache-control", "no-store");
+    return response;
   }
 }

@@ -6,18 +6,7 @@ import { toSafeUser } from "@/domain/models";
 import { actionPlans, statuses, users, weeklyPlans } from "@/infrastructure/container";
 import { ConnectedDashboardWorkspace } from "@/presentation/components/connected-dashboard-workspace";
 import { currentActor } from "@/presentation/server/actor";
-
-function todayInBangkok() {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Bangkok",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).formatToParts(new Date());
-  const value = (type: Intl.DateTimeFormatPartTypes) =>
-    parts.find((part) => part.type === type)?.value ?? "";
-  return value("year") + "-" + value("month") + "-" + value("day");
-}
+import { bangkokDate } from "@/lib/bangkok-date";
 
 export default async function DashboardPage() {
   const actor = await currentActor();
@@ -28,22 +17,11 @@ export default async function DashboardPage() {
   }
 
   const userList = (await users.list()).filter((user) => user.role === "user");
-  const plansByUser = await Promise.all(
-    userList.map(async (user) => {
-      const plans = await listVisiblePlans(
-        actionPlans,
-        statuses,
-        actor,
-        user,
-        "all",
-      );
-      return plans.map((plan): DashboardPlan => ({
-        ...plan,
-        ownerId: user.id,
-        ownerName: user.name,
-      }));
-    }),
-  );
+  const plansByUser: DashboardPlan[][] = [];
+  for (const user of userList) {
+    const plans = await listVisiblePlans(actionPlans, statuses, actor, user, "all");
+    plansByUser.push(plans.map((plan): DashboardPlan => ({ ...plan, ownerId: user.id, ownerName: user.name })));
+  }
   const completedStatusLabels = (await statuses.list())
     .filter((status) => status.isCompleted)
     .map((status) => status.label);
@@ -54,7 +32,7 @@ export default async function DashboardPage() {
       plans={plansByUser.flat()}
       weeklyPlans={await weeklyPlans.list()}
       completedStatusLabels={completedStatusLabels}
-      today={todayInBangkok()}
+      today={bangkokDate()}
     />
   );
 }

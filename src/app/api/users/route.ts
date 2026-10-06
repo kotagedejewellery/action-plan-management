@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 
-import { AppError } from "@/application/errors";
+import { apiError } from "@/presentation/server/api-error";
 import { createUserInputSchema } from "@/application/schemas";
 import { createUser, requireAdmin } from "@/application/use-cases";
 import { toSafeUser } from "@/domain/models";
 import { users } from "@/infrastructure/container";
 import { currentActor } from "@/presentation/server/actor";
 
-function responseError(error: unknown) { return NextResponse.json({ error: error instanceof Error ? error.message : "Terjadi kesalahan." }, { status: error instanceof AppError ? error.code === "CONFLICT" ? 409 : 403 : 400 }); }
+function responseError(error: unknown) { return apiError(error); }
 
 export async function GET() {
   try { requireAdmin(await currentActor()); return NextResponse.json((await users.list()).map(toSafeUser)); } catch (error) { return responseError(error); }

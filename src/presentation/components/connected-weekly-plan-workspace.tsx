@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState, type FormEvent, type ReactNode } from "react";
 
 import type { ActionPlan, WeeklyPlan } from "@/domain/models";
+import { bangkokDate } from "@/lib/bangkok-date";
 import { useFeedback } from "./feedback";
 import { Plus } from "./icons";
 import { ConfirmDialog, DialogFrame, PageHeading, StatusBadge } from "./workspace-ui";
@@ -15,8 +16,8 @@ function displayDate(value: string) {
 }
 
 function currentWeek() {
-  const date = new Date();
-  const utc = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const [year, month, day] = bangkokDate().split("-").map(Number);
+  const utc = new Date(Date.UTC(year, month - 1, day));
   utc.setUTCDate(utc.getUTCDate() + 4 - (utc.getUTCDay() || 7));
   const yearStart = new Date(Date.UTC(utc.getUTCFullYear(), 0, 1));
   const week = Math.ceil((((utc.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
@@ -80,11 +81,11 @@ export function ConnectedWeeklyPlanWorkspace({ initialWeeklyPlans, initialAction
     }
   }
 
-  async function updateWeeklyPlan(input: { title: string; note?: string }) {
+  async function updateWeeklyPlan(input: { title: string; note?: string; updatedAt?: string }) {
     if (!editingWeeklyPlan) return;
     setUpdating(true);
     try {
-      const response = await fetch("/api/weekly-plans/" + editingWeeklyPlan.id, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify(input) });
+      const response = await fetch("/api/weekly-plans/" + editingWeeklyPlan.id, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...input, updatedAt: editingWeeklyPlan.updatedAt }) });
       const body = await response.json();
       if (!response.ok) throw new Error(body.error ?? "Rencana mingguan tidak dapat diperbarui.");
       setWeeklyPlans((current) => current.map((plan) => plan.id === body.id ? body : plan));
@@ -106,7 +107,7 @@ export function ConnectedWeeklyPlanWorkspace({ initialWeeklyPlans, initialAction
       if (!response.ok) { const body = await response.json(); throw new Error(body.error ?? "Rencana mingguan tidak dapat diarsipkan."); }
       setWeeklyPlans((current) => current.filter((plan) => plan.id !== archivingWeeklyPlan.id));
       setArchivingWeeklyPlan(null);
-      notify("success", "Rencana mingguan diarsipkan", "Action Plan harian tetap tersimpan dan dapat dikelola secara mandiri.");
+      notify("success", "Rencana mingguan dihapus permanen", "Seluruh Action Plan harian yang terhubung juga telah dihapus permanen.");
     } catch (error) {
       notify("error", "Rencana mingguan belum diarsipkan", error instanceof Error ? error.message : "Silakan coba lagi.");
     } finally {
@@ -119,13 +120,13 @@ export function ConnectedWeeklyPlanWorkspace({ initialWeeklyPlans, initialAction
     <div className="mt-8 overflow-hidden rounded-2xl border bg-white shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)]">
       {weeklyPlans.length === 0 ? <div className="p-12 text-center"><p className="font-semibold text-[#294846]">Belum ada rencana mingguan.</p><p className="mt-1 text-sm text-[#748886]">Buat rencana untuk menyiapkan Action Plan harian dalam satu minggu kerja.</p></div> : <div className="divide-y">{weeklyPlans.map((weeklyPlan) => {
         const stats = planStats.get(weeklyPlan.id) ?? { children: [], total: 0, completed: 0 };
-        return <article key={weeklyPlan.id} className="px-5 py-5 sm:px-6"><div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div className="min-w-0"><h2 className="font-semibold text-[#244542]">{weeklyPlan.title}</h2><p className="mt-1 text-sm text-[#748886]">{displayDate(weeklyPlan.weekStart)} – {displayDate(weeklyPlan.weekEnd)}</p>{weeklyPlan.note && <p className="mt-3 text-sm leading-6 text-[#617876]">{weeklyPlan.note}</p>}</div><div className="flex items-center gap-2"><p className="shrink-0 text-sm font-semibold tabular-nums text-[#176d69]">{stats.completed} / {stats.total} selesai</p><button type="button" onClick={() => setEditingWeeklyPlan(weeklyPlan)} className="rounded-lg px-2 py-1 text-sm font-semibold text-[#176d69] hover:bg-[#e8f3f1]">Edit</button><button type="button" onClick={() => setArchivingWeeklyPlan(weeklyPlan)} className="rounded-lg px-2 py-1 text-sm font-semibold text-[#9a4639] hover:bg-[#f9ece9]">Arsip</button></div></div><div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e8eeee]"><div className="h-full rounded-full bg-[#137d79] transition-[width] duration-300" style={{ width: `${stats.total ? (stats.completed / stats.total) * 100 : 0}%` }} /></div></article>;
+        return <article key={weeklyPlan.id} className="px-5 py-5 sm:px-6"><div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div className="min-w-0"><h2 className="font-semibold text-[#244542]">{weeklyPlan.title}</h2><p className="mt-1 text-sm text-[#748886]">{displayDate(weeklyPlan.weekStart)} – {displayDate(weeklyPlan.weekEnd)}</p>{weeklyPlan.note && <p className="mt-3 text-sm leading-6 text-[#617876]">{weeklyPlan.note}</p>}</div><div className="flex items-center gap-2"><p className="shrink-0 text-sm font-semibold tabular-nums text-[#176d69]">{stats.completed} / {stats.total} selesai</p><button type="button" onClick={() => setEditingWeeklyPlan(weeklyPlan)} className="rounded-lg px-2 py-1 text-sm font-semibold text-[#176d69] hover:bg-[#e8f3f1]">Edit</button><button type="button" onClick={() => setArchivingWeeklyPlan(weeklyPlan)} className="rounded-lg px-2 py-1 text-sm font-semibold text-[#9a4639] hover:bg-[#f9ece9]">Hapus</button></div></div><div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e8eeee]"><div className="h-full rounded-full bg-[#137d79] transition-[width] duration-300" style={{ width: `${stats.total ? (stats.completed / stats.total) * 100 : 0}%` }} /></div></article>;
       })}</div>}
     </div>
     {weeklyPlans.length > 0 && <section className="mt-6" aria-label="Rincian Action Plan mingguan"><h2 className="text-lg font-semibold text-[#244542]">Rincian Action Plan</h2><div className="mt-3 divide-y overflow-hidden rounded-2xl border bg-white shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)]">{weeklyPlans.map((weeklyPlan) => { const stats = planStats.get(weeklyPlan.id) ?? { children: [], total: 0, completed: 0 }; const status = weeklyStatus(weeklyPlan, stats, today); return <details key={weeklyPlan.id} className="group px-5 py-4 sm:px-6"><summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3"><span className="font-semibold text-[#294846]">{weeklyPlan.title}</span><span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${status.className}`}>{status.label}</span></summary><div className="mt-4 divide-y rounded-xl border">{stats.children.map((plan) => <div key={plan.id} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-sm font-medium text-[#294846]">{plan.task}</p><p className="mt-1 text-xs text-[#748886]">{displayDate(plan.date)}</p></div><div className="flex flex-wrap gap-2"><StatusBadge status={plan.morningStatus} /><StatusBadge status={plan.afternoonStatus} /></div></div>)}{stats.children.length === 0 && <p className="px-4 py-3 text-sm text-[#748886]">Belum ada Action Plan yang terhubung.</p>}</div><Link href="/action-plans" className="mt-4 inline-flex text-sm font-semibold text-[#137d79] hover:underline">Kelola Action Plan aktif</Link></details>; })}</div></section>}
     {formOpen && <WeeklyPlanForm statusOptions={statusOptions} saving={creating} onCancel={() => setFormOpen(false)} onSave={createWeeklyPlan} />}
     {editingWeeklyPlan && <WeeklyPlanEditForm plan={editingWeeklyPlan} saving={updating} onCancel={() => setEditingWeeklyPlan(null)} onSave={updateWeeklyPlan} />}
-    {archivingWeeklyPlan && <ConfirmDialog title="Arsipkan rencana mingguan?" description="Target mingguan tidak lagi tampil di halaman ini. Action Plan harian yang telah dibuat tetap tersimpan." confirmLabel="Arsipkan rencana" confirming={updating} destructive onCancel={() => setArchivingWeeklyPlan(null)} onConfirm={() => void archiveWeeklyPlan()} />}
+    {archivingWeeklyPlan && <ConfirmDialog title="Hapus rencana mingguan secara permanen?" description="Rencana mingguan dan seluruh Action Plan harian yang terhubung akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan." confirmLabel="Hapus permanen" confirming={updating} destructive onCancel={() => setArchivingWeeklyPlan(null)} onConfirm={() => void archiveWeeklyPlan()} />}
   </section>;
 }
 
@@ -143,7 +144,7 @@ function WeeklyPlanForm({ statusOptions, saving, onCancel, onSave }: { statusOpt
   return <DialogFrame title="Tambah Rencana Mingguan" description="Sistem akan membuat Action Plan harian untuk hari kerja yang Anda pilih." onClose={saving ? () => undefined : onCancel}><form onSubmit={submit} className="mt-6 space-y-4"><Field label="Target Mingguan"><textarea name="title" required placeholder="Contoh: Follow up pelanggan prioritas" rows={3} /></Field><div className="grid gap-4 sm:grid-cols-2"><Field label="Mulai Minggu (Senin)"><input name="weekStart" type="date" required defaultValue={mondayThisWeek()} /></Field><Field label="Status Pagi Awal"><select name="morningStatus" required defaultValue={statusOptions[0]}>{statusOptions.map((status) => <option key={status}>{status}</option>)}</select></Field></div><fieldset><legend className="text-sm font-medium text-[#294846]">Hari kerja</legend><div className="mt-2 flex flex-wrap gap-x-4 gap-y-2">{[["1", "Senin"], ["2", "Selasa"], ["3", "Rabu"], ["4", "Kamis"], ["5", "Jumat"]].map(([value, label]) => <label key={value} className="inline-flex items-center gap-2 text-sm text-[#59706f]"><input type="checkbox" name="weekdays" value={value} defaultChecked />{label}</label>)}</div></fieldset><Field label="Catatan"><textarea name="note" placeholder="Konteks atau hasil yang diharapkan (opsional)" rows={2} /></Field>{error && <p className="rounded-xl bg-[#fff1d7] px-3 py-2 text-sm text-[#9a5b16]" role="alert">{error}</p>}<div className="flex justify-end gap-3 border-t pt-5"><button type="button" onClick={onCancel} disabled={saving} className="h-10 rounded-xl px-4 text-sm font-semibold text-[#59706f] hover:bg-[#f1f5f4] disabled:opacity-60">Batal</button><button disabled={saving || statusOptions.length === 0} className="h-10 rounded-xl bg-[#137d79] px-4 text-sm font-semibold text-white hover:bg-[#0e6865] disabled:opacity-60">{saving ? "Membuat..." : "Buat Action Plan"}</button></div></form></DialogFrame>;
 }
 
-function WeeklyPlanEditForm({ plan, saving, onCancel, onSave }: { plan: WeeklyPlan; saving: boolean; onCancel: () => void; onSave: (input: { title: string; note?: string }) => Promise<void> }) {
+function WeeklyPlanEditForm({ plan, saving, onCancel, onSave }: { plan: WeeklyPlan; saving: boolean; onCancel: () => void; onSave: (input: { title: string; note?: string; updatedAt?: string }) => Promise<void> }) {
   const [error, setError] = useState("");
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

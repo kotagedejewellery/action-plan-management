@@ -16,6 +16,7 @@ export interface ActionPlanRepository {
   createMany(sheetName: string, plans: ActionPlan[]): Promise<ActionPlan[]>;
   update(sheetName: string, plan: ActionPlan): Promise<ActionPlan>;
   softDelete(sheetName: string, id: string, deletedAt: string, deletedBy: string): Promise<void>;
+  hardDelete(sheetName: string, id: string): Promise<void>;
 }
 
 export interface WeeklyPlanRepository {
@@ -24,11 +25,14 @@ export interface WeeklyPlanRepository {
   create(plan: WeeklyPlan): Promise<WeeklyPlan>;
   update(plan: WeeklyPlan): Promise<WeeklyPlan>;
   softDelete(id: string, deletedAt: string, deletedBy: string): Promise<void>;
+  hardDelete(id: string): Promise<void>;
 }
 
 export interface AttachmentStorage {
-  upload(input: { name: string; mimeType: string; content: Buffer }): Promise<ActionPlanAttachment>;
+  upload(input: { name: string; mimeType: string; content: Buffer; folder: { userId: string; userName: string; actionPlanId: string } }): Promise<ActionPlanAttachment>;
   download(id: string): Promise<Buffer>;
+  trash(id: string): Promise<void>;
+  hardDelete(id: string): Promise<void>;
 }
 
 export interface StatusRepository {

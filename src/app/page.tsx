@@ -1,5 +1,15 @@
 import { redirect } from "next/navigation";
 
-export default function Home() {
-  redirect("/action-plans");
+import { AppError } from "@/application/errors";
+import { currentActor } from "@/presentation/server/actor";
+
+export default async function Home() {
+  let actor;
+  try {
+    actor = await currentActor();
+  } catch (error) {
+    if (error instanceof AppError && error.code === "FORBIDDEN") redirect("/login");
+    redirect("/login");
+  }
+  redirect(actor.role === "admin" ? "/dashboard" : "/action-plans");
 }

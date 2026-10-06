@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
 
 import {
   summarizeDashboard,
@@ -28,6 +29,12 @@ function displayShortDate(value: string) {
     month: "short",
     timeZone: "Asia/Bangkok",
   }).format(new Date(value + "T00:00:00"));
+}
+
+function monitoringHref(userId: string, from: string, to: string, recordId?: string) {
+  const params = new URLSearchParams({ userId, from, to });
+  if (recordId) params.set("recordId", recordId);
+  return `/monitoring?${params}`;
 }
 
 export function ConnectedDashboardWorkspace({
@@ -82,6 +89,7 @@ export function ConnectedDashboardWorkspace({
         title="Dashboard"
         description="Ringkasan progres Action Plan seluruh User pada periode yang dipilih."
       />
+      <p className="sr-only" role="status">Menampilkan {summary.total} Action Plan dari {displayShortDate(dateFrom)} sampai {displayShortDate(dateTo)}.</p>
 
       <div className="mt-8 flex flex-col gap-4 border-y border-[#dce5e4] py-4 xl:flex-row xl:items-end xl:justify-between">
         <div
@@ -188,9 +196,10 @@ export function ConnectedDashboardWorkspace({
                     {plan.ownerName} · {displayShortDate(plan.date)}
                   </p>
                 </div>
-                <div className="flex shrink-0 flex-wrap gap-2">
+                <div className="flex shrink-0 flex-wrap items-center gap-2">
                   <StatusBadge status={plan.morningStatus} />
                   <StatusBadge status={plan.afternoonStatus} />
+                  <Link href={monitoringHref(plan.ownerId, plan.date, plan.date, plan.id)} className="rounded-lg px-2 py-1 text-sm font-semibold text-[#c8ebe7] hover:bg-white/10 hover:text-white">Lihat detail</Link>
                 </div>
               </article>
             ))}
@@ -233,11 +242,7 @@ export function ConnectedDashboardWorkspace({
                   <p className="truncate text-sm font-semibold text-[#294846]">
                     {user.name}
                   </p>
-                  <p className="shrink-0 text-xs font-semibold tabular-nums text-[#51716e]">
-                    {user.total === 0
-                      ? "Belum ada rencana"
-                      : user.completed + " / " + user.total + " selesai"}
-                  </p>
+                  <div className="flex shrink-0 items-center gap-3"><p className="text-xs font-semibold tabular-nums text-[#51716e]">{user.total === 0 ? "Belum ada rencana" : user.completed + " / " + user.total + " selesai"}</p><Link href={monitoringHref(user.userId, dateFrom, dateTo)} className="rounded-lg px-2 py-1 text-xs font-semibold text-[#137d79] hover:bg-[#e8f3f1]">Lihat</Link></div>
                 </div>
                 <div className="mt-2 h-3 overflow-hidden rounded-full bg-[#e8eeee]">
                   <div

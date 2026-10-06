@@ -1,0 +1,28 @@
+name: action-plan-management
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.action-plan-management.rule=Host(`apm.kotagedejewellery.tech`)"
+      - "traefik.http.routers.action-plan-management.entrypoints=websecure"
+      - "traefik.http.routers.action-plan-management.tls=true"
+      - "traefik.http.routers.action-plan-management.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.action-plan-management-http.rule=Host(`apm.kotagedejewellery.tech`)"
+      - "traefik.http.routers.action-plan-management-http.entrypoints=web"
+      - "traefik.http.routers.action-plan-management-http.middlewares=action-plan-management-https"
+      - "traefik.http.middlewares.action-plan-management-https.redirectscheme.scheme=https"
+      - "traefik.http.services.action-plan-management.loadbalancer.server.port=3000"
+
+networks:
+  proxy:
+    external: true

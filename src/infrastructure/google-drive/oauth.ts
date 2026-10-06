@@ -22,4 +22,8 @@ export function driveFolderId() {
   return required("GOOGLE_DRIVE_FOLDER_ID");
 }
 
+export function configuredDriveFolderId() {
+  return process.env.GOOGLE_DRIVE_FOLDER_ID;
+}
+
 export { driveScope };

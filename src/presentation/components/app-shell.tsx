@@ -46,6 +46,8 @@ export function AppShell({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logoutConfirmationOpen, setLogoutConfirmationOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const isNavigating = pendingHref !== null && pendingHref !== pathname;
   const navigation = baseNavigation.filter((item) =>
     item.roles.includes(actor.role),
   );
@@ -78,7 +80,7 @@ export function AppShell({
         <Link
           className="flex items-center gap-3 font-semibold tracking-tight text-[#173c3a]"
           href={homeHref}
-          onClick={() => setMobileMenuOpen(false)}
+          onClick={() => { setMobileMenuOpen(false); if (pathname !== homeHref) setPendingHref(homeHref); }}
         >
           <span className="grid size-9 place-items-center rounded-xl bg-[#173c3a] text-sm font-bold text-[#d7f1ed]">
             AP
@@ -94,7 +96,7 @@ export function AppShell({
         </button>
       </div>
 
-      <nav className="mt-10 space-y-1" aria-label="Navigasi utama">
+      <nav className="mt-10 space-y-1" aria-label="Navigasi utama" aria-busy={isNavigating}>
         {navigation.map(({ href, label, icon: Icon }) => {
           const active = pathname === href;
           return (
@@ -102,10 +104,12 @@ export function AppShell({
               key={href}
               className={`flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition ${active ? "bg-[#e3f3f0] text-[#116b67]" : "text-[#59706f] hover:bg-[#f1f5f4] hover:text-[#244542]"}`}
               href={href}
-              onClick={() => setMobileMenuOpen(false)}
+              aria-current={active ? "page" : undefined}
+              onClick={() => { setMobileMenuOpen(false); if (!active) setPendingHref(href); }}
             >
               <Icon className="size-[18px]" />
               {label}
+              {isNavigating && pendingHref === href && <span className="ml-auto inline-flex items-center gap-1 text-xs font-semibold" role="status"><span className="size-3 animate-spin rounded-full border-2 border-current border-t-transparent" aria-hidden="true" /><span className="sr-only">Memuat {label}</span></span>}
             </Link>
           );
         })}

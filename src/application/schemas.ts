@@ -33,6 +33,8 @@ export const weeklyPlanInputSchema = z.object({
 export const weeklyPlanUpdateSchema = z.object({
   title: z.string().trim().min(1, "Judul rencana mingguan wajib diisi."),
   note: z.string().trim().optional(),
+  updatedAt: z.string().datetime().optional(),
 });
 
 export const statusInputSchema = z.object({ label: z.string().trim().min(1, "Nama status wajib diisi.").max(50), isCompleted: z.boolean().optional().default(false) });
+export const statusUpdateSchema = z.object({ isActive: z.boolean(), isCompleted: z.boolean() });

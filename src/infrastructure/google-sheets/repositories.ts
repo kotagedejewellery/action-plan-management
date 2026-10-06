@@ -9,9 +9,11 @@ const WEEKLY_PLANS_SHEET = "Weekly Plans";
 
 type Row = { values: string[]; rowNumber: number };
 const value = (input: unknown) => String(input ?? "");
-const READ_CACHE_TTL_MS = 5_000;
+const READ_CACHE_TTL_MS = 30_000;
+const USER_READ_CACHE_TTL_MS = 5_000;
 type CachedRead = { expiresAt: number; value: Promise<string[][]> };
 const readCache = new Map<string, CachedRead>();
+const legacyPlanMigrations = new Map<string, Promise<void>>();
 
 // ponytail: local cache assumes one app container; use a shared cache if replicas are added.
 function clearReadCache() {
@@ -23,7 +25,8 @@ function readValues(range: string): Promise<string[][]> {
   const cached = readCache.get(key);
   if (cached && cached.expiresAt > Date.now()) return cached.value;
 
-  const entry: CachedRead = { expiresAt: Date.now() + READ_CACHE_TTL_MS, value: Promise.resolve([]) };
+  const ttl = range.startsWith("Users!") ? USER_READ_CACHE_TTL_MS : READ_CACHE_TTL_MS;
+  const entry: CachedRead = { expiresAt: Date.now() + ttl, value: Promise.resolve([]) };
   entry.value = sheetsClient().spreadsheets.values.get({ spreadsheetId: spreadsheetId(), range })
     .then((response) => (response.data.values ?? []).map((entry) => entry.map(value)))
     .catch((error: unknown) => {
@@ -55,10 +58,44 @@ async function replace(range: string, values: string[]) {
   clearReadCache();
 }
 
+function rangeSheetName(sheetName: string) {
+  return sheetName.includes(" ") ? `'${sheetName}'` : sheetName;
+}
+
+async function deleteRow(sheetName: string, rowNumber: number) {
+  const sheet = await sheetsClient().spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });
+  const sheetId = sheet.data.sheets?.find((item) => item.properties?.title === sheetName)?.properties?.sheetId;
+  if (sheetId === undefined) throw new Error("Sheet tidak ditemukan.");
+  await sheetsClient().spreadsheets.batchUpdate({ spreadsheetId: spreadsheetId(), requestBody: { requests: [{ deleteDimension: { range: { sheetId, dimension: "ROWS", startIndex: rowNumber - 1, endIndex: rowNumber } } }] } });
+  clearReadCache();
+}
+
 async function ensureHeaders(sheetName: string, headers: string[]) {
-  const rangeSheetName = sheetName.includes(" ") ? `'${sheetName}'` : sheetName;
-  const current = (await readValues(`${rangeSheetName}!1:1`))[0] ?? [];
-  if (headers.some((header, index) => current[index] !== header)) await replace(`${rangeSheetName}!A1:${String.fromCharCode(64 + headers.length)}1`, headers);
+  const name = rangeSheetName(sheetName);
+  const current = (await readValues(`${name}!1:1`))[0] ?? [];
+  const next = headers.map((header, index) => current[index] || header);
+  if (next.some((header, index) => current[index] !== header)) await replace(`${name}!A1:${String.fromCharCode(64 + headers.length)}1`, next);
+}
+
+async function migrateLegacyPlanRecords(sheetName: string) {
+  const running = legacyPlanMigrations.get(sheetName);
+  if (running) return running;
+
+  const migration = (async () => {
+    const legacyRows = (await rows(`${rangeSheetName(sheetName)}!A:M`)).filter((row) => row.values[0] && !row.values[6]);
+    if (!legacyRows.length) return;
+    const timestamp = new Date().toISOString();
+    await sheetsClient().spreadsheets.values.batchUpdate({
+      spreadsheetId: spreadsheetId(),
+      requestBody: {
+        valueInputOption: "RAW",
+        data: legacyRows.map((row) => ({ range: `${rangeSheetName(sheetName)}!G${row.rowNumber}:I${row.rowNumber}`, values: [[crypto.randomUUID(), timestamp, timestamp]] })),
+      },
+    });
+    clearReadCache();
+  })().finally(() => legacyPlanMigrations.delete(sheetName));
+  legacyPlanMigrations.set(sheetName, migration);
+  return migration;
 }
 
 function userFrom(row: Row): User {
@@ -102,12 +139,13 @@ export class GoogleSheetsUserRepository implements UserRepository {
 
 export class GoogleSheetsActionPlanRepository implements ActionPlanRepository {
   private async ensureSchema(sheetName: string) { await ensureHeaders(sheetName, PLAN_HEADERS); }
-  async list(sheetName: string) { await this.ensureSchema(sheetName); return (await rows(`${sheetName}!A:M`)).filter((row) => row.values[6]).map(planFrom).sort((a, b) => b.date.localeCompare(a.date)); }
+  async list(sheetName: string) { await this.ensureSchema(sheetName); await migrateLegacyPlanRecords(sheetName); return (await rows(`${rangeSheetName(sheetName)}!A:M`)).filter((row) => row.values[6]).map(planFrom).sort((a, b) => b.date.localeCompare(a.date)); }
   async findById(sheetName: string, id: string) { return (await this.list(sheetName)).find((plan) => plan.id === id) ?? null; }
-  async create(sheetName: string, plan: ActionPlan) { await this.ensureSchema(sheetName); await append(`${sheetName}!A:M`, [plan.date, plan.task, plan.morningStatus, plan.afternoonStatus ?? "", plan.resultLink ?? "", plan.note ?? "", plan.id, plan.createdAt, plan.updatedAt, plan.deletedAt ?? "", plan.deletedBy ?? "", plan.weeklyPlanId ?? "", JSON.stringify(plan.attachments ?? [])]); return plan; }
-  async createMany(sheetName: string, plans: ActionPlan[]) { await this.ensureSchema(sheetName); await appendMany(`${sheetName}!A:M`, plans.map((plan) => [plan.date, plan.task, plan.morningStatus, plan.afternoonStatus ?? "", plan.resultLink ?? "", plan.note ?? "", plan.id, plan.createdAt, plan.updatedAt, plan.deletedAt ?? "", plan.deletedBy ?? "", plan.weeklyPlanId ?? "", JSON.stringify(plan.attachments ?? [])])); return plans; }
-  async update(sheetName: string, plan: ActionPlan) { await this.ensureSchema(sheetName); const row = (await rows(`${sheetName}!A:M`)).find((item) => item.values[6] === plan.id); if (!row) throw new Error("Action Plan tidak ditemukan."); await replace(`${sheetName}!A${row.rowNumber}:M${row.rowNumber}`, [plan.date, plan.task, plan.morningStatus, plan.afternoonStatus ?? "", plan.resultLink ?? "", plan.note ?? "", plan.id, plan.createdAt, plan.updatedAt, plan.deletedAt ?? "", plan.deletedBy ?? "", plan.weeklyPlanId ?? "", JSON.stringify(plan.attachments ?? [])]); return plan; }
-  async softDelete(sheetName: string, id: string, deletedAt: string, deletedBy: string) { await this.ensureSchema(sheetName); const row = (await rows(`${sheetName}!A:K`)).find((item) => item.values[6] === id); if (!row) throw new Error("Action Plan tidak ditemukan."); await replace(`${sheetName}!J${row.rowNumber}:K${row.rowNumber}`, [deletedAt, deletedBy]); }
+  async create(sheetName: string, plan: ActionPlan) { await this.ensureSchema(sheetName); await append(`${rangeSheetName(sheetName)}!A:M`, [plan.date, plan.task, plan.morningStatus, plan.afternoonStatus ?? "", plan.resultLink ?? "", plan.note ?? "", plan.id, plan.createdAt, plan.updatedAt, plan.deletedAt ?? "", plan.deletedBy ?? "", plan.weeklyPlanId ?? "", JSON.stringify(plan.attachments ?? [])]); return plan; }
+  async createMany(sheetName: string, plans: ActionPlan[]) { await this.ensureSchema(sheetName); await appendMany(`${rangeSheetName(sheetName)}!A:M`, plans.map((plan) => [plan.date, plan.task, plan.morningStatus, plan.afternoonStatus ?? "", plan.resultLink ?? "", plan.note ?? "", plan.id, plan.createdAt, plan.updatedAt, plan.deletedAt ?? "", plan.deletedBy ?? "", plan.weeklyPlanId ?? "", JSON.stringify(plan.attachments ?? [])])); return plans; }
+  async update(sheetName: string, plan: ActionPlan) { await this.ensureSchema(sheetName); const row = (await rows(`${rangeSheetName(sheetName)}!A:M`)).find((item) => item.values[6] === plan.id); if (!row) throw new Error("Action Plan tidak ditemukan."); await replace(`${rangeSheetName(sheetName)}!A${row.rowNumber}:M${row.rowNumber}`, [plan.date, plan.task, plan.morningStatus, plan.afternoonStatus ?? "", plan.resultLink ?? "", plan.note ?? "", plan.id, plan.createdAt, plan.updatedAt, plan.deletedAt ?? "", plan.deletedBy ?? "", plan.weeklyPlanId ?? "", JSON.stringify(plan.attachments ?? [])]); return plan; }
+  async softDelete(sheetName: string, id: string, deletedAt: string, deletedBy: string) { await this.ensureSchema(sheetName); const row = (await rows(`${rangeSheetName(sheetName)}!A:K`)).find((item) => item.values[6] === id); if (!row) throw new Error("Action Plan tidak ditemukan."); await replace(`${rangeSheetName(sheetName)}!J${row.rowNumber}:K${row.rowNumber}`, [deletedAt, deletedBy]); }
+  async hardDelete(sheetName: string, id: string) { await this.ensureSchema(sheetName); const row = (await rows(`${rangeSheetName(sheetName)}!A:M`)).find((item) => item.values[6] === id); if (!row) throw new Error("Action Plan tidak ditemukan."); await deleteRow(sheetName, row.rowNumber); }
 }
 
 export class GoogleSheetsWeeklyPlanRepository implements WeeklyPlanRepository {
@@ -136,6 +174,12 @@ export class GoogleSheetsWeeklyPlanRepository implements WeeklyPlanRepository {
     const row = (await rows(weeklyRange("A:K"))).find((item) => item.values[0] === id);
     if (!row) throw new Error("Rencana mingguan tidak ditemukan.");
     await replace(weeklyRange(`I${row.rowNumber}:J${row.rowNumber}`), [deletedAt, deletedBy]);
+  }
+  async hardDelete(id: string) {
+    await this.ensureSchema();
+    const row = (await rows(weeklyRange("A:K"))).find((item) => item.values[0] === id);
+    if (!row) throw new Error("Rencana mingguan tidak ditemukan.");
+    await deleteRow(WEEKLY_PLANS_SHEET, row.rowNumber);
   }
 }
 

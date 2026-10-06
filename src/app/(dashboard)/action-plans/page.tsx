@@ -7,7 +7,7 @@ import { currentActor } from "@/presentation/server/actor";
 
 export default async function ActionPlansPage() {
   const actor = await currentActor();
-  if (actor.role !== "user") redirect("/monitoring");
+  if (actor.role !== "user") redirect("/dashboard");
   const statusList = await statuses.list();
   const plans = await listVisiblePlans(actionPlans, statuses, actor, null, "active");
   const userWeeklyPlans = await listOwnWeeklyPlans(weeklyPlans, actor);
