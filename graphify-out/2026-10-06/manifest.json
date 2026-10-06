@@ -6,9 +6,9 @@
     "semantic_hash": ""
   },
   "docs/DATABASE_DESIGN.md": {
-    "mtime": 1790753462.1541717,
-    "seen": 1790753468.7748332,
-    "ast_hash": "5f149693742b147b649a1b296b8d0cf6",
+    "mtime": 1791268579.2852516,
+    "seen": 1791268632.0677574,
+    "ast_hash": "73c6660f03435aefaca98238fec3b02f",
     "semantic_hash": ""
   },
   "docs/PRD.md": {
@@ -18,15 +18,15 @@
     "semantic_hash": ""
   },
   "docs/SYSTEM_ARCHITECTURE.md": {
-    "mtime": 1790753463.7173862,
-    "seen": 1790753468.7748375,
-    "ast_hash": "50533b954552f2252da93ce449ad861b",
+    "mtime": 1791268552.596492,
+    "seen": 1791268632.0677664,
+    "ast_hash": "426b8ffea99509d7e40d309f6eab9906",
     "semantic_hash": ""
   },
   "docs/TECH_STACK.md": {
-    "mtime": 1790753460.8235548,
-    "seen": 1790753468.7748394,
-    "ast_hash": "edc48703e97d5aabc7aff5747427560e",
+    "mtime": 1791268552.5944784,
+    "seen": 1791268632.0677695,
+    "ast_hash": "9c207f2a69a0a8aa98008e22ef8c4f21",
     "semantic_hash": ""
   },
   "PRODUCT.md": {
@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1790754219.2439132,
-    "seen": 1790754363.9777734,
-    "ast_hash": "f15aaa42d5d299d091b1171097ea56ad",
+    "mtime": 1791268467.4838226,
+    "seen": 1791268632.0677497,
+    "ast_hash": "40a707ba8bcbd5b9397b62f38f200e8e",
     "semantic_hash": ""
   },
   "public/file.svg": {
@@ -342,9 +342,9 @@
     "semantic_hash": ""
   },
   "docs/SETUP.md": {
-    "mtime": 1790828997.4157505,
-    "seen": 1790829010.4028516,
-    "ast_hash": "c199cf9aaf67c31edd33df8d5c6e92f0",
+    "mtime": 1791268552.596492,
+    "seen": 1791268632.067764,
+    "ast_hash": "8b7e4e3ef433e4a5d012ddc4245a608c",
     "semantic_hash": ""
   },
   "src/presentation/components/feedback.tsx": {

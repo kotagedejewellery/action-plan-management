@@ -4265,30 +4265,39 @@
       "_origin": "ast"
     },
     {
-      "id": "readme_getting_started",
-      "label": "Getting Started",
+      "id": "readme_action_plan_management",
+      "label": "Action Plan Management",
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "README.md",
-      "source_location": "L3",
+      "source_location": "L1",
       "_origin": "ast"
     },
     {
-      "id": "readme_learn_more",
-      "label": "Learn More",
+      "id": "readme_menjalankan_lokal",
+      "label": "Menjalankan lokal",
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "README.md",
-      "source_location": "L23",
+      "source_location": "L5",
       "_origin": "ast"
     },
     {
-      "id": "readme_deploy_on_vercel",
-      "label": "Deploy on Vercel",
+      "id": "readme_pemeriksaan",
+      "label": "Pemeriksaan",
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "README.md",
-      "source_location": "L32",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_dokumentasi",
+      "label": "Dokumentasi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L24",
       "_origin": "ast"
     },
     {
@@ -4324,16 +4333,25 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L17",
+      "source_location": "L18",
       "_origin": "ast"
     },
     {
-      "id": "docs_database_design_3_sheet_action_plan_per_user",
-      "label": "3. Sheet Action Plan per User",
+      "id": "docs_database_design_3_sheet_settings",
+      "label": "3. Sheet `Settings`",
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L33",
+      "source_location": "L34",
+      "_origin": "ast"
+    },
+    {
+      "id": "docs_database_design_4_sheet_action_plan_per_user",
+      "label": "4. Sheet Action Plan per User",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/DATABASE_DESIGN.md",
+      "source_location": "L47",
       "_origin": "ast"
     },
     {
@@ -4342,43 +4360,61 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L49",
+      "source_location": "L67",
       "_origin": "ast"
     },
     {
-      "id": "docs_database_design_4_relasi_dan_isolasi_data",
-      "label": "4. Relasi dan isolasi data",
+      "id": "docs_database_design_5_sheet_weekly_plans",
+      "label": "5. Sheet `Weekly Plans`",
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L56",
+      "source_location": "L74",
       "_origin": "ast"
     },
     {
-      "id": "docs_database_design_5_validasi_integritas",
-      "label": "5. Validasi integritas",
+      "id": "docs_database_design_6_relasi_dan_isolasi_data",
+      "label": "6. Relasi dan isolasi data",
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L65",
+      "source_location": "L89",
       "_origin": "ast"
     },
     {
-      "id": "docs_database_design_6_operasi_akses_data",
-      "label": "6. Operasi akses data",
+      "id": "docs_database_design_7_validasi_integritas",
+      "label": "7. Validasi integritas",
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L80",
+      "source_location": "L101",
       "_origin": "ast"
     },
     {
-      "id": "docs_database_design_7_konsekuensi_google_sheets_sebagai_database",
-      "label": "7. Konsekuensi Google Sheets sebagai database",
+      "id": "docs_database_design_8_operasi_akses_data",
+      "label": "8. Operasi akses data",
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L91",
+      "source_location": "L116",
+      "_origin": "ast"
+    },
+    {
+      "id": "docs_database_design_9_kebijakan_penghapusan",
+      "label": "9. Kebijakan penghapusan",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/DATABASE_DESIGN.md",
+      "source_location": "L129",
+      "_origin": "ast"
+    },
+    {
+      "id": "docs_database_design_10_konsekuensi_google_sheets_sebagai_database",
+      "label": "10. Konsekuensi Google Sheets sebagai database",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/DATABASE_DESIGN.md",
+      "source_location": "L138",
       "_origin": "ast"
     },
     {
@@ -4499,6 +4535,51 @@
       "_origin": "ast"
     },
     {
+      "id": "docs_setup_1_google_sheets_dan_admin_awal",
+      "label": "1. Google Sheets dan Admin awal",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/SETUP.md",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "docs_setup_2_google_drive_untuk_lampiran",
+      "label": "2. Google Drive untuk lampiran",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/SETUP.md",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "docs_setup_3_menjalankan_lokal",
+      "label": "3. Menjalankan lokal",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/SETUP.md",
+      "source_location": "L30",
+      "_origin": "ast"
+    },
+    {
+      "id": "docs_setup_4_deployment_vps",
+      "label": "4. Deployment VPS",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/SETUP.md",
+      "source_location": "L39",
+      "_origin": "ast"
+    },
+    {
+      "id": "docs_setup_5_pemulihan_gangguan_umum",
+      "label": "5. Pemulihan gangguan umum",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/SETUP.md",
+      "source_location": "L60",
+      "_origin": "ast"
+    },
+    {
       "id": "docs_system_architecture",
       "label": "SYSTEM_ARCHITECTURE.md",
       "file_type": "document",
@@ -4531,7 +4612,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L25",
+      "source_location": "L29",
       "_origin": "ast"
     },
     {
@@ -4540,7 +4621,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L27",
+      "source_location": "L31",
       "_origin": "ast"
     },
     {
@@ -4549,7 +4630,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L35",
+      "source_location": "L39",
       "_origin": "ast"
     },
     {
@@ -4558,7 +4639,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L43",
+      "source_location": "L47",
       "_origin": "ast"
     },
     {
@@ -4567,7 +4648,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L53",
+      "source_location": "L57",
       "_origin": "ast"
     },
     {
@@ -4576,7 +4657,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L62",
+      "source_location": "L66",
       "_origin": "ast"
     },
     {
@@ -4585,7 +4666,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L72",
+      "source_location": "L76",
       "_origin": "ast"
     },
     {
@@ -4594,7 +4675,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L74",
+      "source_location": "L78",
       "_origin": "ast"
     },
     {
@@ -4603,7 +4684,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L85",
+      "source_location": "L89",
       "_origin": "ast"
     },
     {
@@ -4612,7 +4693,16 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L96",
+      "source_location": "L100",
+      "_origin": "ast"
+    },
+    {
+      "id": "docs_system_architecture_weekly_plan_dan_lampiran",
+      "label": "Weekly Plan dan lampiran",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/SYSTEM_ARCHITECTURE.md",
+      "source_location": "L111",
       "_origin": "ast"
     },
     {
@@ -4621,7 +4711,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L107",
+      "source_location": "L124",
       "_origin": "ast"
     },
     {
@@ -4630,25 +4720,34 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L119",
+      "source_location": "L137",
       "_origin": "ast"
     },
     {
-      "id": "docs_system_architecture_7_batasan_dan_evolusi",
-      "label": "7. Batasan dan evolusi",
+      "id": "docs_system_architecture_7_deployment",
+      "label": "7. Deployment",
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L126",
+      "source_location": "L145",
       "_origin": "ast"
     },
     {
-      "id": "docs_system_architecture_8_checklist_implementasi",
-      "label": "8. Checklist implementasi",
+      "id": "docs_system_architecture_8_batasan_dan_evolusi",
+      "label": "8. Batasan dan evolusi",
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L130",
+      "source_location": "L153",
+      "_origin": "ast"
+    },
+    {
+      "id": "docs_system_architecture_9_checklist_operasional",
+      "label": "9. Checklist operasional",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/SYSTEM_ARCHITECTURE.md",
+      "source_location": "L157",
       "_origin": "ast"
     },
     {
@@ -4693,7 +4792,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L26",
+      "source_location": "L27",
       "_origin": "ast"
     },
     {
@@ -4702,7 +4801,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L28",
+      "source_location": "L29",
       "_origin": "ast"
     },
     {
@@ -4711,7 +4810,16 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L35",
+      "source_location": "L36",
+      "_origin": "ast"
+    },
+    {
+      "id": "docs_tech_stack_google_drive",
+      "label": "Google Drive",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "docs/TECH_STACK.md",
+      "source_location": "L44",
       "_origin": "ast"
     },
     {
@@ -4720,7 +4828,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L41",
+      "source_location": "L50",
       "_origin": "ast"
     },
     {
@@ -4729,7 +4837,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L47",
+      "source_location": "L56",
       "_origin": "ast"
     },
     {
@@ -4738,7 +4846,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L58",
+      "source_location": "L73",
       "_origin": "ast"
     },
     {
@@ -4747,7 +4855,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L75",
+      "source_location": "L89",
       "_origin": "ast"
     },
     {
@@ -4756,7 +4864,7 @@
       "file_type": "document",
       "node_kind": "heading",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L84",
+      "source_location": "L98",
       "_origin": "ast"
     },
     {
@@ -16870,31 +16978,81 @@
     },
     {
       "source": "readme",
-      "target": "readme_getting_started",
+      "target": "readme_action_plan_management",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L3",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_action_plan_management",
+      "target": "readme_menjalankan_lokal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "readme",
-      "target": "readme_learn_more",
+      "target": "docs_setup",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_action_plan_management",
+      "target": "readme_pemeriksaan",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L23",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_action_plan_management",
+      "target": "readme_dokumentasi",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "readme",
-      "target": "readme_deploy_on_vercel",
-      "relation": "contains",
+      "target": "docs_tech_stack",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L32",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme",
+      "target": "docs_database_design",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme",
+      "target": "docs_system_architecture",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -16924,67 +17082,97 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "docs_database_design_database_design_google_spreadsheet",
-      "target": "docs_database_design_3_sheet_action_plan_per_user",
+      "target": "docs_database_design_3_sheet_settings",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L33",
+      "source_location": "L34",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
-      "source": "docs_database_design_3_sheet_action_plan_per_user",
+      "source": "docs_database_design_database_design_google_spreadsheet",
+      "target": "docs_database_design_4_sheet_action_plan_per_user",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DATABASE_DESIGN.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_database_design_4_sheet_action_plan_per_user",
       "target": "docs_database_design_kompatibilitas_data_existing",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L49",
+      "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "docs_database_design_database_design_google_spreadsheet",
-      "target": "docs_database_design_4_relasi_dan_isolasi_data",
+      "target": "docs_database_design_5_sheet_weekly_plans",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L56",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "docs_database_design_database_design_google_spreadsheet",
-      "target": "docs_database_design_5_validasi_integritas",
+      "target": "docs_database_design_6_relasi_dan_isolasi_data",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L65",
+      "source_location": "L89",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "docs_database_design_database_design_google_spreadsheet",
-      "target": "docs_database_design_6_operasi_akses_data",
+      "target": "docs_database_design_7_validasi_integritas",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L80",
+      "source_location": "L101",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "docs_database_design_database_design_google_spreadsheet",
-      "target": "docs_database_design_7_konsekuensi_google_sheets_sebagai_database",
+      "target": "docs_database_design_8_operasi_akses_data",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L91",
+      "source_location": "L116",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_database_design_database_design_google_spreadsheet",
+      "target": "docs_database_design_9_kebijakan_penghapusan",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DATABASE_DESIGN.md",
+      "source_location": "L129",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_database_design_database_design_google_spreadsheet",
+      "target": "docs_database_design_10_konsekuensi_google_sheets_sebagai_database",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DATABASE_DESIGN.md",
+      "source_location": "L138",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17099,6 +17287,56 @@
       "_origin": "ast"
     },
     {
+      "source": "docs_setup_setup_action_plan_management",
+      "target": "docs_setup_1_google_sheets_dan_admin_awal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SETUP.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_setup_setup_action_plan_management",
+      "target": "docs_setup_2_google_drive_untuk_lampiran",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SETUP.md",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_setup_setup_action_plan_management",
+      "target": "docs_setup_3_menjalankan_lokal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SETUP.md",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_setup_setup_action_plan_management",
+      "target": "docs_setup_4_deployment_vps",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SETUP.md",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_setup_setup_action_plan_management",
+      "target": "docs_setup_5_pemulihan_gangguan_umum",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SETUP.md",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "docs_system_architecture",
       "target": "docs_system_architecture_system_architecture_action_plan_management_system",
       "relation": "contains",
@@ -17124,7 +17362,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L25",
+      "source_location": "L29",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17134,7 +17372,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L27",
+      "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17144,7 +17382,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L35",
+      "source_location": "L39",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17154,7 +17392,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L43",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17164,7 +17402,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L53",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17174,7 +17412,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L62",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17184,7 +17422,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L72",
+      "source_location": "L76",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17194,7 +17432,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L74",
+      "source_location": "L78",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17204,7 +17442,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L85",
+      "source_location": "L89",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17214,7 +17452,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L96",
+      "source_location": "L100",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_system_architecture_4_alur_utama",
+      "target": "docs_system_architecture_weekly_plan_dan_lampiran",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SYSTEM_ARCHITECTURE.md",
+      "source_location": "L111",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17224,7 +17472,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L107",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17234,27 +17482,37 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L119",
+      "source_location": "L137",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "docs_system_architecture_system_architecture_action_plan_management_system",
-      "target": "docs_system_architecture_7_batasan_dan_evolusi",
+      "target": "docs_system_architecture_7_deployment",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L126",
+      "source_location": "L145",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "docs_system_architecture_system_architecture_action_plan_management_system",
-      "target": "docs_system_architecture_8_checklist_implementasi",
+      "target": "docs_system_architecture_8_batasan_dan_evolusi",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L130",
+      "source_location": "L153",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_system_architecture_system_architecture_action_plan_management_system",
+      "target": "docs_system_architecture_9_checklist_operasional",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SYSTEM_ARCHITECTURE.md",
+      "source_location": "L157",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17294,7 +17552,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L26",
+      "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17304,7 +17562,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L28",
+      "source_location": "L29",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17314,7 +17572,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L35",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_tech_stack_3_keputusan_implementasi_utama",
+      "target": "docs_tech_stack_google_drive",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/TECH_STACK.md",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17324,7 +17592,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L41",
+      "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17334,7 +17602,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L47",
+      "source_location": "L56",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17344,7 +17612,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L58",
+      "source_location": "L73",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17354,7 +17622,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L75",
+      "source_location": "L89",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -17364,7 +17632,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L84",
+      "source_location": "L98",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -20686,7 +20954,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -20698,43 +20966,43 @@
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
-      "source": "docs_database_design_4_relasi_dan_isolasi_data",
+      "source": "docs_database_design_6_relasi_dan_isolasi_data",
       "target": "src_presentation_components_icons_users",
       "relation": "references",
       "context": "Users",
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L63",
+      "source_location": "L99",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
-      "source": "docs_database_design_5_validasi_integritas",
+      "source": "docs_database_design_7_validasi_integritas",
       "target": "tests_unit_use_cases_test_user",
       "relation": "references",
       "context": "user",
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L71",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
-      "source": "docs_database_design_6_operasi_akses_data",
+      "source": "docs_database_design_8_operasi_akses_data",
       "target": "src_presentation_components_icons_users",
       "relation": "references",
       "context": "Users",
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/DATABASE_DESIGN.md",
-      "source_location": "L84",
+      "source_location": "L120",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -20763,26 +21031,26 @@
       "_origin": "ast"
     },
     {
-      "source": "docs_setup_setup_action_plan_management",
+      "source": "docs_setup_1_google_sheets_dan_admin_awal",
       "target": "src_presentation_components_icons_users",
       "relation": "references",
       "context": "Users",
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/SETUP.md",
-      "source_location": "L5",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "docs_system_architecture_domain",
-      "target": "src_domain_models_userrole",
+      "target": "src_domain_models_weeklyplan",
       "relation": "references",
-      "context": "UserRole",
+      "context": "WeeklyPlan",
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L32",
+      "source_location": "L35",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -20794,7 +21062,19 @@
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L32",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_system_architecture_domain",
+      "target": "src_domain_models_userrole",
+      "relation": "references",
+      "context": "UserRole",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docs/SYSTEM_ARCHITECTURE.md",
+      "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -20806,7 +21086,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L40",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -20818,7 +21098,43 @@
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L40",
+      "source_location": "L44",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_system_architecture_application",
+      "target": "src_application_ports_weeklyplanrepository",
+      "relation": "references",
+      "context": "WeeklyPlanRepository",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docs/SYSTEM_ARCHITECTURE.md",
+      "source_location": "L44",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_system_architecture_application",
+      "target": "src_application_ports_statusrepository",
+      "relation": "references",
+      "context": "StatusRepository",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docs/SYSTEM_ARCHITECTURE.md",
+      "source_location": "L44",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_system_architecture_application",
+      "target": "src_application_ports_attachmentstorage",
+      "relation": "references",
+      "context": "AttachmentStorage",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docs/SYSTEM_ARCHITECTURE.md",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -20830,7 +21146,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L47",
+      "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -20842,7 +21158,19 @@
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/SYSTEM_ARCHITECTURE.md",
-      "source_location": "L48",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_system_architecture_6_penanganan_kegagalan",
+      "target": "src_presentation_components_icons_users",
+      "relation": "references",
+      "context": "Users",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docs/SYSTEM_ARCHITECTURE.md",
+      "source_location": "L143",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -20854,7 +21182,31 @@
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "docs/TECH_STACK.md",
-      "source_location": "L30",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_tech_stack_google_sheets",
+      "target": "src_presentation_components_icons_users",
+      "relation": "references",
+      "context": "Users",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docs/TECH_STACK.md",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "docs_tech_stack_4_environment_variables",
+      "target": "src_presentation_components_icons_users",
+      "relation": "references",
+      "context": "Users",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docs/TECH_STACK.md",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast"
     }
