@@ -150,9 +150,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/app-shell.tsx": {
-    "mtime": 1791343707.2473156,
-    "seen": 1791343755.1960444,
-    "ast_hash": "517b624a2f6de12e7fd77b8a4388c595",
+    "mtime": 1791258799.032714,
+    "seen": 1791259256.5276167,
+    "ast_hash": "81e4eb39899e0383a5568595814f4ff2",
     "semantic_hash": ""
   },
   "src/presentation/components/icons.tsx": {
@@ -258,9 +258,9 @@
     "semantic_hash": ""
   },
   "src/application/use-cases.ts": {
-    "mtime": 1791343212.6624026,
-    "seen": 1791343335.0504808,
-    "ast_hash": "4beeeb741d3b5f10df3e3a6fe9dfc68c",
+    "mtime": 1791260952.2080586,
+    "seen": 1791261358.6607337,
+    "ast_hash": "1137bee703ef0a1ec09c68295182c90c",
     "semantic_hash": ""
   },
   "src/auth.ts": {
@@ -330,9 +330,9 @@
     "semantic_hash": ""
   },
   "tests/unit/use-cases.test.ts": {
-    "mtime": 1791343212.665131,
-    "seen": 1791343335.0505354,
-    "ast_hash": "399216f43c264e5ebddfbc88bff4e8cb",
+    "mtime": 1791261292.4255753,
+    "seen": 1791261358.660779,
+    "ast_hash": "f6a6a966ad4b4ebc6dc5231156d507b0",
     "semantic_hash": ""
   },
   "vitest.config.ts": {
@@ -372,9 +372,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-dashboard-workspace.tsx": {
-    "mtime": 1791343707.2483168,
-    "seen": 1791343755.1960485,
-    "ast_hash": "9d5b3ece6af3dd37a2a35c848f4d69e1",
+    "mtime": 1791253495.7119927,
+    "seen": 1791253526.5748124,
+    "ast_hash": "2372301c5a0f7cbf37e455d3b9ac9c04",
     "semantic_hash": ""
   },
   "tests/unit/dashboard-analytics.test.ts": {
@@ -390,9 +390,9 @@
     "semantic_hash": ""
   },
   "src/app/(dashboard)/weekly-plans/page.tsx": {
-    "mtime": 1791343212.6631207,
-    "seen": 1791343335.0504372,
-    "ast_hash": "c9e497c04655f985012961b25f6a2dc9",
+    "mtime": 1791267311.943037,
+    "seen": 1791267565.8541057,
+    "ast_hash": "842aab99e8cef58c757bc0e300800f94",
     "semantic_hash": ""
   },
   "src/app/api/weekly-plans/route.ts": {
@@ -402,9 +402,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-weekly-plan-workspace.tsx": {
-    "mtime": 1791343212.6641345,
-    "seen": 1791343335.0505075,
-    "ast_hash": "1179a15c745217882ca5fe8c6d619187",
+    "mtime": 1791267311.9391193,
+    "seen": 1791267565.8542542,
+    "ast_hash": "a2f0fb20175ce662ce4bf5c09fd25740",
     "semantic_hash": ""
   },
   "src/app/api/action-plans/[recordId]/attachments/route.ts": {

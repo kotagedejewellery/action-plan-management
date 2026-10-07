@@ -75,7 +75,7 @@ export function AppShell({
   };
 
   const sidebar = (
-    <aside className="flex h-full w-72 flex-col border-r bg-white px-4 py-5">
+    <aside className="flex h-full w-60 flex-col border-r bg-white px-4 py-5 2xl:w-72">
       <div className="flex items-center justify-between px-2">
         <Link
           className="flex items-center gap-3 font-semibold tracking-tight text-[#173c3a]"
@@ -160,7 +160,7 @@ export function AppShell({
             </div>
           </div>
         )}
-        <div className="flex min-h-screen flex-1 flex-col lg:ml-72">
+        <div className="flex min-h-screen min-w-0 flex-1 flex-col lg:ml-60 2xl:ml-72">
           <header className="flex h-16 items-center justify-between border-b bg-white px-4 sm:px-7">
             <button
               className="grid size-10 place-items-center rounded-xl border bg-white text-[#32514f] lg:hidden"

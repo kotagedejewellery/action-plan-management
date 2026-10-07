@@ -96,6 +96,12 @@ export async function listOwnWeeklyPlans(repository: WeeklyPlanRepository, actor
   return (await repository.list()).filter((plan) => plan.userId === actor.id && !plan.deletedAt).sort((a, b) => b.weekStart.localeCompare(a.weekStart));
 }
 
+export async function listOwnArchivedWeeklyPlans(repository: WeeklyPlanRepository, actor: Actor): Promise<WeeklyPlan[]> {
+  requireActiveActor(actor);
+  if (actor.role !== "user") throw new AppError("Riwayat rencana mingguan hanya tersedia untuk User.", "FORBIDDEN");
+  return (await repository.list()).filter((plan) => plan.userId === actor.id && plan.deletedAt).sort((a, b) => (b.deletedAt ?? "").localeCompare(a.deletedAt ?? ""));
+}
+
 export async function createOwnWeeklyPlan(weeklyPlans: WeeklyPlanRepository, actionPlans: ActionPlanRepository, statuses: StatusRepository, actor: Actor, input: { title: string; weekStart: string; weekdays: number[]; morningStatus: string; note?: string }): Promise<{ weeklyPlan: WeeklyPlan; actionPlans: ActionPlan[] }> {
   requireActiveActor(actor);
   if (actor.role !== "user") throw new AppError("Rencana mingguan hanya dapat dibuat oleh User.", "FORBIDDEN");

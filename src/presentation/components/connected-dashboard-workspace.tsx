@@ -91,7 +91,7 @@ export function ConnectedDashboardWorkspace({
       />
       <p className="sr-only" role="status">Menampilkan {summary.total} Action Plan dari {displayShortDate(dateFrom)} sampai {displayShortDate(dateTo)}.</p>
 
-      <div className="mt-8 flex flex-col gap-4 border-y border-[#dce5e4] py-4 xl:flex-row xl:items-end xl:justify-between">
+      <div className="mt-8 flex flex-col gap-4 border-y border-[#dce5e4] py-4 min-[1440px]:flex-row min-[1440px]:items-end min-[1440px]:justify-between">
         <div
           className="flex flex-wrap gap-2"
           aria-label="Pilih periode Dashboard"
@@ -211,7 +211,7 @@ export function ConnectedDashboardWorkspace({
         <h2 id="summary-heading" className="sr-only">
           Ringkasan periode
         </h2>
-        <dl className="grid divide-y overflow-hidden rounded-2xl border bg-white shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)] sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+        <dl className="grid divide-y overflow-hidden rounded-2xl border bg-white shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)] sm:grid-cols-2 sm:divide-x sm:divide-y-0 xl:grid-cols-4">
           <Metric label="User aktif" value={summary.activeUsers} />
           <Metric label="Action Plan" value={summary.total} />
           <Metric label="Selesai" value={summary.completed} />
@@ -224,8 +224,8 @@ export function ConnectedDashboardWorkspace({
         {weeklySummary.length ? <div className="mt-5 divide-y rounded-xl border">{weeklySummary.map((plan) => <article key={plan.id} className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"><div className="min-w-0"><p className="font-semibold text-[#294846]">{plan.title}</p><p className="mt-1 text-sm text-[#748886]">{plan.ownerName} · {displayShortDate(plan.weekStart)} – {displayShortDate(plan.weekEnd)}</p></div><p className="shrink-0 text-sm font-semibold tabular-nums text-[#176d69]">{plan.completed} / {plan.total} selesai</p></article>)}</div> : <EmptyCopy text="Tidak ada rencana mingguan pada periode ini." />}
       </section>
 
-      <div className="mt-6 grid gap-6 xl:items-start xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-        <section className="rounded-2xl border bg-white p-5 shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)] sm:p-6 xl:self-start">
+      <div className="mt-6 grid gap-6 min-[1440px]:items-start min-[1440px]:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+        <section className="rounded-2xl border bg-white p-5 shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)] sm:p-6 min-[1440px]:self-start">
           <div>
             <h2 className="text-lg font-semibold text-[#244542]">
               Progres per User

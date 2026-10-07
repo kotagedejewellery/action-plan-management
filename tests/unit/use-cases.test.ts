@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import bcrypt from "bcryptjs";
 
 import { AppError } from "@/application/errors";
-import { addOwnActionPlanAttachments, authenticateUser, createOwnWeeklyPlan, createStatus, createUser, deleteOwnActionPlan, deleteOwnWeeklyPlan, listVisiblePlans, removeOwnActionPlanAttachment, requireAdmin, saveOwnActionPlan, updateOwnWeeklyPlan, updateStatus, updateUser } from "@/application/use-cases";
+import { addOwnActionPlanAttachments, authenticateUser, createOwnWeeklyPlan, createStatus, createUser, deleteOwnActionPlan, deleteOwnWeeklyPlan, listOwnArchivedWeeklyPlans, listOwnWeeklyPlans, listVisiblePlans, removeOwnActionPlanAttachment, requireAdmin, saveOwnActionPlan, updateOwnWeeklyPlan, updateStatus, updateUser } from "@/application/use-cases";
 import type { ActionPlanRepository, AttachmentStorage, StatusRepository, UserRepository, WeeklyPlanRepository } from "@/application/ports";
 import type { ActionPlan, User, WeeklyPlan } from "@/domain/models";
 
@@ -66,6 +66,15 @@ describe("access and account use cases", () => {
     expect(result.actionPlans.every((plan) => plan.weeklyPlanId === result.weeklyPlan.id)).toBe(true);
     expect(result.weeklyPlan.plannedActionPlanIds).toEqual(result.actionPlans.map((plan) => plan.id));
     expect(storedWeekly).toHaveLength(1);
+  });
+
+  it("lists archived weekly plans separately from active plans", async () => {
+    const active: WeeklyPlan = { id: "active", userId: "user-1", title: "Aktif", weekStart: "2026-10-05", weekEnd: "2026-10-11", plannedActionPlanIds: [], createdAt: "", updatedAt: "" };
+    const archived: WeeklyPlan = { id: "archived", userId: "user-1", title: "Arsip", weekStart: "2026-09-28", weekEnd: "2026-10-04", plannedActionPlanIds: [], deletedAt: "2026-10-05T10:00:00.000Z", createdAt: "", updatedAt: "" };
+    const repository: WeeklyPlanRepository = { list: async () => [active, archived], findById: async () => null, create: async (item) => item, update: async (item) => item, softDelete: async () => undefined, hardDelete: async () => undefined };
+    const actor = await user();
+    await expect(listOwnWeeklyPlans(repository, actor)).resolves.toEqual([active]);
+    await expect(listOwnArchivedWeeklyPlans(repository, actor)).resolves.toEqual([archived]);
   });
 
   it("prevents deleting an Action Plan that is part of a weekly plan", async () => {
