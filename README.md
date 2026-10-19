@@ -23,7 +23,7 @@ npx playwright install chromium
 npm run test:ui
 ```
 
-Test browser merender komponen dashboard dengan fixture sintetis melalui Vite dan memalsukan respons API lokal. Test ini tidak memerlukan credential Google dan tidak menguji login atau layanan Google nyata. GitHub Actions menjalankannya sebelum deploy.
+Test browser merender komponen dashboard dan Monitoring dengan fixture sintetis melalui Vite dan memalsukan respons API lokal. Test ini mencakup filter, perpindahan anggota, panel detail, keyboard/touch, dan responsif. Test tidak memerlukan credential Google dan tidak menguji login atau layanan Google nyata. GitHub Actions menjalankannya sebelum deploy.
 
 ## Dokumentasi
 

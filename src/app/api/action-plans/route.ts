@@ -5,6 +5,7 @@ import { actionPlanInputSchema } from "@/application/schemas";
 import { listVisiblePlans, saveOwnActionPlan, type ActionPlanScope } from "@/application/use-cases";
 import { actionPlans, statuses, users, weeklyPlans } from "@/infrastructure/container";
 import { currentActor } from "@/presentation/server/actor";
+import { bangkokDate } from "@/lib/bangkok-date";
 
 export async function GET(request: Request) {
   try {
@@ -14,7 +15,7 @@ export async function GET(request: Request) {
     const requestedScope = params.get("scope");
     const scope: ActionPlanScope = requestedScope === "active" || requestedScope === "history" ? requestedScope : actor.role === "user" ? "active" : "all";
     const target = targetId ? await users.findById(targetId) : actor.role === "user" ? await users.findById(actor.id) : null;
-    return NextResponse.json(await listVisiblePlans(actionPlans, statuses, actor, target, scope));
+    return NextResponse.json(await listVisiblePlans(actionPlans, statuses, actor, target, scope), { headers: { "x-workspace-date": bangkokDate(), "cache-control": "no-store" } });
   } catch (error) { return apiError(error); }
 }
 

@@ -1,0 +1,89 @@
+{
+  "passed": true,
+  "data": "synthetic",
+  "command": "npm run test:ui",
+  "harness": "Standalone Vite renders real Monitoring and AppShell components; responses are mocked locally, not a Next.js route integration",
+  "passedTests": 32,
+  "cases": [
+    "completion counts and tabs follow configured afternoon labels without more requests",
+    "today/week/month include scheduled future work and reset retains all dates",
+    "custom range rejects reversed dates and permits an open bound",
+    "pagination bounds visible records and note search resets page",
+    "member search supports full names and empty results",
+    "old-member rows hidden while loading and superseded response ignored",
+    "new-member failure retains no old-member rows and Retry loads correct member",
+    "same-member refresh failure retains prior records and Retry clears error",
+    "401 gives login/Admin recovery and hides records",
+    "403 gives login/Admin recovery and hides records",
+    "desktop modeless detail restores focus/scroll and preserves document restrictions",
+    "dashboard recordId and date range open contextual detail",
+    "empty team, empty member and filter mismatch have distinct recovery",
+    "mobile touch chooser/cards, full-screen detail and keyboard containment",
+    "responsive overflow at 360/768/1024/1280/1440/1919, captures and runtime errors"
+  ],
+  "screenshots": {
+    "desktop.png": "1440px, full page from top",
+    "user-1919.png": "1919px, full page from top",
+    "mobile.png": "390px, full page from top",
+    "desktop-detail.png": "1919x1038 viewport, right-side panel",
+    "mobile-detail.png": "390x844 viewport, full-screen panel",
+    "desktop-detail-1280.png": "1280x900 viewport, reserved panel space and horizontally scrollable table"
+  },
+  "detailImageState": "Unavailable image fixture demonstrates recovery; no live Google file request",
+  "runtimeErrors": [],
+  "finishReview": {
+    "scope": "Six approved Monitoring gap fixes",
+    "disposition": "ship",
+    "materialFixes": 0,
+    "capturesValidated": 6,
+    "reviewType": "Fresh full review of the bounded correction"
+  },
+  "detector": {
+    "primaryFindings": 0,
+    "advisories": 0,
+    "targets": [
+      "connected-monitoring-workspace.tsx",
+      "monitoring-detail-panel.tsx"
+    ]
+  },
+  "notVerified": [
+    "live authentication",
+    "Google integrations",
+    "production data",
+    "remote CI execution",
+    "Next.js navigation in Vite harness"
+  ],
+  "testFiles": [
+    "tests/browser/monitoring.spec.ts",
+    "tests/browser/monitoring-regressions.spec.ts"
+  ],
+  "suite": {
+    "unitTests": 31,
+    "browserTests": 45,
+    "monitoringBrowserTests": 32,
+    "dashboardBrowserTests": 13,
+    "lint": "passed",
+    "typecheck": "passed",
+    "productionBuild": "passed"
+  },
+  "regressionCases": [
+    "access denial remains through 503 and network failure until successful authorization",
+    "closing desktop detail returns focus to latest record",
+    "older dashboard deep link selects correct page and returns focus to its row",
+    "search/status/page/period changes close stale detail",
+    "desktop keyboard focus stays visible beside reserved panel space",
+    "desktop member selection returns focus to visible rail after detail closes",
+    "day/week/month presets advance after successful refresh",
+    "preset click after midnight uses current Bangkok date",
+    "server work date is authoritative on refresh and unfinished draft survives",
+    "custom period chosen during refresh survives",
+    "mobile chooser restores focus for same and changed member",
+    "mobile older deep link returns to matching card"
+  ],
+  "previousFinishReview": {
+    "initialDisposition": "fix",
+    "materialFinding": "Local placeholder and missing-state text contrast",
+    "verdictDisposition": "ship",
+    "fixVerdict": "resolved: #516967 on white, 5.89:1; same five captures validated"
+  }
+}

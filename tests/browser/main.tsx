@@ -3,6 +3,8 @@ import { dashboardFixture } from "./fixture";
 import { ConnectedDashboardWorkspace } from "@/presentation/components/connected-dashboard-workspace";
 import { AppShell } from "@/presentation/components/app-shell";
 import { FeedbackProvider } from "@/presentation/components/feedback";
+import { ConnectedMonitoringWorkspace } from "@/presentation/components/connected-monitoring-workspace";
+import { monitoringPlans, monitoringUsers } from "./monitoring-fixture";
 import "@/app/globals.css";
 
 const params = new URLSearchParams(window.location.search);
@@ -18,9 +20,9 @@ const data = {
 
 createRoot(document.getElementById("root")!).render(
   <FeedbackProvider>
-    <span className="fixed left-16 top-5 z-[80] text-[10px] text-[#59706f] lg:left-[460px]">Pengujian lokal · data sintetis</span>
+    <span className="fixed left-16 top-5 z-[80] text-[10px] text-[#59706f] lg:left-[580px]">Pengujian lokal · data sintetis</span>
     <AppShell actor={{ id: "admin", name: "Admin KotaGede", email: "admin@example.test", role: "admin", status: "active", sheetName: "" }} workspacePeriod="Oktober 2026">
-      <ConnectedDashboardWorkspace {...data} />
+      {window.location.pathname === "/monitoring" ? <ConnectedMonitoringWorkspace users={state === "no-users" ? [] : monitoringUsers} initialPlans={state === "empty" ? [] : monitoringPlans} initialSelectedId="u0" initialRecordId={params.get("recordId") ?? ""} initialDateFrom={params.get("from") ?? ""} initialDateTo={params.get("to") ?? ""} completedStatusLabels={["Selesai", "Final"]} today={params.get("today") ?? "2026-10-19"} /> : <ConnectedDashboardWorkspace {...data} />}
     </AppShell>
   </FeedbackProvider>,
 );

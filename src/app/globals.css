@@ -52,3 +52,18 @@ body {
   outline: 3px solid #79d3ca;
   outline-offset: 3px;
 }
+
+.monitoring-detail::backdrop {
+  background: rgb(23 60 58 / 30%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .monitoring-detail[open] {
+    animation: monitoring-panel-in 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes monitoring-panel-in {
+  from { transform: translateX(24px); }
+  to { transform: translateX(0); }
+}

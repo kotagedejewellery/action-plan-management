@@ -24,9 +24,9 @@
     "semantic_hash": ""
   },
   "docs/TECH_STACK.md": {
-    "mtime": 1792398468.3113496,
-    "seen": 1792398504.5044537,
-    "ast_hash": "0aa609697258c0827aafc8427542b918",
+    "mtime": 1792400866.8385706,
+    "seen": 1792401052.8761356,
+    "ast_hash": "b83f05ed5b4cca93b11dc04fbfa0d6f1",
     "semantic_hash": ""
   },
   "PRODUCT.md": {
@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1792397958.5731897,
-    "seen": 1792398504.5044322,
-    "ast_hash": "e0ac15edfc7ff4905456dac49ade7a74",
+    "mtime": 1792400823.5527692,
+    "seen": 1792401052.8761148,
+    "ast_hash": "590d05908ff2a3db4352b5c002a7a37b",
     "semantic_hash": ""
   },
   "public/file.svg": {
@@ -126,9 +126,9 @@
     "semantic_hash": ""
   },
   "src/app/(dashboard)/monitoring/page.tsx": {
-    "mtime": 1792397958.571178,
-    "seen": 1792398504.5042012,
-    "ast_hash": "bb967ace8d0b58023c260bbe05e47567",
+    "mtime": 1792400389.0999453,
+    "seen": 1792401052.875901,
+    "ast_hash": "f3fa7b2f1f2a9c7244af9a0b83faaf55",
     "semantic_hash": ""
   },
   "src/app/(dashboard)/users/page.tsx": {
@@ -210,9 +210,9 @@
     "semantic_hash": ""
   },
   "src/app/api/action-plans/route.ts": {
-    "mtime": 1791267311.9460585,
-    "seen": 1791267565.8541195,
-    "ast_hash": "198411e82d47226db6808c0b4381f87c",
+    "mtime": 1792402272.5046787,
+    "seen": 1792402840.098455,
+    "ast_hash": "af9b27197777a3f82ec026ffa2a4b408",
     "semantic_hash": ""
   },
   "src/app/api/auth/[...nextauth]/route.ts": {
@@ -300,9 +300,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-monitoring-workspace.tsx": {
-    "mtime": 1792397959.622821,
-    "seen": 1792398504.5043333,
-    "ast_hash": "add0e1e4d558bfe29a3f262a24863afe",
+    "mtime": 1792402574.0422585,
+    "seen": 1792402840.0986042,
+    "ast_hash": "bbb0503340f29ef5b4e84438c550469e",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-user-management-workspace.tsx": {
@@ -582,9 +582,9 @@
     "semantic_hash": ""
   },
   "tests/browser/main.tsx": {
-    "mtime": 1792397797.2990746,
-    "seen": 1792398504.504387,
-    "ast_hash": "8ebe66794bdbf32f9d42a78159ff84b7",
+    "mtime": 1792402273.5754347,
+    "seen": 1792402840.098665,
+    "ast_hash": "af68dbec383dbdd5aad668837c44b3b5",
     "semantic_hash": ""
   },
   "tests/browser/vite.config.ts": {
@@ -603,6 +603,84 @@
     "mtime": 1792397797.2980742,
     "seen": 1792398504.5044563,
     "ast_hash": "1d38d94a1c27e5e7e9688d692af306de",
+    "semantic_hash": ""
+  },
+  ".impeccable/review/monitoring/browser-checks.json": {
+    "mtime": 1792402778.0316422,
+    "seen": 1792402840.0983813,
+    "ast_hash": "e64a3765a892046d26c52c30e0404c6e",
+    "semantic_hash": ""
+  },
+  "src/presentation/components/monitoring-detail-panel.tsx": {
+    "mtime": 1792402272.4981258,
+    "seen": 1792402840.0986276,
+    "ast_hash": "cf5c657ac688c9368beb67bf08f48100",
+    "semantic_hash": ""
+  },
+  "tests/browser/monitoring-fixture.ts": {
+    "mtime": 1792400529.983237,
+    "seen": 1792401052.876067,
+    "ast_hash": "9454f927738fae6c48a92c1c89b52b39",
+    "semantic_hash": ""
+  },
+  "tests/browser/monitoring.spec.ts": {
+    "mtime": 1792402506.6475778,
+    "seen": 1792402840.098675,
+    "ast_hash": "e939b662865e23e0faa5f6cea32b5919",
+    "semantic_hash": ""
+  },
+  ".impeccable/surfaces/monitoring.md": {
+    "mtime": 1792402802.0782788,
+    "seen": 1792402840.0987132,
+    "ast_hash": "ad27b8be37feb7a7d80dced403ef905d",
+    "semantic_hash": ""
+  },
+  ".impeccable/review/monitoring/desktop-detail.png": {
+    "mtime": 1792402588.417618,
+    "seen": 1792402840.0987697,
+    "ast_hash": "d3d89a81c599dca9ecd8421ff9f5940c",
+    "semantic_hash": ""
+  },
+  ".impeccable/review/monitoring/desktop.png": {
+    "mtime": 1792402587.914302,
+    "seen": 1792402840.0987728,
+    "ast_hash": "8d969a9cb2e771e7ce74399b0412b759",
+    "semantic_hash": ""
+  },
+  ".impeccable/review/monitoring/mobile-detail.png": {
+    "mtime": 1792402588.7782009,
+    "seen": 1792402840.0987759,
+    "ast_hash": "b2603918042731e28cc519f2218e52ac",
+    "semantic_hash": ""
+  },
+  ".impeccable/review/monitoring/mobile.png": {
+    "mtime": 1792402588.6599712,
+    "seen": 1792402840.098779,
+    "ast_hash": "7a7a7217f7e399b7c48406e646f9183a",
+    "semantic_hash": ""
+  },
+  ".impeccable/review/monitoring/user-1919.png": {
+    "mtime": 1792402588.132631,
+    "seen": 1792402840.098782,
+    "ast_hash": "1ee16edc2a133490e8ae9b87e52b091b",
+    "semantic_hash": ""
+  },
+  "tests/browser/monitoring-regressions.spec.ts": {
+    "mtime": 1792402369.8678026,
+    "seen": 1792402840.0986717,
+    "ast_hash": "a8cfe8898dbac8545d13aebd47d39934",
+    "semantic_hash": ""
+  },
+  "tests/unit/action-plans-date.test.ts": {
+    "mtime": 1792402195.658543,
+    "seen": 1792402840.0986814,
+    "ast_hash": "faf3500486cbffa9b6075a3e535828c7",
+    "semantic_hash": ""
+  },
+  ".impeccable/review/monitoring/desktop-detail-1280.png": {
+    "mtime": 1792402589.248953,
+    "seen": 1792402840.0987659,
+    "ast_hash": "01c2e8eb57d27d2453711ebdeb0aa931",
     "semantic_hash": ""
   }
 }
