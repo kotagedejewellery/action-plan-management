@@ -1,6 +1,21 @@
 import { describe, expect, it } from "vitest";
 
-import { actionPlanInputSchema } from "@/application/schemas";
+import { actionPlanInputSchema, dashboardPeriodInputSchema } from "@/application/schemas";
+
+describe("dashboard period", () => {
+  it.each([
+    { from: "", to: "2026-10-19" },
+    { from: "2026-02-30", to: "2026-03-01" },
+    { from: "2026-10-19", to: "" },
+    { from: "2026-10-19", to: "2026-10-01" },
+  ])("rejects incomplete, invalid or reversed ranges", (period) => {
+    expect(dashboardPeriodInputSchema.safeParse(period).success).toBe(false);
+  });
+
+  it("accepts a single calendar day", () => {
+    expect(dashboardPeriodInputSchema.parse({ from: "2026-10-19", to: "2026-10-19" })).toEqual({ from: "2026-10-19", to: "2026-10-19" });
+  });
+});
 
 describe("actionPlanInputSchema", () => {
   it("treats the browser's absent weekly-plan field value as unlinked", () => {

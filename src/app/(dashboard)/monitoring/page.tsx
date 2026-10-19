@@ -13,6 +13,7 @@ export default async function MonitoringPage({ searchParams }: { searchParams: P
   const userList = (await users.list()).filter((user) => user.role === "user");
   const selectedUser = userList.find((user) => user.id === params.userId) ?? userList[0];
   const plans = selectedUser ? await listVisiblePlans(actionPlans, statuses, actor, selectedUser, "all") : [];
+  const completedStatusLabels = (await statuses.list()).filter((status) => status.isCompleted).map((status) => status.label);
   const date = (value?: string) => /^\d{4}-\d{2}-\d{2}$/.test(value ?? "") ? value ?? "" : "";
-  return <ConnectedMonitoringWorkspace users={userList.map(toSafeUser)} initialPlans={plans} initialSelectedId={selectedUser?.id ?? ""} initialRecordId={plans.some((plan) => plan.id === params.recordId) ? params.recordId ?? "" : ""} initialDateFrom={date(params.from)} initialDateTo={date(params.to)} />;
+  return <ConnectedMonitoringWorkspace users={userList.map(toSafeUser)} initialPlans={plans} initialSelectedId={selectedUser?.id ?? ""} initialRecordId={plans.some((plan) => plan.id === params.recordId) ? params.recordId ?? "" : ""} initialDateFrom={date(params.from)} initialDateTo={date(params.to)} completedStatusLabels={completedStatusLabels} />;
 }

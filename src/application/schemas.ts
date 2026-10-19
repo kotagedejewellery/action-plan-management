@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+export const dashboardPeriodInputSchema = z.object({
+  from: z.string().date("Isi tanggal mulai yang valid."),
+  to: z.string().date("Isi tanggal akhir yang valid."),
+}).refine((period) => period.from <= period.to, {
+  message: "Tanggal akhir harus sama dengan atau setelah tanggal mulai.",
+  path: ["to"],
+});
+
 export const userInputSchema = z.object({
   name: z.string().trim().min(2, "Nama minimal 2 karakter."),
   email: z.string().trim().email("Email tidak valid."),

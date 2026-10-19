@@ -1,164 +1,234 @@
-# Graph Report - action-plan-management  (2026-10-06)
+# Graph Report - action-plan-management  (2026-10-19)
 
 ## Corpus Check
-- 73 files · ~26,845 words
+- 91 files · ~43,901 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 3 file(s) not represented in the graph (top: (none) 1, .ico 1, .css 1)
+- Unclassified: 5 file(s) not represented in the graph (top: (none) 3, .ico 1, .css 1)
 
 ## Summary
-- 523 nodes · 1333 edges · 23 communities (18 shown, 5 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 55 edges (avg confidence: 0.86)
+- 621 nodes · 1625 edges · 39 communities (32 shown, 7 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 73 edges (avg confidence: 0.87)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `bb25ec7f`
+- Built from commit: `81cf7f8e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- icons.tsx
 - use-cases.ts
 - repositories.ts
-- Product Requirements Document — Action Plan Management System
-- attachments.ts
-- vitest
-- Design System: Action Plan Management System
-- compilerOptions
-- System Architecture — Action Plan Management System
-- package.json
-- devDependencies
-- app/layout.tsx
-- dependencies
-- scripts
-- next-auth.d.ts
-- (dashboard)/layout.tsx
-- eslint.config.mjs
-- README.md
-- Aturan Kerja Proyek
-- postcss.config.mjs
+- connected-dashboard-workspace.tsx
+- connected-user-management-workspace.tsx
 - models.ts
+- (dashboard)/layout.tsx
+- Design System: Action Plan Management System
+- connected-weekly-plan-workspace.tsx
+- compilerOptions
+- Users
+- workspace-ui.tsx
+- useFeedback
+- connected-action-plan-workspace.tsx
+- icons.tsx
+- System Architecture — Action Plan Management System
+- Tech Stack — Action Plan Management System
+- package.json
+- connected-monitoring-workspace.tsx
+- PROJECT_BRIEF.md
+- Product Requirements Document — Action Plan Management System
+- Dashboard Tim
+- Product
+- attachments.ts
+- devDependencies
+- Brief Proyek Action Plan Management
+- dependencies
+- Setup Action Plan Management
+- next-auth.d.ts
+- bootstrap-admin.mjs
+- AGENTS.md
+- scripts
+- postcss.config.mjs
+- eslint.config.mjs
 - { GET, POST }
+- vite
+- next.config.ts
 
 ## God Nodes (most connected - your core abstractions)
-1. `currentActor()` - 48 edges
+1. `currentActor()` - 53 edges
 2. `AppError` - 37 edges
-3. `next` - 27 edges
-4. `requireAdmin()` - 21 edges
-5. `ConnectedActionPlanWorkspace()` - 20 edges
-6. `Icon()` - 18 edges
-7. `listVisiblePlans()` - 17 edges
-8. `ActionPlan` - 17 edges
-9. `PageHeading()` - 17 edges
-10. `useFeedback()` - 16 edges
+3. `apiError()` - 34 edges
+4. `next` - 31 edges
+5. `requireAdmin()` - 25 edges
+6. `ConnectedDashboardWorkspace()` - 21 edges
+7. `ConnectedActionPlanWorkspace()` - 20 edges
+8. `useFeedback()` - 18 edges
+9. `Icon()` - 18 edges
+10. `react` - 17 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Domain` --references--> `ActionPlanStatus`  [INFERRED]
-  docs/SYSTEM_ARCHITECTURE.md → src/domain/models.ts
-- `1. Model penyimpanan` --references--> `Users()`  [INFERRED]
-  docs/DATABASE_DESIGN.md → src/presentation/components/icons.tsx
-- `4. Relasi dan isolasi data` --references--> `Users()`  [INFERRED]
-  docs/DATABASE_DESIGN.md → src/presentation/components/icons.tsx
-- `6. Operasi akses data` --references--> `Users()`  [INFERRED]
-  docs/DATABASE_DESIGN.md → src/presentation/components/icons.tsx
+- `Perlindungan data dan penyimpanan` --references--> `Users()`  [INFERRED]
+  AGENTS.md → src/presentation/components/icons.tsx
 - `6. Halaman dan navigasi` --references--> `Users()`  [INFERRED]
   docs/PRD.md → src/presentation/components/icons.tsx
+- `Kebutuhan operasional` --references--> `Users()`  [INFERRED]
+  docs/PROJECT_BRIEF.md → src/presentation/components/icons.tsx
+- `Penyimpanan dan integrasi menurut dokumentasi` --references--> `Users()`  [INFERRED]
+  docs/PROJECT_BRIEF.md → src/presentation/components/icons.tsx
+- `1. Google Sheets dan Admin awal` --references--> `Users()`  [INFERRED]
+  docs/SETUP.md → src/presentation/components/icons.tsx
 
 ## Import Cycles
 - None detected.
 
-## Communities (23 total, 5 thin omitted)
+## Communities (39 total, 7 thin omitted)
 
-### Community 0 - "icons.tsx"
-Cohesion: 0.05
-Nodes (80): react, LoginPage(), ActionPlanWorkspace(), Field(), PlanForm(), statusOptions, AppShell(), baseNavigation (+72 more)
-
-### Community 1 - "use-cases.ts"
+### Community 0 - "use-cases.ts"
 Cohesion: 0.09
-Nodes (63): nextConfig, next, zod, DELETE(), GET(), acceptedTypes, POST(), DELETE() (+55 more)
+Nodes (73): next, DELETE(), GET(), acceptedTypes, POST(), DELETE(), PATCH(), GET() (+65 more)
 
-### Community 2 - "repositories.ts"
+### Community 1 - "repositories.ts"
+Cohesion: 0.10
+Nodes (29): required(), sheetsClient(), spreadsheetId(), append(), appendMany(), CachedRead, clearReadCache(), deleteRow() (+21 more)
+
+### Community 2 - "connected-dashboard-workspace.tsx"
 Cohesion: 0.06
-Nodes (38): 2. Clean Architecture, Application, Infrastructure, Presentation, ActionPlanRepository, AttachmentStorage, StatusRepository, UserRepository (+30 more)
+Nodes (41): ref_node_path, @playwright/test, react-dom, vitest, src_app_globals, metadata, RootLayout(), calendarDates() (+33 more)
 
-### Community 3 - "Product Requirements Document — Action Plan Management System"
-Cohesion: 0.05
-Nodes (43): 1. Model penyimpanan, 2. Sheet `Users`, 3. Sheet Action Plan per User, 4. Relasi dan isolasi data, 5. Validasi integritas, 6. Operasi akses data, 7. Konsekuensi Google Sheets sebagai database, Database Design — Google Spreadsheet (+35 more)
+### Community 3 - "connected-user-management-workspace.tsx"
+Cohesion: 0.15
+Nodes (18): ActionPlanWorkspace(), ConnectedUserManagementWorkspace(), StatusEditor(), StatusForm(), StatusInput, UserField(), UserForm(), persist() (+10 more)
 
-### Community 4 - "attachments.ts"
-Cohesion: 0.12
-Nodes (19): bcryptjs, googleapis, ref_next_env, ref_node_crypto, ref_node_stream, sheets, spreadsheetId, timestamp (+11 more)
+### Community 4 - "models.ts"
+Cohesion: 0.08
+Nodes (19): 2. Clean Architecture, Application, Domain, Infrastructure, Presentation, ActionPlanRepository, StatusRepository, UserRepository (+11 more)
+
+### Community 5 - "(dashboard)/layout.tsx"
+Cohesion: 0.36
+Nodes (6): DashboardError(), DashboardLayout(), errorStatus(), publicError(), DataUnavailable(), DataUnavailableProps
 
 ### Community 6 - "Design System: Action Plan Management System"
 Cohesion: 0.09
 Nodes (22): Buttons, Cards / Containers, Colors, Components, Design System: Action Plan Management System, Dialogs, Do:, Do's and Don'ts (+14 more)
 
-### Community 7 - "compilerOptions"
+### Community 7 - "connected-weekly-plan-workspace.tsx"
+Cohesion: 0.20
+Nodes (11): ConnectedWeeklyPlanWorkspace(), currentWeek(), displayDate(), Field(), mondayThisWeek(), WeeklyPlanEditForm(), WeeklyPlanForm(), WeeklyStats (+3 more)
+
+### Community 8 - "compilerOptions"
 Cohesion: 0.11
 Nodes (18): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+10 more)
 
-### Community 8 - "System Architecture — Action Plan Management System"
-Cohesion: 0.17
-Nodes (11): 1. Ringkasan, 3. Aturan dependensi, 4. Alur utama, 5. Security boundary, 6. Penanganan kegagalan, 7. Batasan dan evolusi, 8. Checklist implementasi, Admin monitoring (+3 more)
+### Community 9 - "Users"
+Cohesion: 0.16
+Nodes (16): 10. Konsekuensi Google Sheets sebagai database, 1. Model penyimpanan, 2. Sheet `Users`, 3. Sheet `Settings`, 4. Sheet Action Plan per User, 5. Sheet `Weekly Plans`, 6. Relasi dan isolasi data, 7. Validasi integritas (+8 more)
 
-### Community 9 - "package.json"
-Cohesion: 0.17
-Nodes (11): name, private, version, lucide-react, react-dom, tailwindcss, @tailwindcss/postcss, @types/node (+3 more)
+### Community 10 - "workspace-ui.tsx"
+Cohesion: 0.19
+Nodes (14): react, Field(), PlanForm(), statusOptions, ExternalLink(), MonitoringWorkspace(), focusableElements(), StatusBadge() (+6 more)
 
-### Community 10 - "devDependencies"
+### Community 11 - "useFeedback"
+Cohesion: 0.19
+Nodes (11): next-auth, LoginPage(), Feedback, FeedbackContext, FeedbackContextValue, FeedbackType, styles, useFeedback() (+3 more)
+
+### Community 12 - "connected-action-plan-workspace.tsx"
+Cohesion: 0.18
+Nodes (11): bangkokDate(), acceptedAttachmentTypes, ConnectedActionPlanWorkspace(), displayDate(), Draft, Field(), getWeekBounds(), PlanForm() (+3 more)
+
+### Community 13 - "icons.tsx"
+Cohesion: 0.35
+Nodes (12): AppShell(), baseNavigation, Calendar(), Chart(), ChevronDown(), Close(), Grid(), History() (+4 more)
+
+### Community 14 - "System Architecture — Action Plan Management System"
+Cohesion: 0.15
+Nodes (13): 1. Ringkasan, 3. Aturan dependensi, 4. Alur utama, 5. Security boundary, 6. Penanganan kegagalan, 7. Deployment, 8. Batasan dan evolusi, 9. Checklist operasional (+5 more)
+
+### Community 15 - "Tech Stack — Action Plan Management System"
+Cohesion: 0.17
+Nodes (12): 1. Prinsip pemilihan, 2. Stack yang digunakan, 3. Keputusan implementasi utama, 4. Environment variables, 5. Struktur kode yang disarankan, 6. Standar clean code, 7. Quality gate minimal, Antarmuka (+4 more)
+
+### Community 16 - "package.json"
+Cohesion: 0.17
+Nodes (11): name, private, version, lucide-react, tailwindcss, @tailwindcss/postcss, @types/node, @types/react (+3 more)
+
+### Community 17 - "connected-monitoring-workspace.tsx"
+Cohesion: 0.39
+Nodes (7): ConnectedMonitoringWorkspace(), loadPlans(), selectScope(), selectUser(), displayDate(), displayTimestamp(), Scope
+
+### Community 18 - "PROJECT_BRIEF.md"
+Cohesion: 0.29
+Nodes (4): Action Plan Management, Dokumentasi, Menjalankan lokal, Pemeriksaan
+
+### Community 19 - "Product Requirements Document — Action Plan Management System"
 Cohesion: 0.20
-Nodes (10): devDependencies, eslint, eslint-config-next, tailwindcss, @tailwindcss/postcss, @types/node, @types/react, @types/react-dom (+2 more)
+Nodes (9): 1. Ringkasan produk, 2. Tujuan, 3. Peran dan hak akses, 5. Data Action Plan, 6. Halaman dan navigasi, 7. Kebutuhan nonfungsional, 8. Ruang lingkup, 9. Kriteria penerimaan (+1 more)
 
-### Community 11 - "app/layout.tsx"
+### Community 20 - "Dashboard Tim"
 Cohesion: 0.50
-Nodes (4): src_app_globals, metadata, RootLayout(), FeedbackProvider()
+Nodes (3): Dashboard Tim, Direction contract, Shipped outcome and proof
 
-### Community 12 - "dependencies"
+### Community 21 - "Product"
+Cohesion: 0.20
+Nodes (9): Evidence on Hand, Operating Context, Platform, Positioning, Product, Product Principles, Product Purpose, Stack (+1 more)
+
+### Community 23 - "attachments.ts"
+Cohesion: 0.17
+Nodes (11): ref_node_stream, AttachmentStorage, ActionPlanAttachment, driveQueryValue(), GoogleDriveAttachmentStorage, safeFileName(), safeFolderName(), driveFolderId() (+3 more)
+
+### Community 24 - "devDependencies"
+Cohesion: 0.17
+Nodes (12): devDependencies, eslint, eslint-config-next, @playwright/test, tailwindcss, @tailwindcss/postcss, @types/node, @types/react (+4 more)
+
+### Community 25 - "Brief Proyek Action Plan Management"
+Cohesion: 0.29
+Nodes (7): Alur dan aturan yang sudah diverifikasi pada implementasi, Arsitektur dan teknologi, Batas pemahaman dan risiko utama, Brief Proyek Action Plan Management, Kebutuhan operasional, Penyimpanan dan integrasi menurut dokumentasi, Tujuan dan pengguna
+
+### Community 26 - "dependencies"
 Cohesion: 0.22
 Nodes (9): dependencies, bcryptjs, googleapis, lucide-react, next, next-auth, react, react-dom (+1 more)
 
-### Community 13 - "scripts"
-Cohesion: 0.29
-Nodes (7): scripts, bootstrap:admin, build, dev, lint, start, test
+### Community 27 - "Setup Action Plan Management"
+Cohesion: 0.33
+Nodes (6): 1. Google Sheets dan Admin awal, 2. Google Drive untuk lampiran, 3. Menjalankan lokal, 4. Deployment VPS, 5. Pemulihan gangguan umum, Setup Action Plan Management
 
-### Community 14 - "next-auth.d.ts"
-Cohesion: 0.29
-Nodes (6): next-auth, JWT, next-auth, next-auth/jwt, Session, User
+### Community 28 - "next-auth.d.ts"
+Cohesion: 0.33
+Nodes (5): JWT, next-auth, next-auth/jwt, Session, User
 
-### Community 15 - "(dashboard)/layout.tsx"
-Cohesion: 0.48
-Nodes (4): DashboardError(), DashboardLayout(), DataUnavailable(), DataUnavailableProps
+### Community 29 - "bootstrap-admin.mjs"
+Cohesion: 0.22
+Nodes (7): bcryptjs, googleapis, ref_next_env, ref_node_crypto, sheets, spreadsheetId, timestamp
 
-### Community 16 - "eslint.config.mjs"
+### Community 30 - "AGENTS.md"
+Cohesion: 0.25
+Nodes (7): Batas perubahan, Klarifikasi dan konteks proyek, Perbaikan bug, Perlindungan data dan penyimpanan, Prinsip akhir, Urutan kerja, Validasi dan performa
+
+### Community 31 - "scripts"
+Cohesion: 0.25
+Nodes (8): scripts, bootstrap:admin, build, dev, lint, start, test, test:ui
+
+### Community 33 - "eslint.config.mjs"
 Cohesion: 0.50
 Nodes (3): eslintConfig, eslint, eslint-config-next
 
-### Community 17 - "README.md"
-Cohesion: 0.50
-Nodes (3): Deploy on Vercel, Getting Started, Learn More
-
-### Community 22 - "models.ts"
-Cohesion: 0.11
-Nodes (23): Domain, calendarDates(), DashboardPlan, DashboardSummary, summarizeDashboard(), UserSummary, handlers, signIn (+15 more)
-
 ## Knowledge Gaps
-- **146 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+141 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 188 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **182 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+177 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 228 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `next` connect `use-cases.ts` to `icons.tsx`, `attachments.ts`, `package.json`, `app/layout.tsx`, `(dashboard)/layout.tsx`, `models.ts`?**
-  _High betweenness centrality (0.093) - this node is a cross-community bridge._
-- **Why does `Users()` connect `Product Requirements Document — Action Plan Management System` to `icons.tsx`?**
-  _High betweenness centrality (0.086) - this node is a cross-community bridge._
-- **Why does `user()` connect `Product Requirements Document — Action Plan Management System` to `use-cases.ts`?**
-  _High betweenness centrality (0.068) - this node is a cross-community bridge._
+- **Why does `Users()` connect `Users` to `icons.tsx`, `System Architecture — Action Plan Management System`, `Tech Stack — Action Plan Management System`, `Product Requirements Document — Action Plan Management System`, `Brief Proyek Action Plan Management`, `Setup Action Plan Management`, `AGENTS.md`?**
+  _High betweenness centrality (0.156) - this node is a cross-community bridge._
+- **Why does `next` connect `use-cases.ts` to `connected-dashboard-workspace.tsx`, `(dashboard)/layout.tsx`, `next.config.ts`, `health/route.ts`, `connected-weekly-plan-workspace.tsx`, `useFeedback`, `icons.tsx`, `package.json`, `connected-monitoring-workspace.tsx`?**
+  _High betweenness centrality (0.094) - this node is a cross-community bridge._
+- **Why does `user()` connect `Users` to `use-cases.ts`?**
+  _High betweenness centrality (0.062) - this node is a cross-community bridge._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**
-  _146 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `icons.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.051597051597051594 - nodes in this community are weakly interconnected._
+  _182 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `use-cases.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.09125656951743909 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08679245283018867 - nodes in this community are weakly interconnected._
 - **Should `repositories.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.05612694681163679 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09610389610389611 - nodes in this community are weakly interconnected._
+- **Should `connected-dashboard-workspace.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.0593990216631726 - nodes in this community are weakly interconnected._

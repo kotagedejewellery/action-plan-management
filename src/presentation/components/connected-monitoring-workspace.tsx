@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
@@ -37,6 +37,7 @@ export function ConnectedMonitoringWorkspace({
   initialRecordId,
   initialDateFrom,
   initialDateTo,
+  completedStatusLabels,
 }: {
   users: SafeUser[];
   initialPlans: ActionPlan[];
@@ -44,6 +45,7 @@ export function ConnectedMonitoringWorkspace({
   initialRecordId: string;
   initialDateFrom: string;
   initialDateTo: string;
+  completedStatusLabels: string[];
 }) {
   const { notify } = useFeedback();
   const [selectedId, setSelectedId] = useState(initialSelectedId || users[0]?.id || "");
@@ -299,10 +301,10 @@ export function ConnectedMonitoringWorkspace({
                           )}
                         </td>
                         <td className="px-5 py-4">
-                          <StatusBadge status={plan.morningStatus} />
+                          <StatusBadge completedStatusLabels={completedStatusLabels} status={plan.morningStatus} />
                         </td>
                         <td className="px-5 py-4">
-                          <StatusBadge status={plan.afternoonStatus} />
+                          <StatusBadge completedStatusLabels={completedStatusLabels} status={plan.afternoonStatus} />
                         </td>
                         <td className="px-5 py-4">
                           {plan.resultLink ? (
@@ -344,8 +346,8 @@ export function ConnectedMonitoringWorkspace({
                       </div>
                     </div>
                     <div className="mt-4 flex flex-wrap gap-2">
-                      <StatusBadge status={plan.morningStatus} />
-                      <StatusBadge status={plan.afternoonStatus} />
+                      <StatusBadge completedStatusLabels={completedStatusLabels} status={plan.morningStatus} />
+                      <StatusBadge completedStatusLabels={completedStatusLabels} status={plan.afternoonStatus} />
                     </div>
                     {plan.note && (
                       <p className="mt-3 text-sm leading-6 text-[#748886]">
@@ -376,8 +378,8 @@ export function ConnectedMonitoringWorkspace({
                     <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-[#516967]">{selectedPlan.task}</p>
                   </section>
                   <dl className="grid gap-4 border-y border-[#dce5e4] py-4 sm:grid-cols-2">
-                    <div><dt className="text-xs font-semibold tracking-[0.04em] text-[#718583]">STATUS PAGI</dt><dd className="mt-2"><StatusBadge status={selectedPlan.morningStatus} /></dd></div>
-                    <div><dt className="text-xs font-semibold tracking-[0.04em] text-[#718583]">STATUS SORE</dt><dd className="mt-2"><StatusBadge status={selectedPlan.afternoonStatus} /></dd></div>
+                    <div><dt className="text-xs font-semibold tracking-[0.04em] text-[#718583]">STATUS PAGI</dt><dd className="mt-2"><StatusBadge completedStatusLabels={completedStatusLabels} status={selectedPlan.morningStatus} /></dd></div>
+                    <div><dt className="text-xs font-semibold tracking-[0.04em] text-[#718583]">STATUS SORE</dt><dd className="mt-2"><StatusBadge completedStatusLabels={completedStatusLabels} status={selectedPlan.afternoonStatus} /></dd></div>
                   </dl>
                   {selectedPlan.note && <section><h3 className="text-sm font-semibold text-[#294846]">Catatan</h3><p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-[#667c7c]">{selectedPlan.note}</p></section>}
                   {selectedPlan.resultLink && <section><h3 className="text-sm font-semibold text-[#294846]">Link hasil</h3><a href={selectedPlan.resultLink} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[#137d79] hover:underline">Buka hasil <ExternalLink className="size-3.5" /></a></section>}

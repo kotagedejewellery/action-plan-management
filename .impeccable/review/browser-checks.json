@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "data": "synthetic",
+  "command": "npm run test:ui",
+  "testFile": "tests/browser/dashboard.spec.ts",
+  "harness": "Vite renders the real dashboard and AppShell components; API responses are mocked locally",
+  "passedTests": 13,
+  "cases": [
+    "month preset advances after refresh across month boundary",
+    "week preset advances after refresh across week boundary",
+    "custom period chosen during refresh survives",
+    "401 offers sign-in and Admin guidance while retaining results",
+    "403 offers sign-in and Admin guidance while retaining results",
+    "temporary failure retains results and Retry succeeds",
+    "custom completed status is green in KPI details",
+    "mobile chart targets are at least 24px and support keyboard/touch",
+    "unfinished date draft survives preset rollover",
+    "member/weekly details, bounded lists and Monitoring context",
+    "invalid/reversed date drafts retain applied results",
+    "empty data differs from all completed work",
+    "desktop/mobile screenshots, responsive overflow and runtime errors"
+  ],
+  "runtimeErrors": [],
+  "notVerified": ["live authentication", "Google integrations", "production data", "remote CI run"]
+}

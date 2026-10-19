@@ -17,7 +17,7 @@ Stack ini sengaja ringkas: satu aplikasi Next.js yang menangani UI dan server-si
 | Password | bcryptjs | Hash serta verifikasi password. |
 | Integrasi data | Google Sheets API (`googleapis`) | Membaca dan menulis spreadsheet melalui service account. |
 | Lampiran | Google Drive API (`googleapis`) + OAuth refresh token | Upload, baca, pindah ke Sampah, dan hapus permanen file. |
-| Pengujian | Vitest | Unit test domain dan use case. |
+| Pengujian | Vitest, Playwright, Vite | Unit test domain/use case serta regresi browser komponen dashboard dengan fixture sintetis. |
 | Quality gate | ESLint, TypeScript compiler | Konsistensi dan pencegahan kesalahan dasar. |
 | Deployment | Docker Compose, Traefik, GitHub Actions, VPS | Build, TLS, reverse proxy, dan deployment produksi. |
 | Dokumentasi kode | Graphify | Indeks arsitektur yang diperbarui setiap perubahan proyek. |
@@ -82,6 +82,7 @@ src/
   lib/                    # Utility kecil lintas lapisan, misalnya tanggal Bangkok
 tests/
   unit/
+  browser/                # Fixture Vite dan regresi Playwright, tanpa credential Google
 ```
 
 Aturan dependensi: `presentation` dan `infrastructure` bergantung pada `application`; `application` bergantung pada `domain`; `domain` tidak bergantung pada framework atau SDK eksternal.
@@ -102,4 +103,5 @@ Aturan dependensi: `presentation` dan `infrastructure` bergantung pada `applicat
 | Aturan bisnis dan otorisasi | Unit test use case dan policy akses. |
 | Login/nonaktif | Unit/integration test autentikasi. |
 | Tanggal dan error integrasi | Unit test kalender Bangkok dan pemetaan error quota Google. |
+| Interaksi dashboard | `npm run test:ui`: periode, refresh/error akses, disclosure, status selesai, keyboard/touch, dan responsif. |
 | Perubahan umum | Lint, typecheck, dan test suite yang relevan. |

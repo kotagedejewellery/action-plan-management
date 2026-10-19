@@ -30,9 +30,9 @@ function useDialogFocus(onClose: () => void, captureKeys = false) {
   return dialogRef;
 }
 
-export function StatusBadge({ status }: { status?: string }) {
+export function StatusBadge({ status, completedStatusLabels = ["Selesai"] }: { status?: string; completedStatusLabels?: string[] }) {
   if (!status) return <span className="text-sm text-[#90a09f]">—</span>;
-  const styles = status === "Selesai" ? "bg-[#dff3e6] text-[#206b43]" : status === "On Progress" ? "bg-[#e5efff] text-[#265b9b]" : "bg-[#fff1d7] text-[#9a5b16]";
+  const styles = completedStatusLabels.includes(status) ? "bg-[#dff3e6] text-[#206b43]" : status === "On Progress" ? "bg-[#e5efff] text-[#265b9b]" : "bg-[#fff1d7] text-[#9a5b16]";
   return <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${styles}`}>{status}</span>;
 }
 
