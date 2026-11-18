@@ -1,23 +1,29 @@
 import type { DashboardPlan } from "@/application/dashboard-analytics";
-import { listVisiblePlans, requireAdmin } from "@/application/use-cases";
+import { listVisiblePlans } from "@/application/use-cases";
+import { requireMonitorActor, visibleMembers } from "@/application/access";
+import { AppError } from "@/application/errors";
 import { toSafeUser, type Actor } from "@/domain/models";
-import { actionPlans, statuses, users, weeklyPlans } from "@/infrastructure/container";
+import { actionPlans, statuses, users, weeklyPlans, divisions } from "@/infrastructure/container";
 import { bangkokDate } from "@/lib/bangkok-date";
 
-export async function loadDashboard(actor: Actor) {
-  requireAdmin(actor);
-  const userList = (await users.list()).filter((user) => user.role === "user");
+export async function loadDashboard(actor: Actor, divisionId?: string) {
+  requireMonitorActor(actor);
+  const allDivisions = actor.role === "admin" ? await divisions.list() : [];
+  if (actor.role === "admin" && divisionId && !allDivisions.some((division) => division.id === divisionId)) throw new AppError("Divisi tidak ditemukan.", "NOT_FOUND");
+  const userList = visibleMembers(actor, await users.list(), divisionId);
+  const ownerIds = new Set(userList.map((user) => user.id));
   const plans: DashboardPlan[] = [];
   for (const user of userList) {
     const ownPlans = await listVisiblePlans(actionPlans, statuses, actor, user, "all");
     plans.push(...ownPlans.map((plan) => ({ ...plan, ownerId: user.id, ownerName: user.name })));
   }
   return {
-    users: userList.map(toSafeUser),
-    plans,
-    weeklyPlans: await weeklyPlans.list(),
+    canManageUsers: actor.role === "admin",
+    users: userList.map(toSafeUser), plans,
+    weeklyPlans: (await weeklyPlans.list()).filter((plan) => ownerIds.has(plan.userId)),
     completedStatusLabels: (await statuses.list()).filter((status) => status.isCompleted).map((status) => status.label),
-    today: bangkokDate(),
-    loadedAt: new Date().toISOString(),
+    today: bangkokDate(), loadedAt: new Date().toISOString(),
+    divisionId: actor.role === "bod" ? actor.divisionId : divisionId || "",
+    scopeLabel: actor.role === "bod" ? actor.divisionName : allDivisions.find((division) => division.id === divisionId)?.name ?? "Seluruh divisi",
   };
 }

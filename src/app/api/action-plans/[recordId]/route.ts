@@ -1,3 +1,4 @@
+import { requireUserWorkspace } from "@/application/access";
 import { NextResponse } from "next/server";
 
 import { AppError } from "@/application/errors";
@@ -10,6 +11,7 @@ import { currentActor } from "@/presentation/server/actor";
 export async function PATCH(request: Request, { params }: { params: Promise<{ recordId: string }> }) {
   try {
     const actor = await currentActor();
+    requireUserWorkspace(actor);
     const input = actionPlanInputSchema.parse(await request.json());
     const current = await actionPlans.findById(actor.sheetName, (await params).recordId);
     if (!current) throw new AppError("Action Plan tidak ditemukan.", "NOT_FOUND");

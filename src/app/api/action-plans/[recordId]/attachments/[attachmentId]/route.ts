@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { assertCanReadMember, requireUserWorkspace } from "@/application/access";
 import { AppError } from "@/application/errors";
 import { apiError } from "@/presentation/server/api-error";
 import { removeOwnActionPlanAttachment } from "@/application/use-cases";
@@ -10,22 +11,20 @@ export async function GET(request: Request, { params }: { params: Promise<{ reco
   try {
     const actor = await currentActor();
     let sheetName = actor.sheetName;
-    if (actor.role === "admin") {
+    if (actor.role === "admin" || actor.role === "bod") {
       const targetId = new URL(request.url).searchParams.get("userId");
       const target = targetId ? await users.findById(targetId) : null;
-      if (!target || target.role !== "user") throw new AppError("Akses lampiran ditolak.", "FORBIDDEN");
+      assertCanReadMember(actor, target);
       sheetName = target.sheetName;
-    } else if (actor.role !== "user") {
-      throw new AppError("Akses lampiran ditolak.", "FORBIDDEN");
-    }
+    } else { requireUserWorkspace(actor); }
     const { recordId, attachmentId } = await params;
     const plan = await actionPlans.findById(sheetName, recordId);
     const attachment = plan?.attachments?.find((item) => item.id === attachmentId);
     if (!plan || plan.deletedAt || !attachment) throw new AppError("Lampiran tidak ditemukan.", "NOT_FOUND");
-    if (actor.role === "admin" && !attachment.mimeType.startsWith("image/")) throw new AppError("Admin hanya dapat melihat pratinjau gambar.", "FORBIDDEN");
+    if (actor.role !== "user" && !attachment.mimeType.startsWith("image/")) throw new AppError("Pemantau hanya dapat melihat pratinjau gambar.", "FORBIDDEN");
     const content = await attachments.download(attachment.id);
     const body = content.buffer.slice(content.byteOffset, content.byteOffset + content.byteLength) as ArrayBuffer;
-    return new NextResponse(body, { headers: { "content-type": attachment.mimeType, "content-disposition": `inline; filename="${attachment.name.replace(/[\r\n"]/g, "_")}"`, "x-content-type-options": "nosniff" } });
+    return new NextResponse(body, { headers: { "content-type": attachment.mimeType, "content-disposition": `inline; filename="${attachment.name.replace(/[\r\n"]/g, "_")}"`, "x-content-type-options": "nosniff", "cache-control": "private, no-store" } });
   } catch (error) {
     return apiError(error);
   }

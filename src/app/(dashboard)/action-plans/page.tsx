@@ -1,3 +1,4 @@
+import { DivisionUnavailable } from "@/presentation/components/division-unavailable";
 import { redirect } from "next/navigation";
 
 import { ConnectedActionPlanWorkspace } from "@/presentation/components/connected-action-plan-workspace";
@@ -8,6 +9,7 @@ import { currentActor } from "@/presentation/server/actor";
 export default async function ActionPlansPage() {
   const actor = await currentActor();
   if (actor.role !== "user") redirect("/dashboard");
+  if (!actor.divisionId) return <DivisionUnavailable />;
   const statusList = await statuses.list();
   const plans = await listVisiblePlans(actionPlans, statuses, actor, null, "active");
   const userWeeklyPlans = await listOwnWeeklyPlans(weeklyPlans, actor);

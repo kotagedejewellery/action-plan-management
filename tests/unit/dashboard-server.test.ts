@@ -4,13 +4,14 @@ import type { Actor, User } from "@/domain/models";
 
 vi.mock("@/infrastructure/container", () => ({
   users: { list: vi.fn() },
+  divisions: { list: vi.fn() },
   actionPlans: { list: vi.fn() },
   statuses: { list: vi.fn() },
   weeklyPlans: { list: vi.fn() },
 }));
 vi.mock("@/presentation/server/actor", () => ({ currentActor: vi.fn() }));
 
-import { users, actionPlans, statuses, weeklyPlans } from "@/infrastructure/container";
+import { users, actionPlans, statuses, weeklyPlans, divisions } from "@/infrastructure/container";
 import { currentActor } from "@/presentation/server/actor";
 import { GET } from "@/app/api/dashboard/route";
 import { AppError } from "@/application/errors";
@@ -20,6 +21,7 @@ const member: User = { id: "u1", name: "Alya", email: "alya@test", role: "user",
 
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.mocked(divisions.list).mockResolvedValue([]);
   vi.mocked(users.list).mockResolvedValue([member]);
   vi.mocked(actionPlans.list).mockResolvedValue([
     { id: "p1", date: "2026-10-19", task: "Review desain", morningStatus: "Proses", createdAt: "", updatedAt: "" },
@@ -57,6 +59,7 @@ describe("dashboard refresh", () => {
     expect(body.plans[0]).toMatchObject({ id: "p1", ownerId: "u1", ownerName: "Alya" });
     expect(actionPlans.list).toHaveBeenCalledWith("action_plan_u1");
     expect(body.completedStatusLabels).toEqual(["Final"]);
+    expect(body.canManageUsers).toBe(true);
     expect(body.users[0]).not.toHaveProperty("passwordHash");
     expect(JSON.stringify(body)).not.toContain("private-password-hash");
     expect(Number.isNaN(Date.parse(body.loadedAt))).toBe(false);

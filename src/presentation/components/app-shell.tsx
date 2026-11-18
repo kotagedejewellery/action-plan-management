@@ -27,8 +27,9 @@ const baseNavigation = [
   },
   { href: "/weekly-plans", label: "Rencana Mingguan", icon: Calendar, roles: ["user"] },
   { href: "/history", label: "Riwayat", icon: History, roles: ["user"] },
-  { href: "/dashboard", label: "Dashboard", icon: Chart, roles: ["admin"] },
-  { href: "/monitoring", label: "Monitoring", icon: Grid, roles: ["admin"] },
+  { href: "/dashboard", label: "Dashboard", icon: Chart, roles: ["admin", "bod"] },
+  { href: "/monitoring", label: "Monitoring", icon: Grid, roles: ["admin", "bod"] },
+  { href: "/divisions", label: "Divisi", icon: Grid, roles: ["admin"] },
   { href: "/users", label: "Users", icon: Users, roles: ["admin"] },
 ];
 
@@ -51,13 +52,13 @@ export function AppShell({
   const navigation = baseNavigation.filter((item) =>
     item.roles.includes(actor.role),
   );
-  const homeHref = actor.role === "admin" ? "/dashboard" : "/action-plans";
+  const homeHref = actor.role === "user" ? "/action-plans" : "/dashboard";
   const initials = (actor.name.trim().match(/\S+/g) ?? [actor.email])
     .slice(0, 2)
     .map((word) => word.charAt(0))
     .join("")
     .toLocaleUpperCase("id-ID");
-  const roleLabel = actor.role === "admin" ? "Admin" : "User";
+  const roleLabel = actor.role === "admin" ? "SuperAdmin" : actor.role === "bod" ? "BOD" : "User";
   const accountLabel = `${roleLabel} ${actor.status === "active" ? "aktif" : "nonaktif"}`;
 
   const handleSignOut = async () => {
@@ -128,7 +129,7 @@ export function AppShell({
               <p className="truncate text-sm font-semibold text-[#244542]">
                 {actor.name}
               </p>
-              <p className="text-xs text-[#748886]">{accountLabel}</p>
+              <p className="text-xs text-[#748886]">{accountLabel}</p>{actor.divisionName && <p className="mt-1 break-words text-xs text-[#516967]">{actor.divisionName}</p>}
             </div>
           </div>
         </div>

@@ -68,3 +68,7 @@ Push ke `main` akan menjalankan TypeScript, lint, dan Vitest sebelum GitHub Acti
 | Logout menuju localhost | Hapus `AUTH_URL`/`NEXTAUTH_URL` lama yang bernilai localhost dan pastikan Traefik meneruskan domain publik. |
 
 Endpoint kesehatan produksi: `https://apm.kotagedejewellery.tech/api/health`.
+
+## 6. Penerapan multi-divisi
+
+Akun `admin` existing tetap menjadi SuperAdmin tanpa mengganti ID atau password. Sebelum membuka akses User/BOD setelah pembaruan, siapkan pemetaan akun dan ikuti `docs/MULTI_DIVISION_ROLLOUT.md`. Akun User yang belum dipetakan tidak dapat mengisi pekerjaan sampai ditetapkan ke divisi aktif. Tidak ada bootstrap atau backfill otomatis saat deploy; jangan menjalankan bootstrap Admin pada Users yang sudah berisi data.

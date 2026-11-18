@@ -6,7 +6,7 @@ import { addOwnActionPlanAttachments, authenticateUser, createOwnWeeklyPlan, cre
 import type { ActionPlanRepository, AttachmentStorage, StatusRepository, UserRepository, WeeklyPlanRepository } from "@/application/ports";
 import type { ActionPlan, User, WeeklyPlan } from "@/domain/models";
 
-const user = async (overrides: Partial<User> = {}): Promise<User> => ({ id: "user-1", name: "User", email: "user@company.test", passwordHash: await bcrypt.hash("password123", 4), role: "user", status: "active", sheetName: "action_plan_user-1", createdAt: "2026-01-01T00:00:00.000Z", updatedAt: "2026-01-01T00:00:00.000Z", ...overrides });
+const user = async (overrides: Partial<User> = {}): Promise<User> => ({ id: "user-1", name: "User", email: "user@company.test", passwordHash: await bcrypt.hash("password123", 4), role: "user", status: "active", divisionId: "division-a", sheetName: "action_plan_user-1", createdAt: "2026-01-01T00:00:00.000Z", updatedAt: "2026-01-01T00:00:00.000Z", ...overrides });
 
 describe("access and account use cases", () => {
   it("rejects inactive accounts even with the correct password", async () => {
@@ -22,8 +22,13 @@ describe("access and account use cases", () => {
     const created = await createUser(repository, { id: "user-2", name: "New User", email: " NEW@COMPANY.TEST ", role: "user", status: "active", password: "password123" });
     expect(created.email).toBe("new@company.test");
     expect("passwordHash" in created).toBe(false);
+    expect("password" in created).toBe(false);
+    expect("password" in stored[0]).toBe(false);
     expect(await bcrypt.compare("password123", stored[0].passwordHash)).toBe(true);
     expect(sheets).toEqual(["action_plan_user-2"]);
+    const updated = await updateUser(repository, stored[0], { password: "changed-password" });
+    expect("passwordHash" in updated).toBe(false);
+    expect("password" in updated).toBe(false);
   });
 
   it("prevents deactivating or demoting the last active admin", async () => {

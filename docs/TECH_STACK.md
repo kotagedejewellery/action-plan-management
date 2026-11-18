@@ -38,7 +38,7 @@ Versi paket dipasang menggunakan versi stabil yang saling kompatibel saat implem
 - Aplikasi memakai satu service account dengan akses hanya pada spreadsheet yang ditentukan.
 - Spreadsheet dibagikan kepada email service account; credential disimpan sebagai environment variable server dan tidak pernah di-commit.
 - Semua akses Sheets berada di adapter infrastructure, sehingga domain dan use case tidak bergantung pada SDK Google.
-- Pembacaan dicache di memori container selama 30 detik; sheet `Users` selama 5 detik agar perubahan status akun cepat berlaku.
+- Pembacaan dicache di memori container selama 30 detik; sheet `Users` dan `Divisions` selama 5 detik agar perubahan status akun cepat berlaku.
 - Error quota atau gangguan Google diterjemahkan menjadi pesan aman; quota memberi respons `503` dan arahan menunggu sekitar satu menit.
 
 ### Google Drive
@@ -106,3 +106,7 @@ Aturan dependensi: `presentation` dan `infrastructure` bergantung pada `applicat
 | Interaksi dashboard | `npm run test:ui`: periode, refresh/error akses, disclosure, status selesai, keyboard/touch, dan responsif. |
 | Interaksi Monitoring | `npm run test:ui`: pencarian anggota, isolasi tampilan saat berpindah anggota, filter/counts, pagination, panel detail, pemulihan error, dan mobile. |
 | Perubahan umum | Lint, typecheck, dan test suite yang relevan. |
+
+### Otorisasi multi-divisi
+
+`currentActor` membaca ulang akun dari Users pada setiap permintaan melalui cache adapter, lalu me-resolve scope aktif dari Divisions. Nilai `admin` dipertahankan sebagai SuperAdmin; role baru `bod` hanya untuk monitoring. Mutasi akun dan divisi memakai antrean bersama dalam satu proses untuk menjaga keunikan BOD, pemetaan awal anggota, dan perlindungan Admin terakhir. Penulisan Sheets menginvalidasi cache lokal. Instalasi tetap satu proses/container aplikasi; sebelum menambah replica atau beberapa worker, wajib gunakan lock bersama dan strategi invalidasi lintas proses. Perubahan langsung di spreadsheet dapat memerlukan hingga 5 detik untuk data akses terbaca, dan sebaiknya dihindari untuk menjaga invariannya.

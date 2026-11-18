@@ -20,7 +20,7 @@ Next.js container
           └── Google Drive API / OAuth refresh token
           ▼
 Google Spreadsheet
-├── Users, Settings, Weekly Plans
+├── Users, Divisions, Settings, Weekly Plans
 └── User Action Plan sheets
 ```
 
@@ -83,7 +83,7 @@ User submits email/password
   → AuthenticateUser reads Users sheet
   → validate password hash + active status
   → issue JWT session containing userId and role
-  → redirect: admin to dashboard; user to own Action Plan
+  → redirect: admin/bod to dashboard; user to own Action Plan
 ```
 
 ### User membuat atau mengubah Action Plan
@@ -140,7 +140,7 @@ File upload
 - Jika sheet yang dipetakan tidak ditemukan, operasi dihentikan; aplikasi tidak membuat atau memilih sheet berdasarkan input User.
 - Konflik edit dideteksi lewat `updated_at`; User diminta memuat ulang sebelum menimpa data yang lebih baru.
 - Kegagalan validasi dilaporkan dekat pada field form, tanpa penulisan parsial.
-- Cache pembacaan Sheets berlaku 30 detik; `Users` 5 detik untuk mengurangi quota sambil menjaga status akun cepat terbaca.
+- Cache pembacaan Sheets berlaku 30 detik; `Users` dan `Divisions` 5 detik untuk mengurangi quota sambil menjaga status akun cepat terbaca.
 
 ## 7. Deployment
 
@@ -161,3 +161,9 @@ Arsitektur ini ditujukan untuk MVP dengan jumlah User dan record yang wajar. Jik
 3. Konfigurasikan Drive OAuth dan simpan refresh token hanya di environment server.
 4. Pastikan `.env` produksi lengkap sebelum container direstart.
 5. Jalankan lint, typecheck, test relevan, dan perbarui indeks Graphify sebelum deploy.
+
+### Isolasi divisi
+
+`application/access.ts` menjadi policy bersama untuk actor aktif, SuperAdmin, pemantau divisi dan pemilik pekerjaan. `currentActor` mengabaikan claim role JWT sebagai otoritas dan me-resolve BOD dari penugasan Divisions. Dashboard dan Monitoring menyaring daftar anggota sebelum membaca sheet kerja; rencana mingguan disaring melalui ID pemilik yang terlihat sebelum serialisasi. API plan dan lampiran memeriksa target anggota sebelum membaca record atau binary Drive. Halaman dan navigasi mencerminkan policy yang sama; menyembunyikan menu bukan batas keamanan.
+
+`application/divisions.ts` mengoordinasikan mutasi akun/divisi melalui antrean satu proses. Invarian: satu BOD per divisi aktif, satu divisi per BOD, anggota tanpa perpindahan divisi, dan minimal satu SuperAdmin aktif. Tidak ada migrasi startup atau perubahan lokasi data. Riwayat tetap mengikuti afiliasi anggota yang tidak berubah. Batas satu proses, cache akses 5 detik dan persiapan mapping dijelaskan pada `docs/TECH_STACK.md` serta `docs/MULTI_DIVISION_ROLLOUT.md`.

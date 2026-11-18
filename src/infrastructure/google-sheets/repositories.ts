@@ -1,5 +1,6 @@
-import type { ActionPlanRepository, StatusRepository, UserRepository, WeeklyPlanRepository } from "@/application/ports";
-import type { ActionPlan, ActionPlanStatus, User, WeeklyPlan } from "@/domain/models";
+import type { ActionPlanRepository, DivisionRepository, StatusRepository, UserRepository, WeeklyPlanRepository } from "@/application/ports";
+import type { ActionPlan, ActionPlanStatus, Division, User, WeeklyPlan } from "@/domain/models";
+import { AppError } from "@/application/errors";
 import { sheetsClient, spreadsheetId } from "./client";
 
 const PLAN_HEADERS = ["tanggal", "action_plan", "status_pagi", "status_sore", "link_hasil", "catatan", "record_id", "created_at", "updated_at", "deleted_at", "deleted_by", "weekly_plan_id", "lampiran"];
@@ -25,7 +26,7 @@ function readValues(range: string): Promise<string[][]> {
   const cached = readCache.get(key);
   if (cached && cached.expiresAt > Date.now()) return cached.value;
 
-  const ttl = range.startsWith("Users!") ? USER_READ_CACHE_TTL_MS : READ_CACHE_TTL_MS;
+  const ttl = (range.startsWith("Users!") || range.startsWith("Divisions!")) ? USER_READ_CACHE_TTL_MS : READ_CACHE_TTL_MS;
   const entry: CachedRead = { expiresAt: Date.now() + ttl, value: Promise.resolve([]) };
   entry.value = sheetsClient().spreadsheets.values.get({ spreadsheetId: spreadsheetId(), range })
     .then((response) => (response.data.values ?? []).map((entry) => entry.map(value)))
@@ -99,8 +100,8 @@ async function migrateLegacyPlanRecords(sheetName: string) {
 }
 
 function userFrom(row: Row): User {
-  const [id, name, email, passwordHash, role, status, sheetName, createdAt, updatedAt] = row.values;
-  return { id, name, email, passwordHash, role: role as User["role"], status: status as User["status"], sheetName, createdAt, updatedAt };
+  const [id, name, email, passwordHash, role, status, sheetName, createdAt, updatedAt, divisionId] = row.values;
+  return { id, name, email, passwordHash, role: role as User["role"], status: status as User["status"], sheetName, createdAt, updatedAt, divisionId: divisionId || undefined };
 }
 
 function planFrom(row: Row): ActionPlan {
@@ -121,12 +122,34 @@ function weeklyRange(range: string) {
   return `'${WEEKLY_PLANS_SHEET}'!${range}`;
 }
 
+async function userRows() {
+  const values = await readValues("Users!A:J");
+  const header = values[0]?.[9];
+  if ((header && header !== "division_id") || (!header && values.slice(1).some((row) => row[9]))) throw new AppError("Kolom J pada Users belum siap untuk division_id. Periksa pemetaan sebelum memperbarui data.", "VALIDATION");
+  return values.slice(1).map((values, index) => ({ values, rowNumber: index + 2 }));
+}
+
+async function ensureUserDivisionHeader() {
+  await userRows();
+  if (!(await readValues("Users!A:J"))[0]?.[9]) await replace("Users!J1", ["division_id"]);
+}
+
 export class GoogleSheetsUserRepository implements UserRepository {
-  async list() { return (await rows("Users!A:I")).filter((row) => row.values[0]).map(userFrom); }
+  async list() { return (await userRows()).filter((row) => row.values[0]).map(userFrom); }
   async findById(id: string) { return (await this.list()).find((user) => user.id === id) ?? null; }
   async findByEmail(email: string) { return (await this.list()).find((user) => user.email === email) ?? null; }
-  async create(user: User) { await append("Users!A:I", [user.id, user.name, user.email, user.passwordHash, user.role, user.status, user.sheetName, user.createdAt, user.updatedAt]); return user; }
-  async update(user: User) { const row = (await rows("Users!A:I")).find((item) => item.values[0] === user.id); if (!row) throw new Error("User tidak ditemukan."); await replace(`Users!A${row.rowNumber}:I${row.rowNumber}`, [user.id, user.name, user.email, user.passwordHash, user.role, user.status, user.sheetName, user.createdAt, user.updatedAt]); return user; }
+  async create(user: User) {
+    await ensureUserDivisionHeader();
+    await append("Users!A:J", [user.id, user.name, user.email, user.passwordHash, user.role, user.status, user.sheetName, user.createdAt, user.updatedAt, user.divisionId ?? ""]);
+    return user;
+  }
+  async update(user: User) {
+    const row = (await userRows()).find((item) => item.values[0] === user.id);
+    if (!row) throw new Error("User tidak ditemukan.");
+    await ensureUserDivisionHeader();
+    await replace(`Users!A${row.rowNumber}:J${row.rowNumber}`, [user.id, user.name, user.email, user.passwordHash, user.role, user.status, user.sheetName, user.createdAt, user.updatedAt, user.divisionId ?? ""]);
+    return user;
+  }
   async createActionPlanSheet(sheetName: string) {
     const api = sheetsClient();
     const existing = await api.spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });
@@ -188,4 +211,42 @@ export class GoogleSheetsStatusRepository implements StatusRepository {
   async list() { await this.ensureSchema(); return (await rows("Settings!A:F")).filter((row) => row.values[0]).map((row): ActionPlanStatus => ({ id: row.values[0], label: row.values[1], isActive: row.values[2] === "true", createdAt: row.values[3], updatedAt: row.values[4], isCompleted: row.values[5] === "true" || (!row.values[5] && row.values[1].toLowerCase() === "selesai") })); }
   async create(status: ActionPlanStatus) { await this.ensureSchema(); await append("Settings!A:F", [status.id, status.label, String(status.isActive), status.createdAt, status.updatedAt, String(status.isCompleted)]); return status; }
   async update(status: ActionPlanStatus) { await this.ensureSchema(); const row = (await rows("Settings!A:F")).find((item) => item.values[0] === status.id); if (!row) throw new Error("Status tidak ditemukan."); await replace(`Settings!A${row.rowNumber}:F${row.rowNumber}`, [status.id, status.label, String(status.isActive), status.createdAt, status.updatedAt, String(status.isCompleted)]); return status; }
+}
+
+const DIVISION_HEADERS = ["id", "name", "bod_user_id", "status", "created_at", "updated_at"];
+
+export class GoogleSheetsDivisionRepository implements DivisionRepository {
+  async list(): Promise<Division[]> {
+    let values: string[][];
+    try { values = await readValues("Divisions!A:F"); }
+    catch (error) {
+      const status = Number((error as { code?: number; response?: { status?: number } }).response?.status ?? (error as { code?: number }).code);
+      if (status !== 400) throw error;
+      const metadata = await sheetsClient().spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });
+      if (metadata.data.sheets?.some((sheet) => sheet.properties?.title === "Divisions")) throw error;
+      return [];
+    }
+    if (!values.length) return [];
+    if (DIVISION_HEADERS.some((header, index) => values[0][index] !== header)) throw new AppError("Header Divisions tidak sesuai. Periksa sheet tanpa menghapus data existing.", "VALIDATION");
+    return values.slice(1).filter((row) => row[0]).map(([id, name, bodUserId, status, createdAt, updatedAt]) => ({ id, name, bodUserId: bodUserId || undefined, status: status as Division["status"], createdAt, updatedAt }));
+  }
+  async create(division: Division) {
+    const metadata = await sheetsClient().spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });
+    if (!metadata.data.sheets?.some((sheet) => sheet.properties?.title === "Divisions")) {
+      await sheetsClient().spreadsheets.batchUpdate({ spreadsheetId: spreadsheetId(), requestBody: { requests: [{ addSheet: { properties: { title: "Divisions", gridProperties: { frozenRowCount: 1 } } } }] } });
+      clearReadCache();
+    }
+    const values = await readValues("Divisions!A:F");
+    if (!values.length) await replace("Divisions!A1:F1", DIVISION_HEADERS);
+    else await this.list();
+    await append("Divisions!A:F", [division.id, division.name, division.bodUserId ?? "", division.status, division.createdAt, division.updatedAt]);
+    return division;
+  }
+  async update(division: Division) {
+    await this.list();
+    const row = (await rows("Divisions!A:F")).find((item) => item.values[0] === division.id);
+    if (!row) throw new AppError("Divisi tidak ditemukan.", "NOT_FOUND");
+    await replace(`Divisions!A${row.rowNumber}:F${row.rowNumber}`, [division.id, division.name, division.bodUserId ?? "", division.status, division.createdAt, division.updatedAt]);
+    return division;
+  }
 }

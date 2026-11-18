@@ -7,6 +7,8 @@
 | Platform | Web application internal |
 | Sumber data | Google Spreadsheet |
 
+> Perluasan role multi-divisi (18 November 2026) pada bagian 11 menggantikan aturan dua role di requirement awal, khususnya cakupan monitoring dan pengelolaan akun.
+
 ## 1. Ringkasan produk
 
 Action Plan Management System adalah aplikasi web internal yang menggantikan pengisian dan pemantauan Action Plan langsung di Google Spreadsheet. Spreadsheet tetap menjadi sumber data utama; aplikasi menyediakan autentikasi, pembatasan akses berbasis peran, form yang lebih nyaman, dan monitoring oleh Admin.
@@ -98,3 +100,21 @@ Tidak termasuk pada versi 1: notifikasi (email/WhatsApp), approval workflow, abs
 ## 9. Kriteria penerimaan
 
 Sistem diterima apabila Admin/User dapat login; Admin dapat mengelola akun dan melihat semua Action Plan; akun inactive ditolak saat login; User dapat membuat serta memperbarui Action Plan miliknya; isolasi data User terjaga; data disimpan di Spreadsheet dan data existing tetap dapat digunakan; serta aplikasi berjalan di desktop dan mobile.
+
+## 11. Perluasan role multi-divisi ? disetujui 18 November 2026
+
+| Kapabilitas | SuperAdmin (`admin`) | BOD (`bod`) | User (`user`) |
+| --- | --- | --- | --- |
+| Dashboard dan Monitoring | Seluruh divisi, dapat difilter | Satu divisi yang ditugaskan | Tidak |
+| Rencana harian, mingguan, hasil dan riwayat | Pantau seluruh anggota | Pantau anggota divisinya | Milik sendiri |
+| Membuat/mengubah/menghapus pekerjaan | Tidak | Tidak | Milik sendiri |
+| Preview lampiran gambar | Sesuai scope monitoring | Sesuai divisinya | Milik sendiri |
+| Kelola akun, divisi, status dan integrasi | Ya | Tidak | Tidak |
+
+Satu BOD hanya menangani satu divisi; setiap divisi aktif mempunyai tepat satu BOD aktif. BOD hanya memantau, tidak mengelola akun. User ditetapkan ke satu divisi dan perpindahan divisi tidak tersedia pada tahap ini. Akun lama dapat dipetakan pertama kali setelah SuperAdmin meninjau dampak akses terhadap seluruh riwayatnya.
+
+Otorisasi server memakai akun dan penugasan terkini, tidak mempercayai role JWT atau parameter client. BOD tanpa penugasan aktif ditolak; dashboard, daftar anggota, rencana mingguan dan lampiran tidak boleh membocorkan data divisi lain. User tanpa divisi aktif ditampilkan petunjuk menghubungi SuperAdmin. Penggantian BOD mencabut scope BOD lama; penonaktifan divisi menutup akses kerja anggota tanpa menghapus data. Akun Admin existing tetap bernilai `admin` dan ditampilkan sebagai SuperAdmin.
+
+Navigasi SuperAdmin: Dashboard, Monitoring, Divisi, Users. Navigasi BOD: Dashboard, Monitoring. Navigasi kerja User dipertahankan. SuperAdmin dapat meninjau akun belum dipetakan dari filter Users dan memantau data lamanya secara global selama penyiapan.
+
+Implementasi dan verifikasi lokal tidak mencakup izin menjalankan migrasi atau deploy pada penyimpanan nyata. Panduan penerapan: `docs/MULTI_DIVISION_ROLLOUT.md`.

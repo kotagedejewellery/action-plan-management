@@ -11,8 +11,9 @@ export const dashboardPeriodInputSchema = z.object({
 export const userInputSchema = z.object({
   name: z.string().trim().min(2, "Nama minimal 2 karakter."),
   email: z.string().trim().email("Email tidak valid."),
-  role: z.enum(["admin", "user"]),
+  role: z.enum(["admin", "bod", "user"]),
   status: z.enum(["active", "inactive"]),
+  divisionId: z.union([z.string().uuid("Divisi tidak valid."), z.literal("")]).optional(),
   password: z.union([z.string().min(8, "Password minimal 8 karakter."), z.literal("")]).optional(),
 });
 
@@ -46,3 +47,10 @@ export const weeklyPlanUpdateSchema = z.object({
 
 export const statusInputSchema = z.object({ label: z.string().trim().min(1, "Nama status wajib diisi.").max(50), isCompleted: z.boolean().optional().default(false) });
 export const statusUpdateSchema = z.object({ isActive: z.boolean(), isCompleted: z.boolean() });
+
+export const divisionInputSchema = z.object({
+  name: z.string().trim().min(2, "Nama divisi minimal 2 karakter.").max(100),
+  status: z.enum(["active", "inactive"]),
+  bodUserId: z.union([z.string().min(1), z.literal("")]).optional(),
+  updatedAt: z.string().datetime().optional(),
+});

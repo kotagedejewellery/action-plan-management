@@ -1,3 +1,4 @@
+import { DivisionUnavailable } from "@/presentation/components/division-unavailable";
 import { redirect } from "next/navigation";
 
 import { listOwnArchivedWeeklyPlans, listOwnWeeklyPlans, listVisiblePlans } from "@/application/use-cases";
@@ -9,6 +10,7 @@ import { bangkokDate } from "@/lib/bangkok-date";
 export default async function WeeklyPlansPage() {
   const actor = await currentActor();
   if (actor.role !== "user") redirect("/dashboard");
+  if (!actor.divisionId) return <DivisionUnavailable />;
   const [plans, weeklyPlanList, archivedWeeklyPlanList, statusList] = await Promise.all([
     listVisiblePlans(actionPlans, statuses, actor, null, "all"),
     listOwnWeeklyPlans(weeklyPlans, actor),

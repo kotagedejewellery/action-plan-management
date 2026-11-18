@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { dashboardPeriodInputSchema } from "@/application/schemas";
 import type { ActionPlan, SafeUser } from "@/domain/models";
 import { bangkokDate } from "@/lib/bangkok-date";
@@ -43,7 +43,8 @@ function PlanStatus({ status, completedStatusLabels }: { status?: string; comple
   return status ? <span className="break-words md:whitespace-nowrap"><StatusBadge status={status} completedStatusLabels={completedStatusLabels} /></span> : <span className="text-xs text-[#516967]">Belum diisi</span>;
 }
 
-export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelectedId, initialRecordId, initialDateFrom, initialDateTo, completedStatusLabels, today }: {
+export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelectedId, initialRecordId, initialDateFrom, initialDateTo, completedStatusLabels, today, scopeLabel, divisionFilter, canManageUsers = false }: {
+  scopeLabel?: string; divisionFilter?: ReactNode; canManageUsers?: boolean;
   users: SafeUser[]; initialPlans: ActionPlan[]; initialSelectedId: string; initialRecordId: string;
   initialDateFrom: string; initialDateTo: string; completedStatusLabels: string[]; today: string;
 }) {
@@ -199,8 +200,10 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
 
   return <section className={`w-full min-w-0 ${selectedPlan ? "xl:pr-[460px]" : ""}`}>
     <PageHeading title="Monitoring" description="Tinjau rencana, progres, dan hasil kerja setiap anggota tim." action={users.length ? <button type="button" className={`${quietButton} border bg-white`} disabled={loading} onClick={() => void loadPlans(selectedId)}>{loading ? "Memuat data…" : "Perbarui data"}</button> : undefined} />
+    {scopeLabel && <p className="mt-3 text-sm font-semibold text-[#176d69]">{scopeLabel}</p>}
+    {divisionFilter}
     <p className="mt-3 text-xs leading-5 text-[#516967]">Perubahan terbaru dapat memerlukan hingga 30 detik.</p>
-    {users.length === 0 ? <div className="mt-7 rounded-2xl border bg-white p-10 text-center"><h2 className="font-semibold text-[#173c3a]">Belum ada anggota tim</h2><p className="mt-2 text-sm text-[#516967]">Tambahkan akun User untuk mulai meninjau pekerjaan.</p><a href="/users" className={`${quietButton} mt-4 text-[#137d79]`}>Buka Users</a></div> : <div className={`mt-7 grid items-start gap-6 ${selectedPlan ? "" : "xl:grid-cols-[240px_minmax(0,1fr)]"}`}>
+    {users.length === 0 ? <div className="mt-7 rounded-2xl border bg-white p-10 text-center"><h2 className="font-semibold text-[#173c3a]">Belum ada anggota tim</h2><p className="mt-2 text-sm text-[#516967]">{canManageUsers ? "Tambahkan akun User untuk mulai meninjau pekerjaan." : "Hubungi SuperAdmin untuk memetakan anggota ke divisi Anda."}</p>{canManageUsers && <a href="/users" className={`${quietButton} mt-4 text-[#137d79]`}>Buka Users</a>}</div> : <div className={`mt-7 grid items-start gap-6 ${selectedPlan ? "" : "xl:grid-cols-[240px_minmax(0,1fr)]"}`}>
       <aside className={`sticky top-24 hidden rounded-2xl border bg-white p-3 ${selectedPlan ? "" : "xl:block"}`} aria-label="Pemilih anggota"><div className="mb-3 flex items-center justify-between px-1"><h2 className="text-sm font-semibold text-[#173c3a]">Anggota tim</h2><span className="text-xs tabular-nums text-[#516967]">{users.length} anggota</span></div>{renderMemberPicker()}</aside>
       <div className="min-w-0 overflow-hidden rounded-2xl border bg-white">
         <header className="border-b p-5 sm:p-6">

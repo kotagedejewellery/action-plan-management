@@ -11,6 +11,10 @@ import { useFeedback } from "./feedback";
 import { PageHeading, StatusBadge } from "./workspace-ui";
 
 type DashboardData = {
+  divisionId?: string;
+  canManageUsers?: boolean;
+  scopeLabel?: string;
+  divisionFilter?: ReactNode;
   users: SafeUser[];
   plans: DashboardPlan[];
   weeklyPlans: WeeklyPlan[];
@@ -39,15 +43,16 @@ function displayDate(value: string, year = false) {
   }).format(new Date(`${value}T00:00:00Z`));
 }
 
-function monitoringHref(userId: string, from: string, to: string, recordId?: string) {
+function monitoringHref(userId: string, from: string, to: string, recordId?: string, divisionId?: string) {
   const params = new URLSearchParams({ userId, from, to });
   if (recordId) params.set("recordId", recordId);
+  if (divisionId) params.set("divisionId", divisionId);
   return `/monitoring?${params}`;
 }
 
 export function ConnectedDashboardWorkspace(initialData: DashboardData) {
   const [data, setData] = useState(initialData);
-  const { users, plans, weeklyPlans, completedStatusLabels, today, loadedAt } = data;
+  const { users, plans, weeklyPlans, completedStatusLabels, today, loadedAt, divisionId } = data;
   const { notify } = useFeedback();
   const [{ preset, period, draft }, setFilters] = useState(() => {
     const period = presetPeriod("month", today);
@@ -108,7 +113,7 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
     setRefreshing(true);
     setRefreshError(null);
     try {
-      const response = await fetch("/api/dashboard", { cache: "no-store", signal: AbortSignal.timeout(30_000) });
+      const response = await fetch(initialData.divisionId ? `/api/dashboard?divisionId=${encodeURIComponent(initialData.divisionId)}` : "/api/dashboard", { cache: "no-store", signal: AbortSignal.timeout(30_000) });
       const result = await response.json();
       if (!response.ok) {
         setRefreshError({ message: result.error ?? "Data belum dapat diperbarui. Coba lagi.", accessDenied: response.status === 401 || response.status === 403 });
@@ -137,6 +142,8 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
           {refreshing ? "Memperbarui…" : "Perbarui data"}
         </button>
       } />
+      {data.scopeLabel && <p className="mt-3 text-sm font-semibold text-[#176d69]">{data.scopeLabel}</p>}
+      {initialData.divisionFilter}
       <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs leading-5 text-[#59706f]">
         <span>Dimuat {new Intl.DateTimeFormat("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Bangkok" }).format(new Date(loadedAt))} WIB</span>
         <span aria-hidden="true">·</span><span>Perubahan terbaru dapat memerlukan hingga 30 detik.</span>
@@ -168,7 +175,7 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
           <Metric label="Penyelesaian" value={summary.total ? `${summary.completionRate}%` : "—"} detail={summary.total ? `${summary.completed} dari ${summary.total} selesai` : "Belum ada pekerjaan"} emphasis />
           <Metric label="Belum selesai" value={summary.total - summary.completed} detail="Termasuk hari ini" active={scope === "pending"} onClick={() => selectScope("pending")} />
         </div>
-        <section id="dashboard-plan-list" hidden={!scope} className="mt-4 rounded-2xl border bg-white p-4 sm:p-5" aria-labelledby="plan-list-heading"><div className="flex items-start justify-between gap-4"><div><h2 id="plan-list-heading" className="font-semibold text-[#173c3a]">{scopeLabels[scope ?? "all"]}</h2><p className="mt-1 text-xs text-[#59706f]">{scopedPlans.length} pekerjaan pada periode terpilih</p></div><button type="button" onClick={closeScope} className="min-h-10 rounded-lg px-3 text-sm font-semibold text-[#59706f] hover:bg-[#f1f5f4]">Tutup daftar</button></div>{scope && <PlanList key={`${scope}-${period.from}-${period.to}`} plans={scopedPlans} from={period.from} to={period.to} completedStatusLabels={completedStatusLabels} />}</section>
+        <section id="dashboard-plan-list" hidden={!scope} className="mt-4 rounded-2xl border bg-white p-4 sm:p-5" aria-labelledby="plan-list-heading"><div className="flex items-start justify-between gap-4"><div><h2 id="plan-list-heading" className="font-semibold text-[#173c3a]">{scopeLabels[scope ?? "all"]}</h2><p className="mt-1 text-xs text-[#59706f]">{scopedPlans.length} pekerjaan pada periode terpilih</p></div><button type="button" onClick={closeScope} className="min-h-10 rounded-lg px-3 text-sm font-semibold text-[#59706f] hover:bg-[#f1f5f4]">Tutup daftar</button></div>{scope && <PlanList key={`${scope}-${period.from}-${period.to}`} plans={scopedPlans} from={period.from} to={period.to} completedStatusLabels={completedStatusLabels} divisionId={divisionId} />}</section>
       </section>
 
       <div className="mt-6 grid items-start gap-5 min-[1280px]:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
@@ -187,9 +194,9 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
                 </div>
                 <div className="mt-3 sm:ml-[52px]"><Progress value={percent} label={`${member.name}: ${member.completed} dari ${member.total} pekerjaan selesai`} /></div>
               </summary>
-              <div className="border-t border-dashed bg-[#f8faf9] px-5 pb-5 pt-1 sm:px-6"><PlanList plans={ownPlans} from={period.from} to={period.to} completedStatusLabels={completedStatusLabels} /><Link href={monitoringHref(member.userId, period.from, period.to)} className={`${quietButton} mt-4 w-full sm:w-auto`}>Buka Monitoring<ArrowRight className="size-4" aria-hidden="true" /></Link></div>
+              <div className="border-t border-dashed bg-[#f8faf9] px-5 pb-5 pt-1 sm:px-6"><PlanList plans={ownPlans} from={period.from} to={period.to} completedStatusLabels={completedStatusLabels} divisionId={divisionId} /><Link href={monitoringHref(member.userId, period.from, period.to, undefined, divisionId)} className={`${quietButton} mt-4 w-full sm:w-auto`}>Buka Monitoring<ArrowRight className="size-4" aria-hidden="true" /></Link></div>
             </details>;
-          })}</div> : <EmptyCopy title="Belum ada anggota tim" text="Akun User yang sudah dibuat akan muncul di sini." action={<Link href="/users" className={quietButton}>Buka pengelolaan akun<ArrowRight className="size-4" aria-hidden="true" /></Link>} />}
+          })}</div> : <EmptyCopy title="Belum ada anggota tim" text={data.canManageUsers ? "Akun User yang sudah dibuat akan muncul di sini." : "Hubungi SuperAdmin untuk memetakan anggota ke divisi Anda."} action={data.canManageUsers ? <Link href="/users" className={quietButton}>Buka pengelolaan akun<ArrowRight className="size-4" aria-hidden="true" /></Link> : undefined} />}
           {summary.byUser.length > memberLimit && <div className="border-t p-4 text-center"><button type="button" className={quietButton} onClick={() => setMemberLimit(memberLimit + 6)}>Tampilkan lebih banyak ({summary.byUser.length - memberLimit})<ArrowDown className="size-4" aria-hidden="true" /></button></div>}
         </section>
         <DailyTrend key={`${period.from}-${period.to}`} trend={summary.trend} />
@@ -197,12 +204,12 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
 
       <section className="mt-6 overflow-hidden rounded-2xl border bg-white" aria-labelledby="weekly-heading">
         <div className="flex flex-wrap items-start justify-between gap-3 p-5 sm:p-6"><div><h2 id="weekly-heading" className="text-lg font-semibold tracking-tight text-[#173c3a]">Rencana mingguan</h2><p className="mt-1 text-sm text-[#59706f]">Progres satu minggu penuh untuk rencana yang beririsan dengan periode terpilih.</p></div><span className="rounded-lg bg-[#f1f5f4] px-2.5 py-1.5 text-xs font-medium text-[#59706f]">{weeklySummary.length} rencana</span></div>
-        {weeklySummary.length ? <div className="divide-y border-t">{weeklySummary.slice(0, weeklyLimit).map((plan) => <details key={plan.id} className="group"><summary className="flex cursor-pointer list-none flex-wrap items-center gap-4 p-5 transition-colors hover:bg-[#f8faf9] sm:px-6 [&::-webkit-details-marker]:hidden"><span className="min-w-0 flex-1 basis-48"><span className="block break-words text-sm font-semibold text-[#294846]">{plan.title}</span><span className="mt-1 block text-xs leading-5 text-[#59706f]">{plan.ownerName} · {displayDate(plan.weekStart, true)} – {displayDate(plan.weekEnd, true)}</span></span><span className="min-w-0 flex-1 basis-32 sm:max-w-52"><span className="mb-2 block text-xs font-semibold tabular-nums text-[#294846]">{plan.completed} / {plan.total} selesai</span><Progress value={plan.total ? Math.min(100, Math.round(plan.completed / plan.total * 100)) : 0} label={`${plan.title}: ${plan.completed} dari ${plan.total} selesai`} /></span><ChevronDown className="size-4 shrink-0 text-[#59706f] transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" /></summary><div className="border-t border-dashed bg-[#f8faf9] px-5 pb-3 sm:px-6">{plan.note && <p className="pt-4 text-sm text-[#59706f]">{plan.note}</p>}<PlanList plans={plan.children} from={plan.weekStart} to={plan.weekEnd} completedStatusLabels={completedStatusLabels} /></div></details>)}</div> : <EmptyCopy title="Belum ada rencana mingguan" text="Rencana dengan periode minggu yang sesuai akan ditampilkan di sini." />}
+        {weeklySummary.length ? <div className="divide-y border-t">{weeklySummary.slice(0, weeklyLimit).map((plan) => <details key={plan.id} className="group"><summary className="flex cursor-pointer list-none flex-wrap items-center gap-4 p-5 transition-colors hover:bg-[#f8faf9] sm:px-6 [&::-webkit-details-marker]:hidden"><span className="min-w-0 flex-1 basis-48"><span className="block break-words text-sm font-semibold text-[#294846]">{plan.title}</span><span className="mt-1 block text-xs leading-5 text-[#59706f]">{plan.ownerName} · {displayDate(plan.weekStart, true)} – {displayDate(plan.weekEnd, true)}</span></span><span className="min-w-0 flex-1 basis-32 sm:max-w-52"><span className="mb-2 block text-xs font-semibold tabular-nums text-[#294846]">{plan.completed} / {plan.total} selesai</span><Progress value={plan.total ? Math.min(100, Math.round(plan.completed / plan.total * 100)) : 0} label={`${plan.title}: ${plan.completed} dari ${plan.total} selesai`} /></span><ChevronDown className="size-4 shrink-0 text-[#59706f] transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" /></summary><div className="border-t border-dashed bg-[#f8faf9] px-5 pb-3 sm:px-6">{plan.note && <p className="pt-4 text-sm text-[#59706f]">{plan.note}</p>}<PlanList plans={plan.children} from={plan.weekStart} to={plan.weekEnd} completedStatusLabels={completedStatusLabels} divisionId={divisionId} /></div></details>)}</div> : <EmptyCopy title="Belum ada rencana mingguan" text="Rencana dengan periode minggu yang sesuai akan ditampilkan di sini." />}
         {weeklySummary.length > weeklyLimit && <div className="border-t p-4 text-center"><button type="button" className={quietButton} onClick={() => setWeeklyLimit(weeklyLimit + 4)}>Tampilkan lebih banyak ({weeklySummary.length - weeklyLimit})<ArrowDown className="size-4" aria-hidden="true" /></button></div>}
       </section>
 
       <section className="mt-5" aria-label="Pekerjaan yang perlu ditindaklanjuti">
-        {summary.total === 0 ? <div className="flex items-start gap-3 rounded-xl border border-dashed p-4 text-sm text-[#59706f]"><CalendarDays className="mt-0.5 size-4 shrink-0" aria-hidden="true" /><p>Belum ada Action Plan pada periode ini. Pilih periode lain untuk melihat progres tim.</p></div> : summary.overdue.length ? <details className="group overflow-hidden rounded-2xl border border-[#e8d6b3] bg-[#fffbf2]"><summary className="flex cursor-pointer list-none items-center gap-3 p-5 [&::-webkit-details-marker]:hidden"><AlertCircle className="size-5 shrink-0 text-[#95601a]" aria-hidden="true" /><span className="flex-1"><span className="block text-sm font-semibold text-[#754b18]">{summary.overdue.length} pekerjaan perlu tindak lanjut</span><span className="mt-1 block text-xs leading-5 text-[#754b18]">Belum selesai dari tanggal sebelum hari ini, dalam periode terpilih.</span></span><ChevronDown className="size-4 shrink-0 text-[#754b18] transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" /></summary><div className="border-t border-[#e8d6b3] px-5 pb-3"><PlanList key={`${period.from}-${period.to}`} plans={summary.overdue} from={period.from} to={period.to} completedStatusLabels={completedStatusLabels} /></div></details> : <div className="flex items-start gap-3 rounded-xl border bg-white p-4 text-sm text-[#294846]"><CheckCircle2 className="mt-0.5 size-4 shrink-0 text-[#137d79]" aria-hidden="true" /><p>{summary.completed === summary.total ? "Seluruh Action Plan pada periode ini sudah selesai." : "Tidak ada pekerjaan sebelum hari ini yang belum selesai pada periode ini."}</p></div>}
+        {summary.total === 0 ? <div className="flex items-start gap-3 rounded-xl border border-dashed p-4 text-sm text-[#59706f]"><CalendarDays className="mt-0.5 size-4 shrink-0" aria-hidden="true" /><p>Belum ada Action Plan pada periode ini. Pilih periode lain untuk melihat progres tim.</p></div> : summary.overdue.length ? <details className="group overflow-hidden rounded-2xl border border-[#e8d6b3] bg-[#fffbf2]"><summary className="flex cursor-pointer list-none items-center gap-3 p-5 [&::-webkit-details-marker]:hidden"><AlertCircle className="size-5 shrink-0 text-[#95601a]" aria-hidden="true" /><span className="flex-1"><span className="block text-sm font-semibold text-[#754b18]">{summary.overdue.length} pekerjaan perlu tindak lanjut</span><span className="mt-1 block text-xs leading-5 text-[#754b18]">Belum selesai dari tanggal sebelum hari ini, dalam periode terpilih.</span></span><ChevronDown className="size-4 shrink-0 text-[#754b18] transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" /></summary><div className="border-t border-[#e8d6b3] px-5 pb-3"><PlanList key={`${period.from}-${period.to}`} plans={summary.overdue} from={period.from} to={period.to} completedStatusLabels={completedStatusLabels} divisionId={divisionId} /></div></details> : <div className="flex items-start gap-3 rounded-xl border bg-white p-4 text-sm text-[#294846]"><CheckCircle2 className="mt-0.5 size-4 shrink-0 text-[#137d79]" aria-hidden="true" /><p>{summary.completed === summary.total ? "Seluruh Action Plan pada periode ini sudah selesai." : "Tidak ada pekerjaan sebelum hari ini yang belum selesai pada periode ini."}</p></div>}
       </section>
     </section>
   );
@@ -222,10 +229,10 @@ function Progress({ value, label }: { value: number; label: string }) {
   return <div role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={value} className="h-1.5 overflow-hidden rounded-full bg-[#e4ecea]"><div className="h-full rounded-full bg-[#137d79] transition-[width] duration-200 ease-out motion-reduce:transition-none" style={{ width: `${value}%` }} /></div>;
 }
 
-function PlanList({ plans, from, to, completedStatusLabels }: { plans: DashboardPlan[]; from: string; to: string; completedStatusLabels: string[] }) {
+function PlanList({ plans, from, to, completedStatusLabels, divisionId }: { plans: DashboardPlan[]; from: string; to: string; completedStatusLabels: string[]; divisionId?: string }) {
   const [limit, setLimit] = useState(5);
   if (!plans.length) return <p className="py-5 text-sm text-[#59706f]">Tidak ada pekerjaan pada daftar ini.</p>;
-  return <><ul className="mt-2 divide-y">{plans.slice(0, limit).map((plan) => <li key={plan.id} className="flex flex-wrap items-start justify-between gap-3 py-4"><div className="min-w-0 flex-1 basis-48"><Link href={monitoringHref(plan.ownerId, from, to, plan.id)} className="break-words text-sm font-semibold text-[#176d68] underline-offset-4 hover:underline">{plan.task}<span className="sr-only"> — lihat detail</span></Link><p className="mt-1 text-xs leading-5 text-[#59706f]">{plan.ownerName} · {displayDate(plan.date, true)}</p></div><div className="flex shrink-0 flex-col items-start gap-1.5 text-xs"><span className="flex items-center gap-2"><span className="w-8 text-[#59706f]">Pagi</span><StatusBadge completedStatusLabels={completedStatusLabels} status={plan.morningStatus} /></span><span className="flex items-center gap-2"><span className="w-8 text-[#59706f]">Sore</span>{plan.afternoonStatus ? <StatusBadge completedStatusLabels={completedStatusLabels} status={plan.afternoonStatus} /> : <span className="text-[#59706f]">Belum diisi</span>}</span></div></li>)}</ul>{plans.length > limit && <button type="button" className="mb-2 inline-flex min-h-10 items-center gap-2 rounded-lg px-2 text-sm font-semibold text-[#137d79] hover:bg-[#e3f3f0]" onClick={() => setLimit(limit + 5)}>Tampilkan lebih banyak ({plans.length - limit})<ArrowDown className="size-4" aria-hidden="true" /></button>}</>;
+  return <><ul className="mt-2 divide-y">{plans.slice(0, limit).map((plan) => <li key={plan.id} className="flex flex-wrap items-start justify-between gap-3 py-4"><div className="min-w-0 flex-1 basis-48"><Link href={monitoringHref(plan.ownerId, from, to, plan.id, divisionId)} className="break-words text-sm font-semibold text-[#176d68] underline-offset-4 hover:underline">{plan.task}<span className="sr-only"> — lihat detail</span></Link><p className="mt-1 text-xs leading-5 text-[#59706f]">{plan.ownerName} · {displayDate(plan.date, true)}</p></div><div className="flex shrink-0 flex-col items-start gap-1.5 text-xs"><span className="flex items-center gap-2"><span className="w-8 text-[#59706f]">Pagi</span><StatusBadge completedStatusLabels={completedStatusLabels} status={plan.morningStatus} /></span><span className="flex items-center gap-2"><span className="w-8 text-[#59706f]">Sore</span>{plan.afternoonStatus ? <StatusBadge completedStatusLabels={completedStatusLabels} status={plan.afternoonStatus} /> : <span className="text-[#59706f]">Belum diisi</span>}</span></div></li>)}</ul>{plans.length > limit && <button type="button" className="mb-2 inline-flex min-h-10 items-center gap-2 rounded-lg px-2 text-sm font-semibold text-[#137d79] hover:bg-[#e3f3f0]" onClick={() => setLimit(limit + 5)}>Tampilkan lebih banyak ({plans.length - limit})<ArrowDown className="size-4" aria-hidden="true" /></button>}</>;
 }
 
 function DailyTrend({ trend }: { trend: { date: string; total: number; completed: number }[] }) {

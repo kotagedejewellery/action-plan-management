@@ -11,5 +11,5 @@ export default async function Home() {
     if (error instanceof AppError && error.code === "FORBIDDEN") redirect("/login");
     redirect("/login");
   }
-  redirect(actor.role === "admin" ? "/dashboard" : "/action-plans");
+  redirect(actor.role === "user" ? "/action-plans" : "/dashboard");
 }

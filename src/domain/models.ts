@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "user";
+export type UserRole = "admin" | "bod" | "user";
 export type AccountStatus = "active" | "inactive";
 
 export type User = {
@@ -9,11 +9,21 @@ export type User = {
   role: UserRole;
   status: AccountStatus;
   sheetName: string;
+  divisionId?: string;
   createdAt: string;
   updatedAt: string;
 };
 
 export type SafeUser = Omit<User, "passwordHash">;
+
+export type Division = {
+  id: string;
+  name: string;
+  bodUserId?: string;
+  status: AccountStatus;
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type ActionPlan = {
   id: string;
@@ -60,7 +70,7 @@ export type ActionPlanStatus = {
   updatedAt: string;
 };
 
-export type Actor = Pick<User, "id" | "role" | "status" | "sheetName" | "email" | "name">;
+export type Actor = Pick<User, "id" | "role" | "status" | "sheetName" | "email" | "name" | "divisionId"> & { divisionName?: string };
 
 export function toSafeUser(user: User): SafeUser {
   const safeUser: Partial<User> = { ...user };

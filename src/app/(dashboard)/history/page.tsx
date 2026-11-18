@@ -1,3 +1,4 @@
+import { DivisionUnavailable } from "@/presentation/components/division-unavailable";
 import { redirect } from "next/navigation";
 
 import { listOwnWeeklyPlans, listVisiblePlans } from "@/application/use-cases";
@@ -8,6 +9,7 @@ import { currentActor } from "@/presentation/server/actor";
 export default async function HistoryPage() {
   const actor = await currentActor();
   if (actor.role !== "user") redirect("/dashboard");
+  if (!actor.divisionId) return <DivisionUnavailable />;
   const statusList = await statuses.list();
   const plans = await listVisiblePlans(actionPlans, statuses, actor, null, "history");
   const userWeeklyPlans = await listOwnWeeklyPlans(weeklyPlans, actor);

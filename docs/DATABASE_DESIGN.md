@@ -2,7 +2,7 @@
 
 ## 1. Model penyimpanan
 
-Satu Google Spreadsheet menjadi sumber data utama. Sheet `Users` menyimpan akun, `Settings` menyimpan status custom, `Weekly Plans` menyimpan target mingguan, dan setiap User memiliki satu sheet Action Plan yang ditentukan melalui `Users.sheet_name`. Google Drive menyimpan binary lampiran; spreadsheet hanya menyimpan metadatanya.
+Satu Google Spreadsheet menjadi sumber data utama. Sheet `Users` menyimpan akun, `Divisions` menyimpan divisi dan penanggung jawab BOD, `Settings` menyimpan status custom, `Weekly Plans` menyimpan target mingguan, dan setiap User memiliki satu sheet Action Plan yang ditentukan melalui `Users.sheet_name`. Google Drive menyimpan binary lampiran; spreadsheet hanya menyimpan metadatanya.
 
 ```text
 Action Plan Management Spreadsheet
@@ -23,11 +23,12 @@ Desain ini mempertahankan pola spreadsheet existing. Aplikasi tidak membuat data
 | `name` | string | Ya | Nama tampilan User. |
 | `email` | string | Ya | Unik secara case-insensitive, dipakai untuk login. |
 | `password_hash` | string | Ya | Hasil bcrypt; tidak pernah dikirim ke client. |
-| `role` | enum | Ya | Hanya `admin` atau `user`. |
+| `role` | enum | Ya | `admin` (SuperAdmin), `bod`, atau `user`. |
 | `status` | enum | Ya | Hanya `active` atau `inactive`. |
 | `sheet_name` | string | Ya untuk role user | Nama tab Action Plan yang telah ada. Tidak boleh dipakai dua User. |
 | `created_at` | ISO 8601 UTC | Ya | Waktu akun dibuat. |
 | `updated_at` | ISO 8601 UTC | Ya | Waktu perubahan terakhir. |
+| `division_id` (J) | UUID/string | Untuk User baru | Divisi anggota; pemetaan awal akun lama boleh kosong dan harus ditinjau SuperAdmin. |
 
 `email` dinormalisasi (trim + lowercase) sebelum dibandingkan atau disimpan. `sheet_name` harus divalidasi terhadap daftar sheet yang diizinkan dan tidak boleh dibentuk dari input request tanpa otorisasi.
 
@@ -96,7 +97,7 @@ Users (1) ──── (1) User Action Plan Sheet
 
 Users (1) memiliki banyak Weekly Plan; setiap Weekly Plan memiliki banyak Action Plan harian. Satu Action Plan dapat memiliki maksimal tiga metadata lampiran Google Drive.
 
-Pada setiap operasi User, aplikasi mengambil `sheet_name` dari akun terautentikasi di sheet `Users`; request client tidak boleh menentukan target sheet. Admin boleh memilih User, tetapi target tetap di-resolve lewat `Users.id` di server.
+Pada setiap operasi User, aplikasi mengambil `sheet_name` dari akun terautentikasi di sheet `Users`; request client tidak boleh menentukan target sheet. SuperAdmin boleh memilih seluruh User; BOD hanya anggota divisinya. Target tetap di-resolve lewat `Users.id` dan diperiksa cakupannya sebelum membaca sheet atau lampiran.
 
 ## 7. Validasi integritas
 
@@ -104,7 +105,7 @@ Pada setiap operasi User, aplikasi mengambil `sheet_name` dari akun terautentika
 | --- | --- |
 | `Users.id` / `record_id` | Unik dan tidak kosong untuk record baru. |
 | Email | Format email valid dan unik. |
-| Role | `admin` atau `user`. |
+| Role | `admin`, `bod`, atau `user`. |
 | Status akun | `active` atau `inactive`. |
 | Tanggal | Tanggal kalender valid. |
 | Action Plan | Setelah trim tidak kosong. |
@@ -141,3 +142,15 @@ Google Sheets tidak menyediakan constraint database relasional. Semua validasi d
 - Edit bersamaan pada baris yang sama berpotensi last-write-wins. Untuk v1, aplikasi mengirim `updated_at` terakhir dan menolak update jika nilainya telah berubah, sehingga User diminta memuat ulang.
 - Akses langsung manusia ke spreadsheet tetap dimungkinkan, tetapi perubahan header/kolom harus dikontrol karena dapat mengganggu adapter.
 - Spreadsheet dan credential service account harus dibackup/dikelola oleh pemilik Workspace.
+
+## 11. Divisi dan kompatibilitas akun lama
+
+Sheet `Divisions`, kolom A:F, berisi `id`, `name`, `bod_user_id`, `status`, `created_at`, `updated_at`. Nama divisi unik tanpa membedakan huruf besar/kecil. Satu divisi aktif wajib memiliki satu BOD aktif; satu akun BOD hanya ditugaskan pada satu divisi. Divisi nonaktif dapat disimpan tanpa BOD untuk persiapan. Penggantian BOD menutup akses BOD lama pada permintaan berikutnya. BOD yang masih memimpin divisi aktif tidak dapat dinonaktifkan atau diubah role-nya sebelum penggantian.
+
+`Users.division_id` adalah afiliasi pekerjaan anggota, bukan sumber penugasan BOD. Penugasan BOD di-resolve dari `Divisions.bod_user_id`. Afiliasi anggota dipertahankan saat role berubah agar riwayat tetap terikat pada divisi semula. Perpindahan divisi anggota tidak tersedia; pemetaan pertama akun lama diperbolehkan dan harus dikonfirmasi, termasuk akun yang sudah berganti role tetapi masih memiliki sheet pekerjaan. Pemetaan awal riwayat BOD harus sesuai penugasan divisinya, baik melalui form maupun API. Sheet, ID, hash password, relasi Weekly Plan dan lampiran tetap sama. Action Plan tidak memerlukan kolom divisi tambahan selama afiliasi anggota tetap.
+
+Pembacaan Users sembilan kolom tetap didukung tanpa perubahan data. Kolom J ditambahkan sebagai `division_id` hanya pada mutasi akun yang diminta SuperAdmin; kolom J tidak dikenal atau berisi data tanpa header ditolak untuk mencegah penimpaan. Pembacaan ketika tab Divisions belum ada menghasilkan daftar kosong tanpa membuat tab. Penambahan divisi secara eksplisit membuat tab yang belum ada beserta header; header tab existing yang berbeda ditolak. Tidak ada backfill, reset, penghapusan, atau bootstrap saat startup/deploy.
+
+User dan BOD tanpa divisi aktif tidak memperoleh akses pekerjaan. SuperAdmin tetap dapat memantau riwayat akun yang belum dipetakan melalui cakupan global. BOD dapat memantau anggota nonaktif dan riwayat mantan User yang tetap memiliki sheet dalam divisinya; BOD tidak dapat mengubah pekerjaan atau akun. Preview gambar memakai pemeriksaan anggota, record dan ID lampiran; respons binary tidak boleh dicache browser. File non-gambar mengikuti batas existing: hanya pemilik yang mengunduh melalui aplikasi.
+
+Lihat `docs/MULTI_DIVISION_ROLLOUT.md` sebelum mengubah pemetaan environment nyata.
