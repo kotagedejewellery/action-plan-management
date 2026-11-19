@@ -17,6 +17,7 @@ import {
   Users,
 } from "./icons";
 import { ConfirmDialog } from "./workspace-ui";
+import { BrandLogo } from "./brand-logo";
 
 const baseNavigation = [
   {
@@ -76,17 +77,15 @@ export function AppShell({
   };
 
   const sidebar = (
-    <aside className="flex h-full w-60 flex-col border-r bg-white px-4 py-5 2xl:w-72">
+    <aside className="flex h-full w-60 flex-col overflow-y-auto border-r bg-white px-4 py-5 2xl:w-72">
       <div className="flex items-center justify-between px-2">
         <Link
-          className="flex items-center gap-3 font-semibold tracking-tight text-[#173c3a]"
+          className="flex min-w-0 flex-1 flex-col rounded-2xl bg-[#173c3a] px-3 py-3 text-white transition-colors hover:bg-[#0f302e] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#8fd8d0]"
           href={homeHref}
           onClick={() => { setMobileMenuOpen(false); if (pathname !== homeHref) setPendingHref(homeHref); }}
         >
-          <span className="grid size-9 place-items-center rounded-xl bg-[#173c3a] text-sm font-bold text-[#d7f1ed]">
-            AP
-          </span>
-          <span>Action Plan</span>
+          <BrandLogo className="h-28 w-full" />
+          <span className="mt-1 text-center text-xs font-semibold tracking-[0.08em] text-[#d5e8e5]">ACTION PLAN MANAGEMENT</span>
         </Link>
         <button
           className="grid size-9 place-items-center rounded-lg text-[#667c7c] lg:hidden"
@@ -97,7 +96,7 @@ export function AppShell({
         </button>
       </div>
 
-      <nav className="mt-10 space-y-1" aria-label="Navigasi utama" aria-busy={isNavigating}>
+      <nav className="mt-8 space-y-1" aria-label="Navigasi utama" aria-busy={isNavigating}>
         {navigation.map(({ href, label, icon: Icon }) => {
           const active = pathname === href;
           return (

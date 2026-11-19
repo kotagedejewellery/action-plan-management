@@ -60,9 +60,9 @@
     "semantic_hash": ""
   },
   "src/app/layout.tsx": {
-    "mtime": 1791268917.2430925,
-    "seen": 1791269158.980233,
-    "ast_hash": "26f6b7b594a0a10a7bbe2a135071400c",
+    "mtime": 1795080609.282855,
+    "seen": 1795080938.8196316,
+    "ast_hash": "54ca8818285e0a87d26008d4af2051ff",
     "semantic_hash": ""
   },
   "src/app/page.tsx": {
@@ -138,9 +138,9 @@
     "semantic_hash": ""
   },
   "src/app/login/page.tsx": {
-    "mtime": 1790840106.9039438,
-    "seen": 1790840139.5464396,
-    "ast_hash": "55d321a474f3b93f0cb600113cfee995",
+    "mtime": 1795078965.1430233,
+    "seen": 1795079005.421382,
+    "ast_hash": "1a6ecf09df82120c8e7a72be2051cd33",
     "semantic_hash": ""
   },
   "src/presentation/components/action-plan-workspace.tsx": {
@@ -150,9 +150,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/app-shell.tsx": {
-    "mtime": 1794985013.8343332,
-    "seen": 1794985725.2577152,
-    "ast_hash": "a806e7fba7620a89e5aa805bf6f3ce78",
+    "mtime": 1795078965.1420228,
+    "seen": 1795079005.4214492,
+    "ast_hash": "c64d0ebc73f6a53465e7444440576aa3",
     "semantic_hash": ""
   },
   "src/presentation/components/icons.tsx": {
@@ -780,129 +780,129 @@
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-dashboard-desktop.png": {
-    "mtime": 1795068614.9269514,
-    "seen": 1795068848.96954,
-    "ast_hash": "bcbac0e5315275a0e70ff3795e358727",
+    "mtime": 1795080841.3317165,
+    "seen": 1795080938.8198776,
+    "ast_hash": "bfe022214a1c4910170713fa08ca7620",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-dashboard-mobile.png": {
-    "mtime": 1795068621.3249943,
-    "seen": 1795068848.9695463,
+    "mtime": 1795080847.4961128,
+    "seen": 1795080938.8198798,
     "ast_hash": "c5682e625f7a8873a9aa0af6d0e1530b",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-dashboard-user-1919.png": {
-    "mtime": 1795068626.9312017,
-    "seen": 1795068848.969553,
-    "ast_hash": "26b7720ddb6f34cc6207ec59f92a7d4a",
+    "mtime": 1795080851.3255136,
+    "seen": 1795080938.8198814,
+    "ast_hash": "05555694ebf3a3dcd44e461f20b06daf",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-monitoring-desktop.png": {
-    "mtime": 1795068615.687656,
-    "seen": 1795068848.969559,
-    "ast_hash": "3a7f19f37581ab0267104a5189f02d26",
+    "mtime": 1795080842.2478244,
+    "seen": 1795080938.8198833,
+    "ast_hash": "47be494109d595fea6bf009f02afe228",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-monitoring-mobile.png": {
-    "mtime": 1795068622.2219656,
-    "seen": 1795068848.9695654,
+    "mtime": 1795080848.1445825,
+    "seen": 1795080938.8198853,
     "ast_hash": "ffcf90469396976c018d38b9b9e676ea",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-monitoring-user-1919.png": {
-    "mtime": 1795068628.2907836,
-    "seen": 1795068848.9695714,
-    "ast_hash": "3a6a60b31f6505dff35cde3c46c265ca",
+    "mtime": 1795080852.0321097,
+    "seen": 1795080938.819887,
+    "ast_hash": "9e550a769d10d02f2afd18e2499a593f",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/division-form-desktop.png": {
-    "mtime": 1795068616.947583,
-    "seen": 1795068848.9695776,
-    "ast_hash": "dbd04298e92dbadd714945e7c9037138",
+    "mtime": 1795080843.4086738,
+    "seen": 1795080938.8198886,
+    "ast_hash": "17d96443b15c35bdeebf4cfabdec84b8",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/division-form-mobile.png": {
-    "mtime": 1795068623.3252823,
-    "seen": 1795068848.969584,
+    "mtime": 1795080849.0090902,
+    "seen": 1795080938.8198905,
     "ast_hash": "fbfbd523aff93c974e0f841587680deb",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/division-form-user-1919.png": {
-    "mtime": 1795068629.5913987,
-    "seen": 1795068848.9695911,
-    "ast_hash": "009414f0ef12e5cd12ba91a0629c91cb",
+    "mtime": 1795080853.0964117,
+    "seen": 1795080938.8198926,
+    "ast_hash": "6a5cb20b535e2137989f75019eb3351c",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/divisions-desktop.png": {
-    "mtime": 1795068613.6418495,
-    "seen": 1795068848.9695973,
-    "ast_hash": "878f7caddad1dbb56a44bac0fdf261ab",
+    "mtime": 1795080839.908949,
+    "seen": 1795080938.8198946,
+    "ast_hash": "8ac00c1470be86198bfc1fb20e3d1a72",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/divisions-mobile.png": {
-    "mtime": 1795068619.4657664,
-    "seen": 1795068848.969603,
+    "mtime": 1795080846.109967,
+    "seen": 1795080938.8198962,
     "ast_hash": "96fe9d2a549289adfe6a4eab3c88543c",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/divisions-user-1919.png": {
-    "mtime": 1795068625.1288059,
-    "seen": 1795068848.969609,
-    "ast_hash": "79c2f04b8d155e8c0a3557cbeaa5149c",
+    "mtime": 1795080850.0528555,
+    "seen": 1795080938.8198981,
+    "ast_hash": "e6f184721cc9cba7dc475881a57d2c6a",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/mapping-desktop.png": {
-    "mtime": 1795068618.490336,
-    "seen": 1795068848.9696155,
-    "ast_hash": "e59c0d7d496164d7d10419893bba5fd0",
+    "mtime": 1795080845.142337,
+    "seen": 1795080938.8198998,
+    "ast_hash": "2555e99a02b9e4cdd01c7fe1152b3561",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/mapping-mobile.png": {
-    "mtime": 1795068624.1801236,
-    "seen": 1795068848.9696221,
+    "mtime": 1795080849.573646,
+    "seen": 1795080938.8199017,
     "ast_hash": "8e1cfefff235040a0497bd12fda0db4a",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/mapping-user-1919.png": {
-    "mtime": 1795068630.6755855,
-    "seen": 1795068848.9696283,
-    "ast_hash": "98bd34e3b83edb5744b7ed0a8ad161a8",
+    "mtime": 1795080854.4554906,
+    "seen": 1795080938.8199031,
+    "ast_hash": "e8e4d159416a3f66a23fc250fe185193",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/unassigned-desktop.png": {
-    "mtime": 1795068616.2268705,
-    "seen": 1795068848.9696336,
-    "ast_hash": "e92664bf8fc8b1127f04746e340a53ad",
+    "mtime": 1795080842.793293,
+    "seen": 1795080938.819905,
+    "ast_hash": "2a44d67cf0de9be66d565e26aecc0ee2",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/unassigned-mobile.png": {
-    "mtime": 1795068622.7717638,
-    "seen": 1795068848.9696398,
+    "mtime": 1795080848.5207996,
+    "seen": 1795080938.8199074,
     "ast_hash": "aa913ef0c2d7389077cf0a3128f0ebdd",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/unassigned-user-1919.png": {
-    "mtime": 1795068628.907744,
-    "seen": 1795068848.9696457,
-    "ast_hash": "e38112b0ac9434cb3591db370ff50c13",
+    "mtime": 1795080852.479831,
+    "seen": 1795080938.819909,
+    "ast_hash": "14a6038571cf95520d23d30f1c071e50",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/users-desktop.png": {
-    "mtime": 1795068614.2461407,
-    "seen": 1795068848.9696522,
-    "ast_hash": "a7a1683c4076953aa3df329762102534",
+    "mtime": 1795080840.6913757,
+    "seen": 1795080938.8199108,
+    "ast_hash": "10592724aa18f35db08f8e5f3d6c1267",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/users-mobile.png": {
-    "mtime": 1795068620.1754694,
-    "seen": 1795068848.969658,
+    "mtime": 1795080846.7860682,
+    "seen": 1795080938.8199124,
     "ast_hash": "00263b11a295dbc5a4854e607b95ece9",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/users-user-1919.png": {
-    "mtime": 1795068625.9269829,
-    "seen": 1795068848.969664,
-    "ast_hash": "e04d1bb025cc471336252ab7b115bd00",
+    "mtime": 1795080850.6165934,
+    "seen": 1795080938.819914,
+    "ast_hash": "a599434fc04972a44d00fabbcd93d289",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/finish-review.md": {
@@ -936,111 +936,111 @@
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-dashboard-empty-desktop.png": {
-    "mtime": 1795068597.8020604,
-    "seen": 1795068848.9694247,
-    "ast_hash": "23637e9063446009670dd481290317ce",
+    "mtime": 1795080827.3465195,
+    "seen": 1795080938.8198433,
+    "ast_hash": "7d1d79fe796ab1b0748294604ef94c59",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-dashboard-empty-mobile.png": {
-    "mtime": 1795068601.100277,
-    "seen": 1795068848.9694314,
+    "mtime": 1795080830.063733,
+    "seen": 1795080938.819846,
     "ast_hash": "d47e0ead4f0770891cc6c10c5d304d5a",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-dashboard-empty-user-1919.png": {
-    "mtime": 1795068603.6722047,
-    "seen": 1795068848.9694378,
-    "ast_hash": "3253842bf21583be4a9ecd183c0c1ab0",
+    "mtime": 1795080832.0938416,
+    "seen": 1795080938.8198476,
+    "ast_hash": "22ddf3013f4279e55fc649444ee9eb03",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-monitoring-empty-desktop.png": {
-    "mtime": 1795068598.4844906,
-    "seen": 1795068848.969444,
-    "ast_hash": "fd488a344c188aec27fb303d87fcb25a",
+    "mtime": 1795080827.7830174,
+    "seen": 1795080938.8198495,
+    "ast_hash": "6ff1dcef9f350b7fd80e58228cbb12eb",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-monitoring-empty-mobile.png": {
-    "mtime": 1795068601.5324657,
-    "seen": 1795068848.969451,
+    "mtime": 1795080830.3718133,
+    "seen": 1795080938.8198516,
     "ast_hash": "cf096f198ea0b481a13119b36c260532",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-monitoring-empty-user-1919.png": {
-    "mtime": 1795068604.2729025,
-    "seen": 1795068848.9694574,
-    "ast_hash": "257de4f580fa58f36d4185a96d93ab6c",
+    "mtime": 1795080832.4707918,
+    "seen": 1795080938.8198538,
+    "ast_hash": "d6affd08be0ad416e551766b8c535030",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/filtered-monitoring-desktop.png": {
-    "mtime": 1795068599.1779647,
-    "seen": 1795068848.9694643,
-    "ast_hash": "1d2beefd37d1d7a252c63b90a26a5276",
+    "mtime": 1795080828.597222,
+    "seen": 1795080938.8198557,
+    "ast_hash": "a813b391b9fd1aad97ccc28c220bce2e",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/filtered-monitoring-mobile.png": {
-    "mtime": 1795068602.144412,
-    "seen": 1795068848.9694703,
+    "mtime": 1795080830.8410947,
+    "seen": 1795080938.8198576,
     "ast_hash": "d9affb6eefd597d79230de46abb0137d",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/filtered-monitoring-user-1919.png": {
-    "mtime": 1795068605.2261305,
-    "seen": 1795068848.9694765,
-    "ast_hash": "8dd19476b9addd0dcf71d3cceb1191e4",
+    "mtime": 1795080833.0847323,
+    "seen": 1795080938.8198595,
+    "ast_hash": "8defaa09983bfbc43f98e00b8f02e1e8",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-confirm-desktop.png": {
-    "mtime": 1795068600.6210496,
-    "seen": 1795068848.9694824,
-    "ast_hash": "707c4da77db77dca277c4a4244e96873",
+    "mtime": 1795080829.5358603,
+    "seen": 1795080938.8198614,
+    "ast_hash": "6f08b82ab78724bf3a9b824041250b74",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-confirm-mobile.png": {
-    "mtime": 1795068603.0394614,
-    "seen": 1795068848.9694889,
+    "mtime": 1795080831.6430492,
+    "seen": 1795080938.8198636,
     "ast_hash": "115d230dac0e75829f03cd7134d4de28",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-confirm-user-1919.png": {
-    "mtime": 1795068606.5706103,
-    "seen": 1795068848.9694958,
-    "ast_hash": "4d8c2d0381486b0eb08d2ee10883b2c7",
+    "mtime": 1795080834.6292038,
+    "seen": 1795080938.8198652,
+    "ast_hash": "f30bfa3cf4503d6b828729c96956cf87",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-filter-desktop.png": {
-    "mtime": 1795068600.0897238,
-    "seen": 1795068848.9695024,
-    "ast_hash": "85071a3daa35580721727fa460823186",
+    "mtime": 1795080829.114465,
+    "seen": 1795080938.8198671,
+    "ast_hash": "86bf9cefcaae8361a705ee3376a1ec6d",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-filter-mobile.png": {
-    "mtime": 1795068602.6786966,
-    "seen": 1795068848.9695084,
+    "mtime": 1795080831.3077078,
+    "seen": 1795080938.8198693,
     "ast_hash": "5fb41f796ef18f75b381f2cc92f6ca51",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-filter-user-1919.png": {
-    "mtime": 1795068605.7808325,
-    "seen": 1795068848.9695146,
-    "ast_hash": "3f5a5dc607f8ee466ce1fb9816a1c8c7",
+    "mtime": 1795080833.4974618,
+    "seen": 1795080938.819871,
+    "ast_hash": "0996735e10f4ca006454ef2894efe607",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-form-desktop.png": {
-    "mtime": 1795068600.3680544,
-    "seen": 1795068848.9695208,
-    "ast_hash": "5e5a461bd10b497a3cecd66776928f04",
+    "mtime": 1795080829.3222353,
+    "seen": 1795080938.8198726,
+    "ast_hash": "27bc3e2af0a07215b20e836a3bcfaba1",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-form-mobile.png": {
-    "mtime": 1795068602.852345,
-    "seen": 1795068848.9695272,
-    "ast_hash": "bed5f5af4a0373e6446b8652e7a91c6c",
+    "mtime": 1795080831.4642282,
+    "seen": 1795080938.8198743,
+    "ast_hash": "1bdc99b7bb013d66deb0658e232588dd",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-form-user-1919.png": {
-    "mtime": 1795068606.0792406,
-    "seen": 1795068848.9695337,
-    "ast_hash": "9faab776337e08dde37b4448a5c757b4",
+    "mtime": 1795080833.6945026,
+    "seen": 1795080938.8198762,
+    "ast_hash": "3aa25eb477bb4c4d2d9328943e97e3cd",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/verification.md": {
@@ -1133,10 +1133,46 @@
     "ast_hash": "feedd275eb6a053208560e4b4798fd7e",
     "semantic_hash": ""
   },
-  "src/app/icon.svg": {
-    "mtime": 1795061507.2101805,
-    "seen": 1795061637.593963,
-    "ast_hash": "5781f0de6c3fbceb992bfc6d80e83b31",
+  "src/presentation/components/brand-logo.tsx": {
+    "mtime": 1795080500.679925,
+    "seen": 1795080938.8196821,
+    "ast_hash": "ec6da1a995223a389ab7ec1df9b07e41",
+    "semantic_hash": ""
+  },
+  "public/kotagede-jewellery-logo-transparent.png": {
+    "mtime": 1795078567.303582,
+    "seen": 1795078928.2009623,
+    "ast_hash": "1d260e1f8a0998563716cb651bde012d",
+    "semantic_hash": ""
+  },
+  "src/app/apple-icon.png": {
+    "mtime": 1795079244.2366257,
+    "seen": 1795079447.8534174,
+    "ast_hash": "60a43649c616cc5fca91a66d018b8b09",
+    "semantic_hash": ""
+  },
+  "src/app/icon.png": {
+    "mtime": 1795079244.2366257,
+    "seen": 1795079447.8534214,
+    "ast_hash": "623fecc00956e870e692422e5123663d",
+    "semantic_hash": ""
+  },
+  "tests/unit/app-icons.test.ts": {
+    "mtime": 1795080609.2818332,
+    "seen": 1795080938.8197563,
+    "ast_hash": "7b123ffa57144c67f1d4d1075e0c53f9",
+    "semantic_hash": ""
+  },
+  "public/kotagede-jewellery-logo-dashboard.png": {
+    "mtime": 1795080489.9690292,
+    "seen": 1795080938.8199422,
+    "ast_hash": "04d8d968a6f6ce34b2246e9535ebe28d",
+    "semantic_hash": ""
+  },
+  "public/kotagede-pinned-tab.svg": {
+    "mtime": 1795080453.2413733,
+    "seen": 1795080938.8199477,
+    "ast_hash": "0de7597888039bc98d668c480c641cb8",
     "semantic_hash": ""
   }
 }

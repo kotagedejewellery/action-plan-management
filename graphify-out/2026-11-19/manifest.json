@@ -138,9 +138,9 @@
     "semantic_hash": ""
   },
   "src/app/login/page.tsx": {
-    "mtime": 1790840106.9039438,
-    "seen": 1790840139.5464396,
-    "ast_hash": "55d321a474f3b93f0cb600113cfee995",
+    "mtime": 1795078965.1430233,
+    "seen": 1795079005.421382,
+    "ast_hash": "1a6ecf09df82120c8e7a72be2051cd33",
     "semantic_hash": ""
   },
   "src/presentation/components/action-plan-workspace.tsx": {
@@ -150,9 +150,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/app-shell.tsx": {
-    "mtime": 1794985013.8343332,
-    "seen": 1794985725.2577152,
-    "ast_hash": "a806e7fba7620a89e5aa805bf6f3ce78",
+    "mtime": 1795078965.1420228,
+    "seen": 1795079005.4214492,
+    "ast_hash": "c64d0ebc73f6a53465e7444440576aa3",
     "semantic_hash": ""
   },
   "src/presentation/components/icons.tsx": {
@@ -300,9 +300,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-monitoring-workspace.tsx": {
-    "mtime": 1795062299.4448464,
-    "seen": 1795062552.6470964,
-    "ast_hash": "6d2af8c6b2c2f6f1b0614ff3d8880456",
+    "mtime": 1795068447.4805653,
+    "seen": 1795068848.968943,
+    "ast_hash": "e9371c01836a7eb1568fae41062abbd3",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-user-management-workspace.tsx": {
@@ -624,9 +624,9 @@
     "semantic_hash": ""
   },
   "tests/browser/monitoring.spec.ts": {
-    "mtime": 1795049849.811435,
-    "seen": 1795050304.2880738,
-    "ast_hash": "ba205558c5b43a6d012fb6b77f17489d",
+    "mtime": 1795068447.4839678,
+    "seen": 1795068848.9691274,
+    "ast_hash": "c367765c4bf9d9eb78d29130b265ab5d",
     "semantic_hash": ""
   },
   ".impeccable/surfaces/monitoring.md": {
@@ -780,129 +780,129 @@
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-dashboard-desktop.png": {
-    "mtime": 1795062408.3234546,
-    "seen": 1795062552.6472788,
-    "ast_hash": "bcbac0e5315275a0e70ff3795e358727",
+    "mtime": 1795078852.9181616,
+    "seen": 1795078928.200849,
+    "ast_hash": "46c8b5388f757369c41b510176b7c3df",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-dashboard-mobile.png": {
-    "mtime": 1795062411.819662,
-    "seen": 1795062552.647281,
+    "mtime": 1795078856.8580768,
+    "seen": 1795078928.2008522,
     "ast_hash": "c5682e625f7a8873a9aa0af6d0e1530b",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-dashboard-user-1919.png": {
-    "mtime": 1795062415.5874472,
-    "seen": 1795062552.6472826,
-    "ast_hash": "26b7720ddb6f34cc6207ec59f92a7d4a",
+    "mtime": 1795078860.3508859,
+    "seen": 1795078928.2008553,
+    "ast_hash": "b758e2388acb6f37dff3a55cbc503e4f",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-monitoring-desktop.png": {
-    "mtime": 1795062408.9264283,
-    "seen": 1795062552.6472845,
-    "ast_hash": "3a7f19f37581ab0267104a5189f02d26",
+    "mtime": 1795078853.7070804,
+    "seen": 1795078928.2008586,
+    "ast_hash": "995f93e6d458e45c6485a5d6e2911d2e",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-monitoring-mobile.png": {
-    "mtime": 1795062412.5312204,
-    "seen": 1795062552.6472864,
+    "mtime": 1795078857.5145876,
+    "seen": 1795078928.2008617,
     "ast_hash": "ffcf90469396976c018d38b9b9e676ea",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-monitoring-user-1919.png": {
-    "mtime": 1795062416.3432126,
-    "seen": 1795062552.6472883,
-    "ast_hash": "3a6a60b31f6505dff35cde3c46c265ca",
+    "mtime": 1795078860.9352467,
+    "seen": 1795078928.2008646,
+    "ast_hash": "d3334f2253e5339b9ee5c4cae9f0df26",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/division-form-desktop.png": {
-    "mtime": 1795062409.6810956,
-    "seen": 1795062552.6472898,
-    "ast_hash": "dbd04298e92dbadd714945e7c9037138",
+    "mtime": 1795078854.5488136,
+    "seen": 1795078928.2008677,
+    "ast_hash": "e8ccea235f03ee279588a86c237bde87",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/division-form-mobile.png": {
-    "mtime": 1795062413.294402,
-    "seen": 1795062552.6472914,
+    "mtime": 1795078858.216947,
+    "seen": 1795078928.2008708,
     "ast_hash": "fbfbd523aff93c974e0f841587680deb",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/division-form-user-1919.png": {
-    "mtime": 1795062417.2681916,
-    "seen": 1795062552.6472929,
-    "ast_hash": "009414f0ef12e5cd12ba91a0629c91cb",
+    "mtime": 1795078861.727529,
+    "seen": 1795078928.2008736,
+    "ast_hash": "3506a6b08f0ee6e38c4969e46543beb0",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/divisions-desktop.png": {
-    "mtime": 1795062406.997939,
-    "seen": 1795062552.6472955,
-    "ast_hash": "878f7caddad1dbb56a44bac0fdf261ab",
+    "mtime": 1795078851.2874079,
+    "seen": 1795078928.200877,
+    "ast_hash": "80b94cfc07382be770ef1e12fde0b785",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/divisions-mobile.png": {
-    "mtime": 1795062410.8508427,
-    "seen": 1795062552.6472967,
+    "mtime": 1795078855.9837396,
+    "seen": 1795078928.2008798,
     "ast_hash": "96fe9d2a549289adfe6a4eab3c88543c",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/divisions-user-1919.png": {
-    "mtime": 1795062414.592625,
-    "seen": 1795062552.6472986,
-    "ast_hash": "79c2f04b8d155e8c0a3557cbeaa5149c",
+    "mtime": 1795078859.246943,
+    "seen": 1795078928.2008827,
+    "ast_hash": "918a55469ccbb14cfd310bf476efd9ae",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/mapping-desktop.png": {
-    "mtime": 1795062410.3063061,
-    "seen": 1795062552.6473,
-    "ast_hash": "e59c0d7d496164d7d10419893bba5fd0",
+    "mtime": 1795078855.366389,
+    "seen": 1795078928.200886,
+    "ast_hash": "7df33732410a2da65e5ac7b1e1a99eb8",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/mapping-mobile.png": {
-    "mtime": 1795062413.987813,
-    "seen": 1795062552.6473024,
+    "mtime": 1795078858.7918403,
+    "seen": 1795078928.200889,
     "ast_hash": "8e1cfefff235040a0497bd12fda0db4a",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/mapping-user-1919.png": {
-    "mtime": 1795062418.2818336,
-    "seen": 1795062552.6473038,
-    "ast_hash": "98bd34e3b83edb5744b7ed0a8ad161a8",
+    "mtime": 1795078862.7738307,
+    "seen": 1795078928.200892,
+    "ast_hash": "6e11bd10833bd0e4cad3c25b2664e190",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/unassigned-desktop.png": {
-    "mtime": 1795062409.3123558,
-    "seen": 1795062552.6473055,
-    "ast_hash": "e92664bf8fc8b1127f04746e340a53ad",
+    "mtime": 1795078854.0899553,
+    "seen": 1795078928.200895,
+    "ast_hash": "4d40aca3e0b82808d287fe10c9b1361e",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/unassigned-mobile.png": {
-    "mtime": 1795062412.8846183,
-    "seen": 1795062552.647307,
+    "mtime": 1795078857.822441,
+    "seen": 1795078928.2008984,
     "ast_hash": "aa913ef0c2d7389077cf0a3128f0ebdd",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/unassigned-user-1919.png": {
-    "mtime": 1795062416.7946804,
-    "seen": 1795062552.6473083,
-    "ast_hash": "e38112b0ac9434cb3591db370ff50c13",
+    "mtime": 1795078861.2879882,
+    "seen": 1795078928.200901,
+    "ast_hash": "a7d48f61692b763f77a11416fb34bc14",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/users-desktop.png": {
-    "mtime": 1795062407.6833105,
-    "seen": 1795062552.6473105,
-    "ast_hash": "a7a1683c4076953aa3df329762102534",
+    "mtime": 1795078852.020812,
+    "seen": 1795078928.2009044,
+    "ast_hash": "6ad2e70843a0bdc6dc6afd588e18f284",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/users-mobile.png": {
-    "mtime": 1795062411.3036253,
-    "seen": 1795062552.647312,
+    "mtime": 1795078856.374604,
+    "seen": 1795078928.2009075,
     "ast_hash": "00263b11a295dbc5a4854e607b95ece9",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/users-user-1919.png": {
-    "mtime": 1795062415.0554612,
-    "seen": 1795062552.6473134,
-    "ast_hash": "e04d1bb025cc471336252ab7b115bd00",
+    "mtime": 1795078859.7397623,
+    "seen": 1795078928.2009106,
+    "ast_hash": "1cc3750999117da7737f9274e7010166",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/finish-review.md": {
@@ -936,111 +936,111 @@
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-dashboard-empty-desktop.png": {
-    "mtime": 1795062393.587808,
-    "seen": 1795062552.6472452,
-    "ast_hash": "23637e9063446009670dd481290317ce",
+    "mtime": 1795078839.802171,
+    "seen": 1795078928.2007923,
+    "ast_hash": "44f35d937cb1893134c3ad888a4e9850",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-dashboard-empty-mobile.png": {
-    "mtime": 1795062396.3342042,
-    "seen": 1795062552.6472478,
+    "mtime": 1795078842.0557358,
+    "seen": 1795078928.200796,
     "ast_hash": "d47e0ead4f0770891cc6c10c5d304d5a",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-dashboard-empty-user-1919.png": {
-    "mtime": 1795062398.9915793,
-    "seen": 1795062552.6472497,
-    "ast_hash": "3253842bf21583be4a9ecd183c0c1ab0",
+    "mtime": 1795078844.7544248,
+    "seen": 1795078928.200799,
+    "ast_hash": "e2ec69e2f21e0f53ea535f33fc6da368",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-monitoring-empty-desktop.png": {
-    "mtime": 1795062394.0676725,
-    "seen": 1795062552.6472514,
-    "ast_hash": "fd488a344c188aec27fb303d87fcb25a",
+    "mtime": 1795078840.4111063,
+    "seen": 1795078928.2008023,
+    "ast_hash": "e96643aa6e3b0107a23fe19a5ad6aa28",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-monitoring-empty-mobile.png": {
-    "mtime": 1795062396.666334,
-    "seen": 1795062552.6472533,
+    "mtime": 1795078842.6066427,
+    "seen": 1795078928.200806,
     "ast_hash": "cf096f198ea0b481a13119b36c260532",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/bod-monitoring-empty-user-1919.png": {
-    "mtime": 1795062399.4572122,
-    "seen": 1795062552.647256,
-    "ast_hash": "257de4f580fa58f36d4185a96d93ab6c",
+    "mtime": 1795078845.2346468,
+    "seen": 1795078928.200809,
+    "ast_hash": "7c81244e9b5c3f3c610d1a10c908321e",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/filtered-monitoring-desktop.png": {
-    "mtime": 1795062394.8825045,
-    "seen": 1795062552.6472576,
-    "ast_hash": "1d2beefd37d1d7a252c63b90a26a5276",
+    "mtime": 1795078840.9123356,
+    "seen": 1795078928.2008119,
+    "ast_hash": "ca3cdb5d78abb99b8d730b182d442ec2",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/filtered-monitoring-mobile.png": {
-    "mtime": 1795062397.1534538,
-    "seen": 1795062552.6472592,
+    "mtime": 1795078843.138097,
+    "seen": 1795078928.200815,
     "ast_hash": "d9affb6eefd597d79230de46abb0137d",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/filtered-monitoring-user-1919.png": {
-    "mtime": 1795062399.9755795,
-    "seen": 1795062552.6472611,
-    "ast_hash": "8dd19476b9addd0dcf71d3cceb1191e4",
+    "mtime": 1795078845.823978,
+    "seen": 1795078928.2008176,
+    "ast_hash": "8a3f137c53e3e74f267669128805e8de",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-confirm-desktop.png": {
-    "mtime": 1795062395.93848,
-    "seen": 1795062552.6472635,
-    "ast_hash": "707c4da77db77dca277c4a4244e96873",
+    "mtime": 1795078841.5662615,
+    "seen": 1795078928.2008207,
+    "ast_hash": "4bb42acd462cbb85da8e615aa79d8fba",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-confirm-mobile.png": {
-    "mtime": 1795062398.2989123,
-    "seen": 1795062552.647265,
+    "mtime": 1795078844.0900311,
+    "seen": 1795078928.200824,
     "ast_hash": "115d230dac0e75829f03cd7134d4de28",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-confirm-user-1919.png": {
-    "mtime": 1795062400.7322328,
-    "seen": 1795062552.6472669,
-    "ast_hash": "4d8c2d0381486b0eb08d2ee10883b2c7",
+    "mtime": 1795078847.2089243,
+    "seen": 1795078928.2008274,
+    "ast_hash": "4bf518cbe483930ae8cf2840a6e70706",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-filter-desktop.png": {
-    "mtime": 1795062395.4772835,
-    "seen": 1795062552.6472685,
-    "ast_hash": "85071a3daa35580721727fa460823186",
+    "mtime": 1795078841.2786984,
+    "seen": 1795078928.2008305,
+    "ast_hash": "b23d36eae3cd7649f2116b8e48a55d92",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-filter-mobile.png": {
-    "mtime": 1795062397.6208844,
-    "seen": 1795062552.6472707,
+    "mtime": 1795078843.6041813,
+    "seen": 1795078928.2008338,
     "ast_hash": "5fb41f796ef18f75b381f2cc92f6ca51",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-filter-user-1919.png": {
-    "mtime": 1795062400.3469648,
-    "seen": 1795062552.647272,
-    "ast_hash": "3f5a5dc607f8ee466ce1fb9816a1c8c7",
+    "mtime": 1795078846.7548854,
+    "seen": 1795078928.2008367,
+    "ast_hash": "0d1561dd07cb73c56346c5f15aa6135d",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-form-desktop.png": {
-    "mtime": 1795062395.7079685,
-    "seen": 1795062552.6472735,
-    "ast_hash": "5e5a461bd10b497a3cecd66776928f04",
+    "mtime": 1795078841.4176593,
+    "seen": 1795078928.2008398,
+    "ast_hash": "c66a484118d527e7a63fbc7a174a1846",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-form-mobile.png": {
-    "mtime": 1795062397.899863,
-    "seen": 1795062552.6472752,
+    "mtime": 1795078843.816053,
+    "seen": 1795078928.200843,
     "ast_hash": "bed5f5af4a0373e6446b8652e7a91c6c",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/legacy-form-user-1919.png": {
-    "mtime": 1795062400.5245214,
-    "seen": 1795062552.6472769,
-    "ast_hash": "9faab776337e08dde37b4448a5c757b4",
+    "mtime": 1795078846.9895644,
+    "seen": 1795078928.2008462,
+    "ast_hash": "fec3e769b834a9881cdcbcdf2bdc8062",
     "semantic_hash": ""
   },
   ".impeccable/review/division-gaps/verification.md": {
@@ -1133,10 +1133,28 @@
     "ast_hash": "feedd275eb6a053208560e4b4798fd7e",
     "semantic_hash": ""
   },
-  "src/app/icon.svg": {
-    "mtime": 1795061507.2101805,
-    "seen": 1795061637.593963,
-    "ast_hash": "5781f0de6c3fbceb992bfc6d80e83b31",
+  "src/presentation/components/brand-logo.tsx": {
+    "mtime": 1795078674.125111,
+    "seen": 1795078928.2005,
+    "ast_hash": "b928ec006231d3858415489f5f4599df",
+    "semantic_hash": ""
+  },
+  "public/kotagede-jewellery-logo-transparent.png": {
+    "mtime": 1795078567.303582,
+    "seen": 1795078928.2009623,
+    "ast_hash": "1d260e1f8a0998563716cb651bde012d",
+    "semantic_hash": ""
+  },
+  "src/app/apple-icon.png": {
+    "mtime": 1795079244.2366257,
+    "seen": 1795079447.8534174,
+    "ast_hash": "60a43649c616cc5fca91a66d018b8b09",
+    "semantic_hash": ""
+  },
+  "src/app/icon.png": {
+    "mtime": 1795079244.2366257,
+    "seen": 1795079447.8534214,
+    "ast_hash": "623fecc00956e870e692422e5123663d",
     "semantic_hash": ""
   }
 }
