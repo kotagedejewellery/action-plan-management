@@ -127,6 +127,7 @@ test("desktop detail preserves scroll, restores focus and respects attachment pe
   await opener.click();
   const panel = page.getByRole("dialog", { name: "Detail Action Plan", exact: true });
   await expect(panel).toHaveAttribute("aria-modal", "false");
+  expect(await page.evaluate(() => window.scrollY)).toBe(before);
   await expect(panel).toContainText("Katalog telah diperiksa");
   await expect(panel.getByRole("link", { name: "Buka hasil", exact: true })).toHaveAttribute("href", "https://example.test/hasil-katalog");
   await expect(panel.getByText("Rekap koleksi.pdf", { exact: true })).toBeVisible();

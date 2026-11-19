@@ -70,6 +70,7 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
   const requestId = useRef(0);
   const requestController = useRef<AbortController | null>(null);
   const detailOpener = useRef<HTMLButtonElement | null>(null);
+  const detailScrollPosition = useRef<{ left: number; top: number } | null>(null);
   const memberToggle = useRef<HTMLButtonElement>(null);
   const list = useRef<HTMLDivElement>(null);
   const selected = users.find((user) => user.id === selectedId);
@@ -96,25 +97,26 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
 
   useEffect(() => () => requestController.current?.abort(), []);
   useEffect(() => {
-    if (!selectedPlanId) return;
+    if (!selectedPlanId || detailScrollPosition.current) return;
     const row = Array.from(list.current?.querySelectorAll<HTMLElement>("[data-plan-row]") ?? []).find((element) => element.dataset.planRow === selectedPlanId && element.getClientRects().length > 0);
     row?.scrollIntoView({ block: "nearest", inline: "start" });
   }, [selectedPlanId]);
 
   function openDetail(id: string, opener: HTMLButtonElement) {
     detailOpener.current = opener;
+    detailScrollPosition.current = { left: window.scrollX, top: window.scrollY };
     setDetailId(id);
   }
 
   function closeDetail() {
     const id = detailId;
     const opener = detailOpener.current;
-    const restoreScroll = Boolean(opener?.isConnected && opener.getClientRects().length);
-    const scrollPosition = restoreScroll ? { left: window.scrollX, top: window.scrollY } : undefined;
+    const scrollPosition = detailScrollPosition.current;
+    detailScrollPosition.current = null;
     setDetailId("");
     requestAnimationFrame(() => {
       const target = opener?.isConnected && opener.getClientRects().length > 0 ? opener : Array.from(list.current?.querySelectorAll<HTMLButtonElement>("[data-plan-detail]") ?? []).find((element) => element.dataset.planDetail === id && element.getClientRects().length > 0);
-      if (!restoreScroll) target?.scrollIntoView({ block: "nearest", inline: "nearest" });
+      if (!scrollPosition) target?.scrollIntoView({ block: "nearest", inline: "nearest" });
       target?.focus({ preventScroll: true });
       if (scrollPosition) window.scrollTo(scrollPosition);
     });
