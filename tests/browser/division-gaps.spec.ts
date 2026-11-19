@@ -48,7 +48,8 @@ test("every dashboard Monitoring link retains division and applied period", asyn
     expect(params.get("divisionId")).toBe("a");
     expect(params.get("from")).toBeTruthy();
     expect(params.get("to")).toBeTruthy();
-    expect(params.get("userId")).toBeTruthy();
+    if (params.get("scope") === "active") expect(params.get("userId")).toBeNull();
+    else expect(params.get("userId")).toBeTruthy();
   }
   await page.getByRole("button", { name: /^Total Action Plan/ }).click();
   const detail = page.locator('#dashboard-plan-list a[href^="/monitoring?"]').first();

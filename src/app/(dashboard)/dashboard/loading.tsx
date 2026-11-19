@@ -3,7 +3,7 @@
 export default function DashboardLoading() {
   return <section className="w-full" aria-busy="true" aria-label="Memuat Dashboard Tim">
     <div className="flex flex-wrap items-start justify-between gap-4">
-      <div><h1 role="status" className="text-lg font-semibold text-[#173c3a]">Memuat Dashboard Tim…</h1><p className="mt-1 text-sm text-[#59706f]">Kami sedang menyiapkan ringkasan progres dan tindak lanjut tim.</p></div>
+      <div><h1 className="text-lg font-semibold text-[#173c3a]">Memuat Dashboard Tim…</h1><p className="mt-1 text-sm text-[#59706f]">Kami sedang menyiapkan ringkasan progres dan tindak lanjut tim.</p></div>
       <button type="button" onClick={() => window.location.reload()} className="inline-flex min-h-10 items-center rounded-xl border bg-white px-3 text-sm font-semibold text-[#294846] transition-colors hover:bg-[#f1f5f4]">Coba lagi</button>
     </div>
     <div className="mt-5 flex flex-wrap items-center gap-3 border-y bg-white px-4 py-3"><div className="h-10 w-48 rounded-xl bg-[#e4ecea] motion-safe:animate-pulse" /><div className="h-10 w-36 rounded-xl bg-[#e4ecea] motion-safe:animate-pulse" /><div className="h-4 w-52 rounded bg-[#e4ecea] motion-safe:animate-pulse" /></div>

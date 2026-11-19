@@ -138,6 +138,16 @@ test("a custom period selected during refresh and an unfinished draft are preser
   await expect(page.getByLabel("Dari tanggal", { exact: true })).toHaveValue("2026-10-13");
 });
 
+test("BOD keeps loaded work visible when approval status cannot be refreshed", async ({ page }) => {
+  await page.goto("/monitoring?actor=bod");
+  await page.route("**/api/action-plans?**", (route) => route.fulfill({ json: monitoringPlans }));
+  await page.route("**/api/approvals?**", (route) => route.fulfill({ status: 503, json: { error: "Approval sedang tidak tersedia." } }));
+  await page.getByRole("button", { name: "Perbarui data", exact: true }).click();
+  await expect(page.locator("tbody tr")).toHaveCount(20);
+  await expect(page.getByText("Monitoring diperbarui", { exact: true })).toBeVisible();
+  await expect(page.getByText("Status approval belum dimuat", { exact: true })).toBeVisible();
+});
+
 test.describe("mobile picker focus", () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   test("the member chooser restores focus after same and different selections", async ({ page }) => {

@@ -39,7 +39,7 @@ function DivisionForm({ division, divisions, users, onCancel, onSave }: { divisi
   const [name, setName] = useState(division?.name ?? "");
   const [bodUserId, setBodUserId] = useState(division?.bodUserId ?? "");
   const [status, setStatus] = useState<Division["status"]>(division?.status ?? "inactive");
-  const [approvalRequired, setApprovalRequired] = useState(Boolean(division?.approvalRequired));
+  const [approvalRequired] = useState(Boolean(division?.approvalRequired));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [confirming, setConfirming] = useState(false);

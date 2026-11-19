@@ -111,8 +111,8 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
     const opener = detailOpener.current;
     setDetailId("");
     requestAnimationFrame(() => {
-      const target = opener?.isConnected ? opener : Array.from(list.current?.querySelectorAll<HTMLButtonElement>("[data-plan-detail]") ?? []).find((element) => element.dataset.planDetail === id && element.getClientRects().length > 0);
-      target?.scrollIntoView({ block: "nearest", inline: "nearest" });
+      const target = opener?.isConnected && opener.getClientRects().length > 0 ? opener : Array.from(list.current?.querySelectorAll<HTMLButtonElement>("[data-plan-detail]") ?? []).find((element) => element.dataset.planDetail === id && element.getClientRects().length > 0);
+      if (target !== opener) target?.scrollIntoView({ block: "nearest", inline: "nearest" });
       target?.focus({ preventScroll: true });
     });
   }
@@ -141,9 +141,12 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
       }
       if (!Array.isArray(body)) throw new Error("Invalid response");
       setData({ userId, plans: body });
-      const approvalResponse = await fetch(`/api/approvals?userId=${encodeURIComponent(userId)}`, { signal: controller.signal });
-      if (approvalResponse.ok && currentRequestId === requestId.current) setApprovalStates(await approvalResponse.json());
-      else if (currentRequestId === requestId.current) notify("error", "Status approval belum dimuat", "Data pekerjaan tetap tampil. Muat ulang untuk melihat status approval terbaru.");
+      if (canApprove) {
+        const approvalResponse = await fetch(`/api/approvals?userId=${encodeURIComponent(userId)}`, { signal: controller.signal });
+        const states = approvalResponse.ok ? await approvalResponse.json().catch(() => null) : null;
+        if (states && currentRequestId === requestId.current) setApprovalStates(states);
+        else if (currentRequestId === requestId.current) notify("error", "Status approval belum dimuat", "Data pekerjaan tetap tampil. Muat ulang untuk melihat status approval terbaru.");
+      }
       setError(null);
       const dateHeader = response.headers.get("x-workspace-date");
       const nextDate = dateHeader && dashboardPeriodInputSchema.safeParse({ from: dateHeader, to: dateHeader }).success ? dateHeader : bangkokDate();

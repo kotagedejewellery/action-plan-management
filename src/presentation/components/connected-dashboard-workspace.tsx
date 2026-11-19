@@ -55,7 +55,7 @@ function monitoringHref(userId: string | undefined, from: string, to: string, re
 
 export function ConnectedDashboardWorkspace(initialData: DashboardData) {
   const [data, setData] = useState(initialData);
-  const { users, plans, pendingApprovals, weeklyPlans, completedStatusLabels, today, loadedAt, divisionId } = data;
+  const { users, plans, pendingApprovals = [], weeklyPlans, completedStatusLabels, today, loadedAt, divisionId } = data;
   const { notify } = useFeedback();
   const [{ preset, period, draft }, setFilters] = useState(() => {
     const period = presetPeriod("month", today);
@@ -174,7 +174,7 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
         </div>
       </form>
 
-      {summary.total === 0 ? <section className="mt-5 rounded-2xl border bg-white p-6 text-center sm:p-10" aria-labelledby="empty-dashboard-heading"><CalendarDays className="mx-auto size-7 text-[#59706f]" aria-hidden="true" /><h2 id="empty-dashboard-heading" className="mt-4 text-lg font-semibold text-[#173c3a]">Belum ada Action Plan pada periode ini</h2><p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-[#59706f]">Pilih periode lain untuk meninjau progres tim dan pekerjaan yang perlu ditindaklanjuti.</p><button type="button" onClick={() => setCustomOpen(true)} className={`${quietButton} mt-5 text-[#137d79]`}><CalendarDays className="size-4" aria-hidden="true" />Pilih periode lain</button></section> : <section className="mt-5" aria-label="Ringkasan progres tim" aria-busy={refreshing}>
+      {summary.total === 0 ? <section className="mt-5 rounded-2xl border bg-white p-6 text-center sm:p-10" aria-labelledby="empty-dashboard-heading"><CalendarDays className="mx-auto size-7 text-[#59706f]" aria-hidden="true" /><h2 id="empty-dashboard-heading" className="mt-4 text-lg font-semibold text-[#173c3a]">{users.length ? "Belum ada Action Plan pada periode ini" : "Belum ada anggota tim"}</h2><p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-[#59706f]">{users.length ? "Pilih periode lain untuk meninjau progres tim dan pekerjaan yang perlu ditindaklanjuti." : data.canManageUsers ? "Tambahkan akun anggota agar progres tim dapat dipantau di Dashboard." : "Hubungi SuperAdmin untuk menambahkan anggota ke divisi Anda."}</p>{users.length ? <button type="button" onClick={() => setCustomOpen(true)} className={`${quietButton} mt-5 text-[#137d79]`}><CalendarDays className="size-4" aria-hidden="true" />Pilih periode lain</button> : data.canManageUsers ? <Link href="/users" className={`${quietButton} mt-5 text-[#137d79]`}>Buka pengelolaan akun<ArrowRight className="size-4" aria-hidden="true" /></Link> : null}</section> : <section className="mt-5" aria-label="Ringkasan progres tim" aria-busy={refreshing}>
         <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
           <Metric label="Total Action Plan" value={summary.total} detail="Pada periode terpilih" active={scope === "all"} onClick={() => selectScope("all")} />
           <Metric label="Selesai" value={summary.completed} detail="Status sore final" active={scope === "completed"} onClick={() => selectScope("completed")} />

@@ -134,7 +134,7 @@ test("invalid date drafts preserve the applied results", async ({ page }) => {
 
 test("empty data is distinguished from all completed work", async ({ page }) => {
   await page.goto("/?state=empty");
-  await expect(page.getByText(/Belum ada Action Plan pada periode ini. Pilih periode lain/)).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Belum ada Action Plan pada periode ini", exact: true })).toBeVisible();
   await expect(page.getByText("Seluruh Action Plan pada periode ini sudah selesai.", { exact: true })).toHaveCount(0);
   await page.goto("/?state=complete");
   await expect(page.getByText("Seluruh Action Plan pada periode ini sudah selesai.", { exact: true })).toBeVisible();
@@ -143,7 +143,7 @@ test("empty data is distinguished from all completed work", async ({ page }) => 
 test("SuperAdmin sees a recoverable loading state and can triage pending work in the current scope", async ({ page }) => {
   await page.goto("/?state=loading");
   await expect(page.getByRole("heading", { name: "Memuat Dashboard Tim…", exact: true })).toBeVisible();
-  await expect(page.getByRole("status")).toContainText("Memuat Dashboard Tim");
+  await expect(page.getByLabel("Memuat Dashboard Tim")).toHaveAttribute("aria-busy", "true");
   await expect(page.getByRole("button", { name: "Coba lagi", exact: true })).toBeVisible();
   await page.goto("/?divisionId=a");
   const triage = page.getByRole("link", { name: "Tinjau pekerjaan", exact: true });
