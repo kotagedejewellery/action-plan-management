@@ -1,9 +1,14 @@
-import type { ActionPlan, ActionPlanAttachment, ActionPlanStatus, Division, User, WeeklyPlan } from "@/domain/models";
+import type { ActionPlan, ActionPlanApproval, ActionPlanAttachment, ActionPlanStatus, Division, User, WeeklyPlan } from "@/domain/models";
 
 export interface DivisionRepository {
   list(): Promise<Division[]>;
   create(division: Division): Promise<Division>;
   update(division: Division): Promise<Division>;
+}
+
+export interface ActionPlanApprovalRepository {
+  list(): Promise<ActionPlanApproval[]>;
+  create(approval: ActionPlanApproval): Promise<ActionPlanApproval>;
 }
 
 export interface UserRepository {

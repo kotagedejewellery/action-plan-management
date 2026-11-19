@@ -145,7 +145,7 @@ Google Sheets tidak menyediakan constraint database relasional. Semua validasi d
 
 ## 11. Divisi dan kompatibilitas akun lama
 
-Sheet `Divisions`, kolom A:F, berisi `id`, `name`, `bod_user_id`, `status`, `created_at`, `updated_at`. Nama divisi unik tanpa membedakan huruf besar/kecil. Satu divisi aktif wajib memiliki satu BOD aktif; satu akun BOD hanya ditugaskan pada satu divisi. Divisi nonaktif dapat disimpan tanpa BOD untuk persiapan. Penggantian BOD menutup akses BOD lama pada permintaan berikutnya. BOD yang masih memimpin divisi aktif tidak dapat dinonaktifkan atau diubah role-nya sebelum penggantian.
+Sheet `Divisions`, kolom A:G, berisi `id`, `name`, `bod_user_id`, `status`, `created_at`, `updated_at`, `approval_required`. Kolom G default `false`; sheet A:F lama tetap dapat dibaca tanpa mutasi. Kolom G hanya ditambahkan saat SuperAdmin secara eksplisit menyimpan divisi. Nama divisi unik tanpa membedakan huruf besar/kecil. Satu divisi aktif wajib memiliki satu BOD aktif; satu akun BOD hanya ditugaskan pada satu divisi. Divisi nonaktif dapat disimpan tanpa BOD untuk persiapan. Penggantian BOD menutup akses BOD lama pada permintaan berikutnya. BOD yang masih memimpin divisi aktif tidak dapat dinonaktifkan atau diubah role-nya sebelum penggantian.
 
 `Users.division_id` adalah afiliasi pekerjaan anggota, bukan sumber penugasan BOD. Penugasan BOD di-resolve dari `Divisions.bod_user_id`. Afiliasi anggota dipertahankan saat role berubah agar riwayat tetap terikat pada divisi semula. Perpindahan divisi anggota tidak tersedia; pemetaan pertama akun lama diperbolehkan dan harus dikonfirmasi, termasuk akun yang sudah berganti role tetapi masih memiliki sheet pekerjaan. Pemetaan awal riwayat BOD harus sesuai penugasan divisinya, baik melalui form maupun API. Sheet, ID, hash password, relasi Weekly Plan dan lampiran tetap sama. Action Plan tidak memerlukan kolom divisi tambahan selama afiliasi anggota tetap.
 
@@ -154,3 +154,9 @@ Pembacaan Users sembilan kolom tetap didukung tanpa perubahan data. Kolom J dita
 User dan BOD tanpa divisi aktif tidak memperoleh akses pekerjaan. SuperAdmin tetap dapat memantau riwayat akun yang belum dipetakan melalui cakupan global. BOD dapat memantau anggota nonaktif dan riwayat mantan User yang tetap memiliki sheet dalam divisinya; BOD tidak dapat mengubah pekerjaan atau akun. Preview gambar memakai pemeriksaan anggota, record dan ID lampiran; respons binary tidak boleh dicache browser. File non-gambar mengikuti batas existing: hanya pemilik yang mengunduh melalui aplikasi.
 
 Lihat `docs/MULTI_DIVISION_ROLLOUT.md` sebelum mengubah pemetaan environment nyata.
+
+## 12. Sheet `Action Plan Approvals`
+
+Tab ini dibuat secara lazy hanya ketika User pertama kali mengajukan approval, sehingga deploy atau pembacaan data tidak mengubah Spreadsheet. Sheet yang sudah ada harus memiliki header persis sesuai skema; header berbeda ditolak tanpa menulis atau menghapus data. Setiap baris adalah event append-only: `id`, `action_plan_id`, `owner_id`, `division_id`, `plan_updated_at`, `decision`, `note`, `actor_id`, `created_at`.
+
+`decision` bernilai `submitted`, `approved`, atau `rejected`. Status yang berlaku adalah event terakhir berdasarkan urutan append pada `action_plan_id` dengan `plan_updated_at` yang sama. Karena itu edit Action Plan setelah submit atau keputusan otomatis membuat event lama kedaluwarsa dan User perlu mengajukan ulang. Action Plan yang sudah disetujui tidak dapat diajukan ulang tanpa perubahan. Hanya BOD canonical pada divisi dengan `approval_required=true` yang dapat membuat event `approved` atau `rejected`; alasan penolakan wajib diisi. Bukti submit minimal berupa `link_hasil` atau satu lampiran yang telah tersimpan.

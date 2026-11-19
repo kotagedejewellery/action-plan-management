@@ -3,12 +3,14 @@ import { listVisiblePlans } from "@/application/use-cases";
 import { requireMonitorActor, visibleMembers } from "@/application/access";
 import { AppError } from "@/application/errors";
 import { toSafeUser, type Actor } from "@/domain/models";
-import { actionPlans, statuses, users, weeklyPlans, divisions } from "@/infrastructure/container";
+import { approvalState } from "@/application/approvals";
+import { actionPlans, approvals, statuses, users, weeklyPlans, divisions } from "@/infrastructure/container";
 import { bangkokDate } from "@/lib/bangkok-date";
 
 export async function loadDashboard(actor: Actor, divisionId?: string) {
   requireMonitorActor(actor);
-  const allDivisions = actor.role === "admin" ? await divisions.list() : [];
+  const divisionList = await divisions.list();
+  const allDivisions = actor.role === "admin" ? divisionList : [];
   if (actor.role === "admin" && divisionId && !allDivisions.some((division) => division.id === divisionId)) throw new AppError("Divisi tidak ditemukan.", "NOT_FOUND");
   const userList = visibleMembers(actor, await users.list(), divisionId);
   const ownerIds = new Set(userList.map((user) => user.id));
@@ -17,9 +19,13 @@ export async function loadDashboard(actor: Actor, divisionId?: string) {
     const ownPlans = await listVisiblePlans(actionPlans, statuses, actor, user, "all");
     plans.push(...ownPlans.map((plan) => ({ ...plan, ownerId: user.id, ownerName: user.name })));
   }
+  const approvalEnabledMembers = new Set(userList.filter((user) => divisionList.some((division) => division.id === user.divisionId && division.approvalRequired)).map((user) => user.id));
+  const approvalEvents = await approvals.list();
+  const pendingApprovals = plans.filter((plan) => approvalEnabledMembers.has(plan.ownerId) && approvalState(plan, approvalEvents).status === "menunggu");
   return {
     canManageUsers: actor.role === "admin",
     users: userList.map(toSafeUser), plans,
+    pendingApprovals,
     weeklyPlans: (await weeklyPlans.list()).filter((plan) => ownerIds.has(plan.userId)),
     completedStatusLabels: (await statuses.list()).filter((status) => status.isCompleted).map((status) => status.label),
     today: bangkokDate(), loadedAt: new Date().toISOString(),

@@ -140,6 +140,36 @@ test("empty data is distinguished from all completed work", async ({ page }) => 
   await expect(page.getByText("Seluruh Action Plan pada periode ini sudah selesai.", { exact: true })).toBeVisible();
 });
 
+test("SuperAdmin sees a recoverable loading state and can triage pending work in the current scope", async ({ page }) => {
+  await page.goto("/?state=loading");
+  await expect(page.getByRole("heading", { name: "Memuat Dashboard Tim…", exact: true })).toBeVisible();
+  await expect(page.getByRole("status")).toContainText("Memuat Dashboard Tim");
+  await expect(page.getByRole("button", { name: "Coba lagi", exact: true })).toBeVisible();
+  await page.goto("/?divisionId=a");
+  const triage = page.getByRole("link", { name: "Tinjau pekerjaan", exact: true });
+  await expect(page.getByLabel("Pekerjaan yang perlu ditinjau")).toBeVisible();
+  await expect(triage).toHaveAttribute("href", /divisionId=a/);
+  await expect(triage).toHaveAttribute("href", /scope=active/);
+  await expect(triage).toHaveAttribute("href", /from=2026-10-01&to=2026-10-31/);
+  await expect(page.getByRole("form", { name: "Cakupan data", exact: true })).toContainText("Menampilkan: Marketing");
+});
+
+test("BOD sees an approval queue with a direct link to the submitted task", async ({ page }) => {
+  await page.goto("/?state=approval-queue&actor=bod");
+  await expect(page.getByLabel("Antrean approval")).toContainText("2 approval menunggu keputusan");
+  const task = page.getByRole("link", { name: "Tinjau", exact: true }).first();
+  await expect(task).toHaveAttribute("href", /userId=u0/);
+  await expect(task).toHaveAttribute("href", /recordId=p0-0/);
+});
+
+test("empty dashboard gives one clear recovery before secondary panels", async ({ page }) => {
+  await page.goto("/?state=empty");
+  await expect(page.getByRole("heading", { name: "Belum ada Action Plan pada periode ini", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Pilih periode lain", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Progres anggota tim", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Rencana mingguan", exact: true })).toHaveCount(0);
+});
+
 test("responsive dashboard remains usable on desktop and mobile", async ({ page }, testInfo) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));

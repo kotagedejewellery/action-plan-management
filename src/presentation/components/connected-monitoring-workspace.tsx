@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { dashboardPeriodInputSchema } from "@/application/schemas";
+import type { ApprovalState } from "@/application/approvals";
 import type { ActionPlan, SafeUser } from "@/domain/models";
 import { bangkokDate } from "@/lib/bangkok-date";
 import { useFeedback } from "./feedback";
@@ -43,15 +44,15 @@ function PlanStatus({ status, completedStatusLabels }: { status?: string; comple
   return status ? <span className="break-words md:whitespace-nowrap"><StatusBadge status={status} completedStatusLabels={completedStatusLabels} /></span> : <span className="text-xs text-[#516967]">Belum diisi</span>;
 }
 
-export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelectedId, initialRecordId, initialDateFrom, initialDateTo, completedStatusLabels, today, scopeLabel, divisionFilter, canManageUsers = false }: {
-  scopeLabel?: string; divisionFilter?: ReactNode; canManageUsers?: boolean;
+export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelectedId, initialRecordId, initialDateFrom, initialDateTo, initialScope = "all", completedStatusLabels, today, scopeLabel, divisionFilter, canManageUsers = false, canApprove = false, initialApprovalStates = {} }: {
+  scopeLabel?: string; divisionFilter?: ReactNode; canManageUsers?: boolean; canApprove?: boolean; initialApprovalStates?: Record<string, ApprovalState>;
   users: SafeUser[]; initialPlans: ActionPlan[]; initialSelectedId: string; initialRecordId: string;
-  initialDateFrom: string; initialDateTo: string; completedStatusLabels: string[]; today: string;
+  initialDateFrom: string; initialDateTo: string; initialScope?: Scope; completedStatusLabels: string[]; today: string;
 }) {
   const { notify } = useFeedback();
   const [selectedId, setSelectedId] = useState(initialSelectedId || users[0]?.id || "");
   const [data, setData] = useState({ userId: selectedId, plans: initialPlans });
-  const [scope, setScope] = useState<Scope>("all");
+  const [scope, setScope] = useState<Scope>(initialScope);
   const [query, setQuery] = useState("");
   const [memberQuery, setMemberQuery] = useState("");
   const [memberPickerOpen, setMemberPickerOpen] = useState(false);
@@ -65,6 +66,7 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
   const [detailId, setDetailId] = useState(initialRecordId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<{ message: string; accessDenied: boolean } | null>(null);
+  const [approvalStates, setApprovalStates] = useState(initialApprovalStates);
   const requestId = useRef(0);
   const requestController = useRef<AbortController | null>(null);
   const detailOpener = useRef<HTMLButtonElement | null>(null);
@@ -115,12 +117,20 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
     });
   }
 
+  async function decideApproval(approvalId: string, decision: "approved" | "rejected", note?: string) {
+    const response = await fetch(`/api/approvals/${encodeURIComponent(approvalId)}`, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ decision, note }) });
+    const body = await response.json();
+    if (!response.ok) throw new Error(body.error ?? "Approval belum dapat diproses.");
+    setApprovalStates((current) => ({ ...current, [body.actionPlanId]: { status: decision === "approved" ? "disetujui" : "ditolak", approvalId: body.id, note: body.note } }));
+    notify("success", decision === "approved" ? "Action Plan disetujui" : "Revisi dikirim", decision === "approved" ? "Hasil kerja telah terverifikasi." : "User dapat melengkapi bukti dan mengajukan ulang.");
+  }
+
   async function loadPlans(userId: string) {
     const currentRequestId = ++requestId.current;
     requestController.current?.abort();
     const controller = new AbortController();
     requestController.current = controller;
-    setLoading(true); setError((current) => current?.accessDenied ? current : null); setDetailId("");
+    setLoading(true); setError((current) => current?.accessDenied ? current : null); setApprovalStates({}); setDetailId("");
     try {
       const response = await fetch(`/api/action-plans?userId=${encodeURIComponent(userId)}&scope=all`, { signal: controller.signal });
       const body = await response.json().catch(() => null);
@@ -131,6 +141,9 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
       }
       if (!Array.isArray(body)) throw new Error("Invalid response");
       setData({ userId, plans: body });
+      const approvalResponse = await fetch(`/api/approvals?userId=${encodeURIComponent(userId)}`, { signal: controller.signal });
+      if (approvalResponse.ok && currentRequestId === requestId.current) setApprovalStates(await approvalResponse.json());
+      else if (currentRequestId === requestId.current) notify("error", "Status approval belum dimuat", "Data pekerjaan tetap tampil. Muat ulang untuk melihat status approval terbaru.");
       setError(null);
       const dateHeader = response.headers.get("x-workspace-date");
       const nextDate = dateHeader && dashboardPeriodInputSchema.safeParse({ from: dateHeader, to: dateHeader }).success ? dateHeader : bangkokDate();
@@ -200,8 +213,8 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
 
   return <section className={`w-full min-w-0 ${selectedPlan ? "xl:pr-[460px]" : ""}`}>
     <PageHeading title="Monitoring" description="Tinjau rencana, progres, dan hasil kerja setiap anggota tim." action={users.length ? <button type="button" className={`${quietButton} border bg-white`} disabled={loading} onClick={() => void loadPlans(selectedId)}>{loading ? "Memuat data…" : "Perbarui data"}</button> : undefined} />
-    {scopeLabel && <p className="mt-3 text-sm font-semibold text-[#176d69]">{scopeLabel}</p>}
-    {divisionFilter}
+    {scopeLabel && !divisionFilter && <p className="mt-3 text-sm font-semibold text-[#176d69]">{scopeLabel}</p>}
+    {divisionFilter && <div className="mt-4">{divisionFilter}</div>}
     <p className="mt-3 text-xs leading-5 text-[#516967]">Perubahan terbaru dapat memerlukan hingga 30 detik.</p>
     {users.length === 0 ? <div className="mt-7 rounded-2xl border bg-white p-10 text-center"><h2 className="font-semibold text-[#173c3a]">Belum ada anggota tim</h2><p className="mt-2 text-sm text-[#516967]">{canManageUsers ? "Tambahkan akun User untuk mulai meninjau pekerjaan." : "Hubungi SuperAdmin untuk memetakan anggota ke divisi Anda."}</p>{canManageUsers && <a href="/users" className={`${quietButton} mt-4 text-[#137d79]`}>Buka Users</a>}</div> : <div className={`mt-7 grid items-start gap-6 ${selectedPlan ? "" : "xl:grid-cols-[240px_minmax(0,1fr)]"}`}>
       <aside className={`sticky top-24 hidden rounded-2xl border bg-white p-3 ${selectedPlan ? "" : "xl:block"}`} aria-label="Pemilih anggota"><div className="mb-3 flex items-center justify-between px-1"><h2 className="text-sm font-semibold text-[#173c3a]">Anggota tim</h2><span className="text-xs tabular-nums text-[#516967]">{users.length} anggota</span></div>{renderMemberPicker()}</aside>
@@ -234,7 +247,7 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
               <table className="w-full min-w-[760px] text-left text-sm"><caption className="sr-only">Action Plan {selected?.name}, {periodLabel(period)}</caption><thead className="sticky top-0 z-10 border-b bg-[#f7faf9] text-xs text-[#516967]"><tr>{["Tanggal", "Action Plan", "Pagi", "Sore", "Hasil", "Detail"].map((label) => <th key={label} scope="col" className="px-4 py-4 font-semibold">{label}</th>)}</tr></thead>
                 <tbody>{pagePlans.map((plan) => <tr key={plan.id} data-plan-row={plan.id} className={`border-t transition-colors hover:bg-[#f7faf9] ${detailId === plan.id ? "bg-[#e3f3f0]" : ""}`} aria-selected={detailId === plan.id}>
                   <td className="px-4 py-4 align-top">{renderDate(plan)}</td><td className="w-full min-w-52 max-w-lg px-4 py-4 align-top"><p className="break-words font-medium text-[#173c3a]">{plan.task}</p>{plan.note && <p className="mt-1 line-clamp-2 break-words text-xs leading-5 text-[#516967]">{plan.note}</p>}</td>
-                  <td className="px-4 py-4 align-top"><PlanStatus status={plan.morningStatus} completedStatusLabels={completedStatusLabels} /></td><td className="px-4 py-4 align-top"><PlanStatus status={plan.afternoonStatus} completedStatusLabels={completedStatusLabels} /></td><td className="px-4 py-3 align-top">{renderResult(plan)}</td><td className="px-3 py-3 align-top"><button type="button" onClick={(event) => openDetail(plan.id, event.currentTarget)} data-plan-detail={plan.id} aria-label={`Lihat detail: ${plan.task}`} className={`${quietButton} text-[#137d79]`}>Lihat</button></td>
+                  <td className="px-4 py-4 align-top"><PlanStatus status={plan.morningStatus} completedStatusLabels={completedStatusLabels} /></td><td className="px-4 py-4 align-top"><PlanStatus status={plan.afternoonStatus} completedStatusLabels={completedStatusLabels} /></td><td className="px-4 py-3 align-top">{renderResult(plan)}</td><td className="px-3 py-3 align-top"><button type="button" onClick={(event) => openDetail(plan.id, event.currentTarget)} data-plan-detail={plan.id} aria-label={`Lihat detail: ${plan.task}`} className={`${quietButton} text-[#137d79]`}>Lihat detail</button></td>
                 </tr>)}</tbody>
               </table>
             </div>
@@ -244,6 +257,6 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
         </div>
       </div>
     </div>}
-    {selectedPlan && <MonitoringDetailPanel plan={selectedPlan} userId={selectedId} memberName={selected?.name ?? "Anggota"} completedStatusLabels={completedStatusLabels} onClose={closeDetail} />}
+    {selectedPlan && <MonitoringDetailPanel plan={selectedPlan} userId={selectedId} memberName={selected?.name ?? "Anggota"} completedStatusLabels={completedStatusLabels} approvalState={approvalStates[selectedPlan.id]} canApprove={canApprove} onDecision={decideApproval} onClose={closeDetail} />}
   </section>;
 }

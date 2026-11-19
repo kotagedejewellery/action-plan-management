@@ -7,15 +7,18 @@ vi.mock("@/infrastructure/container", () => ({
   divisions: { list: vi.fn(), create: vi.fn(), update: vi.fn() },
   actionPlans: { list: vi.fn(), findById: vi.fn(), create: vi.fn(), update: vi.fn(), softDelete: vi.fn() },
   weeklyPlans: { list: vi.fn(), update: vi.fn(), hardDelete: vi.fn() },
+  approvals: { list: vi.fn(), create: vi.fn() },
   statuses: { list: vi.fn(), create: vi.fn() },
   attachments: { download: vi.fn(), upload: vi.fn(), trash: vi.fn() },
 }));
 
 import { auth } from "@/auth";
-import { users, divisions, actionPlans, weeklyPlans, attachments, statuses } from "@/infrastructure/container";
+import { users, divisions, actionPlans, weeklyPlans, attachments, statuses, approvals } from "@/infrastructure/container";
 import { GET as dashboard } from "@/app/api/dashboard/route";
 import { GET as plans, POST as createPlan } from "@/app/api/action-plans/route";
 import { PATCH as updatePlan, DELETE as deletePlan } from "@/app/api/action-plans/[recordId]/route";
+import { POST as submitApproval } from "@/app/api/action-plans/[recordId]/approval/route";
+import { PATCH as decideApproval } from "@/app/api/approvals/[approvalId]/route";
 import { GET as image, DELETE as removeImage } from "@/app/api/action-plans/[recordId]/attachments/[attachmentId]/route";
 import { GET as accounts, POST as createAccount } from "@/app/api/users/route";
 import { GET as divisionList, POST as createDivision } from "@/app/api/divisions/route";
@@ -31,6 +34,7 @@ let scope: Division[];
 const request = (path: string, body?: unknown) => new Request(`http://localhost/api/${path}`, body ? { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) } : undefined);
 const planContext = { params: Promise.resolve({ recordId: "pa" }) };
 const imageContext = { params: Promise.resolve({ recordId: "pa", attachmentId: "img" }) };
+const approvalContext = { params: Promise.resolve({ recordId: "pa" }) };
 
 function login(id: string) { vi.mocked(auth).mockResolvedValue({ user: { id, role: "admin" } } as never); }
 beforeEach(() => {
@@ -42,6 +46,7 @@ beforeEach(() => {
   vi.mocked(actionPlans.list).mockImplementation(async (sheet) => [{ id: sheet, task: sheet, date: "2026-11-18", morningStatus: "On Progress", createdAt: "", updatedAt: "" }]);
   vi.mocked(weeklyPlans.list).mockResolvedValue(["ua", "ub", "old"].map((userId) => ({ id: userId, userId, title: userId, weekStart: "2026-11-16", weekEnd: "2026-11-22", plannedActionPlanIds: [], createdAt: "", updatedAt: "" })));
   vi.mocked(statuses.list).mockResolvedValue([]);
+  vi.mocked(approvals.list).mockResolvedValue([]);
   vi.mocked(actionPlans.findById).mockResolvedValue({ id: "pa", task: "Review", date: "2026-11-18", morningStatus: "On Progress", createdAt: "", updatedAt: "", attachments: [{ id: "img", name: "evidence.png", mimeType: "image/png" }] });
   vi.mocked(attachments.download).mockResolvedValue(Buffer.from([1, 2, 3]));
   login("ba");
@@ -106,4 +111,17 @@ it("keeps SuperAdmin global visibility and preserves User isolation", async () =
   login("old");
   expect((await plans(request("action-plans?scope=all"))).status).toBe(403);
   expect((await currentActor()).divisionId).toBeUndefined();
+});
+
+it("rejects an approval decision from a BOD outside the configured division", async () => {
+  scope = scope.map((division) => division.id === "a" ? { ...division, approvalRequired: true } : division);
+  login("ua");
+  const submittedResponse = await submitApproval(request("action-plans/pa/approval"), approvalContext);
+  const submitted = await submittedResponse.json();
+  expect(submittedResponse.status).toBe(201);
+  vi.mocked(approvals.list).mockResolvedValue([submitted]);
+  login("bb");
+  const response = await decideApproval(new Request("http://localhost/api/approvals/" + submitted.id, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ decision: "approved" }) }), { params: Promise.resolve({ approvalId: submitted.id }) });
+  expect(response.status).toBe(403);
+  expect(approvals.create).toHaveBeenCalledTimes(1);
 });

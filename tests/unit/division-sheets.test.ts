@@ -1,5 +1,6 @@
 import { beforeEach, expect, it, vi } from "vitest";
 import type { Division } from "@/domain/models";
+import type { ActionPlanApproval } from "@/domain/models";
 
 const google = vi.hoisted(() => ({ get: vi.fn(), update: vi.fn(), append: vi.fn(), metadata: vi.fn(), batchUpdate: vi.fn() }));
 vi.mock("@/infrastructure/google-sheets/client", () => ({ spreadsheetId: () => "synthetic-sheet", sheetsClient: () => ({ spreadsheets: { values: { get: google.get, update: google.update, append: google.append }, get: google.metadata, batchUpdate: google.batchUpdate } }) }));
@@ -8,6 +9,7 @@ beforeEach(() => { vi.resetModules(); vi.resetAllMocks(); google.update.mockReso
 const legacyHeaders = ["id", "name", "email", "password_hash", "role", "status", "sheet_name", "created_at", "updated_at"];
 const legacyUser = ["u-old", "Existing", "old@example.test", "unchanged-hash", "user", "active", "legacy_plan_sheet", "created", "updated"];
 const division: Division = { id: "division-a", name: "Marketing", bodUserId: "bod-a", status: "active", createdAt: "created", updatedAt: "updated" };
+const approval: ActionPlanApproval = { id: "approval-1", actionPlanId: "plan-1", ownerId: "user-1", divisionId: "division-a", planUpdatedAt: "updated", decision: "submitted", actorId: "user-1", createdAt: "created" };
 
 it("reads nine-column Users without writes or implicit division assignment", async () => {
   google.get.mockResolvedValue({ data: { values: [legacyHeaders, legacyUser] } });
@@ -62,9 +64,24 @@ it("creates only a missing Divisions tab and invalidates the cached assignment a
   const { GoogleSheetsDivisionRepository } = await import("@/infrastructure/google-sheets/repositories");
   const repository = new GoogleSheetsDivisionRepository();
   await repository.create(division);
-  expect(await repository.list()).toEqual([division]);
+  expect(await repository.list()).toEqual([{ ...division, approvalRequired: false }]);
   expect(google.batchUpdate).toHaveBeenCalledWith(expect.objectContaining({ requestBody: { requests: [{ addSheet: { properties: { title: "Divisions", gridProperties: { frozenRowCount: 1 } } } }] } }));
   expect(google.update).toHaveBeenCalledTimes(1);
-  expect(google.update.mock.calls[0][0].range).toBe("Divisions!A1:F1");
+  expect(google.update.mock.calls[0][0].range).toBe("Divisions!A1:G1");
   expect(google.append).toHaveBeenCalledTimes(1);
+});
+
+it("reads the legacy six-column Divisions sheet without changing approval configuration", async () => {
+  google.get.mockResolvedValue({ data: { values: [["id", "name", "bod_user_id", "status", "created_at", "updated_at"], ["division-a", "Marketing", "bod-a", "active", "created", "updated"]] } });
+  const { GoogleSheetsDivisionRepository } = await import("@/infrastructure/google-sheets/repositories");
+  await expect(new GoogleSheetsDivisionRepository().list()).resolves.toEqual([{ ...division, approvalRequired: false }]);
+  expect(google.update).not.toHaveBeenCalled();
+});
+
+it("refuses a pre-existing approval tab with unknown headers before appending an event", async () => {
+  google.metadata.mockResolvedValue({ data: { sheets: [{ properties: { title: "Action Plan Approvals" } }] } });
+  google.get.mockResolvedValue({ data: { values: [["unexpected_header"]] } });
+  const { GoogleSheetsActionPlanApprovalRepository } = await import("@/infrastructure/google-sheets/repositories");
+  await expect(new GoogleSheetsActionPlanApprovalRepository().create(approval)).rejects.toMatchObject({ code: "VALIDATION" });
+  expect(google.append).not.toHaveBeenCalled();
 });

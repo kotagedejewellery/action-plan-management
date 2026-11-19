@@ -14,7 +14,7 @@ export function ConnectedDivisionWorkspace({ initialDivisions, users }: { initia
   const [editing, setEditing] = useState<Division | "new" | null>(null);
   const { notify } = useFeedback();
   const unmapped = users.filter((user) => Boolean(user.sheetName) && !user.divisionId).length;
-  async function save(input: Pick<Division, "name" | "status" | "bodUserId"> & { updatedAt?: string }, existing?: Division) {
+  async function save(input: Pick<Division, "name" | "status" | "bodUserId" | "approvalRequired"> & { updatedAt?: string }, existing?: Division) {
     const response = await fetch(existing ? `/api/divisions/${existing.id}` : "/api/divisions", { method: existing ? "PATCH" : "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(input) });
     const body = await response.json();
     if (!response.ok) throw new Error(body.error ?? "Divisi belum dapat disimpan.");
@@ -22,27 +22,34 @@ export function ConnectedDivisionWorkspace({ initialDivisions, users }: { initia
     setEditing(null);
     notify("success", "Divisi tersimpan", "Penugasan dan akses divisi telah diperbarui.");
   }
+  async function toggleApproval(division: Division) {
+    if (!window.confirm(`${division.approvalRequired ? "Nonaktifkan" : "Aktifkan"} approval hasil Action Plan untuk ${division.name}?`)) return;
+    try {
+      await save({ name: division.name, status: division.status, bodUserId: division.bodUserId, approvalRequired: !division.approvalRequired, updatedAt: division.updatedAt }, division);
+    } catch (caught) { notify("error", "Aturan approval belum diubah", caught instanceof Error ? caught.message : "Coba lagi."); }
+  }
   return <section><PageHeading title="Divisi" description="Tetapkan satu BOD untuk setiap divisi. Akun dan penugasan dikelola oleh SuperAdmin." action={<button type="button" className="min-h-11 rounded-xl bg-[#137d79] px-4 text-sm font-semibold text-white hover:bg-[#0e6865]" onClick={() => setEditing("new")}>Tambah divisi</button>} />
     <p className="mt-6 text-sm leading-6 text-[#516967]">Buat akun ber-role BOD di <Link href="/users" className="font-semibold text-[#137d79] underline underline-offset-4">Users</Link>, lalu tugaskan ke divisi. {unmapped > 0 && <span>{unmapped} akun memiliki riwayat pekerjaan yang belum dipetakan.</span>}</p>
-    <div className="mt-6 divide-y rounded-2xl border bg-white">{divisions.map((division) => <article key={division.id} className="flex flex-wrap items-center justify-between gap-4 p-5"><div className="min-w-0 flex-1"><h2 className="break-words text-lg font-semibold text-[#173c3a]">{division.name}</h2><p className="mt-1 text-sm text-[#516967]">BOD: {users.find((user) => user.id === division.bodUserId)?.name ?? "Belum ditugaskan"}</p><p className="mt-1 text-sm text-[#516967]">{users.filter((user) => user.divisionId === division.id && user.sheetName).length} anggota dengan data pekerjaan</p></div><AccountStatus status={division.status} /><button className={button} onClick={() => setEditing(division)} aria-label={`Kelola ${division.name}`}>Kelola</button></article>)}{!divisions.length && <div className="p-6 text-sm leading-6 text-[#516967]">Belum ada divisi. Tambahkan divisi dan BOD, lalu petakan akun lama melalui halaman Users. Data lama tetap tersimpan.</div>}</div>
+    <div className="mt-6 divide-y rounded-2xl border bg-white">{divisions.map((division) => <article key={division.id} className="flex flex-wrap items-center justify-between gap-4 p-5"><div className="min-w-0 flex-1"><h2 className="break-words text-lg font-semibold text-[#173c3a]">{division.name}</h2><p className="mt-1 text-sm text-[#516967]">BOD: {users.find((user) => user.id === division.bodUserId)?.name ?? "Belum ditugaskan"}</p><p className="mt-1 text-sm text-[#516967]">{users.filter((user) => user.divisionId === division.id && user.sheetName).length} anggota dengan data pekerjaan{division.approvalRequired ? " · Approval aktif" : ""}</p></div><AccountStatus status={division.status} /><div className="flex flex-wrap gap-2"><button className={button} onClick={() => void toggleApproval(division)}>{division.approvalRequired ? "Nonaktifkan approval" : "Aktifkan approval"}</button><button className={button} onClick={() => setEditing(division)} aria-label={`Kelola ${division.name}`}>Kelola</button></div></article>)}{!divisions.length && <div className="p-6 text-sm leading-6 text-[#516967]">Belum ada divisi. Tambahkan divisi dan BOD, lalu petakan akun lama melalui halaman Users. Data lama tetap tersimpan.</div>}</div>
     {editing && <DivisionForm division={editing === "new" ? undefined : editing} divisions={divisions} users={users} onCancel={() => setEditing(null)} onSave={save} />}
   </section>;
 }
 
-function DivisionForm({ division, divisions, users, onCancel, onSave }: { division?: Division; divisions: Division[]; users: SafeUser[]; onCancel: () => void; onSave: (input: Pick<Division, "name" | "status" | "bodUserId"> & { updatedAt?: string }, existing?: Division) => Promise<void> }) {
+function DivisionForm({ division, divisions, users, onCancel, onSave }: { division?: Division; divisions: Division[]; users: SafeUser[]; onCancel: () => void; onSave: (input: Pick<Division, "name" | "status" | "bodUserId" | "approvalRequired"> & { updatedAt?: string }, existing?: Division) => Promise<void> }) {
   const [name, setName] = useState(division?.name ?? "");
   const [bodUserId, setBodUserId] = useState(division?.bodUserId ?? "");
   const [status, setStatus] = useState<Division["status"]>(division?.status ?? "inactive");
+  const [approvalRequired, setApprovalRequired] = useState(Boolean(division?.approvalRequired));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [confirming, setConfirming] = useState(false);
   const [discard, setDiscard] = useState(false);
-  const dirty = name !== (division?.name ?? "") || bodUserId !== (division?.bodUserId ?? "") || status !== (division?.status ?? "inactive");
+  const dirty = name !== (division?.name ?? "") || bodUserId !== (division?.bodUserId ?? "") || status !== (division?.status ?? "inactive") || approvalRequired !== Boolean(division?.approvalRequired);
   const close = () => { if (saving) return; if (dirty) setDiscard(true); else onCancel(); };
   const candidates = users.filter((user) => user.role === "bod" && user.status === "active" && (!user.divisionId || user.divisionId === division?.id) && !divisions.some((item) => item.id !== division?.id && item.bodUserId === user.id));
   async function persist() {
     setConfirming(false); setSaving(true); setError("");
-    try { await onSave({ name, bodUserId, status, updatedAt: division?.updatedAt }, division); }
+    try { await onSave({ name, bodUserId, status, approvalRequired, updatedAt: division?.updatedAt }, division); }
     catch (caught) { setError(caught instanceof Error ? caught.message : "Divisi belum dapat disimpan."); }
     finally { setSaving(false); }
   }

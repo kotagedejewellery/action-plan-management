@@ -148,6 +148,12 @@ test("dashboard deep link opens the requested record with its period", async ({ 
   await expect(page.getByRole("status")).toHaveText("1 Okt 2026 – 19 Okt 2026");
 });
 
+test("dashboard triage link applies the unfinished filter", async ({ page }) => {
+  await page.goto("/monitoring?scope=active");
+  await expect(page.getByRole("button", { name: "Belum selesai 21", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("tbody tr")).toHaveCount(20);
+});
+
 test("empty member, empty team and filtered results have distinct recovery", async ({ page }) => {
   await page.getByRole("textbox", { name: "Cari pekerjaan, catatan, atau status" }).fill("tidak ditemukan");
   await expect(page.getByText("Tidak ada pekerjaan yang sesuai filter", { exact: true })).toBeVisible();

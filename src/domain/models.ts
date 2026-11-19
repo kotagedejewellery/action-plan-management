@@ -23,6 +23,19 @@ export type Division = {
   status: AccountStatus;
   createdAt: string;
   updatedAt: string;
+  approvalRequired?: boolean;
+};
+
+export type ActionPlanApproval = {
+  id: string;
+  actionPlanId: string;
+  ownerId: string;
+  divisionId: string;
+  planUpdatedAt: string;
+  decision: "submitted" | "approved" | "rejected";
+  note?: string;
+  actorId: string;
+  createdAt: string;
 };
 
 export type ActionPlan = {

@@ -17,7 +17,7 @@ async function activeAdmin(users: UserRepository, actor: Actor) {
   requireAdmin(await users.findById(actor.id));
 }
 
-export type DivisionInput = Pick<Division, "name" | "status" | "bodUserId"> & { updatedAt?: string };
+export type DivisionInput = Pick<Division, "name" | "status" | "bodUserId" | "approvalRequired"> & { updatedAt?: string };
 
 export function saveDivision(repository: DivisionRepository, users: UserRepository, actor: Actor, input: DivisionInput, id?: string): Promise<Division> {
   return serializeAccessWrite(async () => {
@@ -38,7 +38,7 @@ export function saveDivision(repository: DivisionRepository, users: UserReposito
       if (all.some((division) => division.id !== id && division.bodUserId === bodUserId)) throw new AppError("BOD sudah ditugaskan ke divisi lain.", "CONFLICT");
     }
     const timestamp = new Date().toISOString();
-    const division: Division = { id: existing?.id ?? crypto.randomUUID(), name, bodUserId, status: input.status, createdAt: existing?.createdAt ?? timestamp, updatedAt: timestamp };
+    const division: Division = { id: existing?.id ?? crypto.randomUUID(), name, bodUserId, status: input.status, approvalRequired: input.approvalRequired ?? existing?.approvalRequired ?? false, createdAt: existing?.createdAt ?? timestamp, updatedAt: timestamp };
     return existing ? repository.update(division) : repository.create(division);
   });
 }

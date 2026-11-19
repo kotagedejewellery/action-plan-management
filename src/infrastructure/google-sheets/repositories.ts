@@ -1,5 +1,5 @@
-import type { ActionPlanRepository, DivisionRepository, StatusRepository, UserRepository, WeeklyPlanRepository } from "@/application/ports";
-import type { ActionPlan, ActionPlanStatus, Division, User, WeeklyPlan } from "@/domain/models";
+import type { ActionPlanApprovalRepository, ActionPlanRepository, DivisionRepository, StatusRepository, UserRepository, WeeklyPlanRepository } from "@/application/ports";
+import type { ActionPlan, ActionPlanApproval, ActionPlanStatus, Division, User, WeeklyPlan } from "@/domain/models";
 import { AppError } from "@/application/errors";
 import { sheetsClient, spreadsheetId } from "./client";
 
@@ -7,6 +7,8 @@ const PLAN_HEADERS = ["tanggal", "action_plan", "status_pagi", "status_sore", "l
 const STATUS_HEADERS = ["id", "label", "is_active", "created_at", "updated_at", "is_completed"];
 const WEEKLY_PLAN_HEADERS = ["id", "user_id", "judul", "week_start", "week_end", "catatan", "created_at", "updated_at", "deleted_at", "deleted_by", "planned_action_plan_ids"];
 const WEEKLY_PLANS_SHEET = "Weekly Plans";
+const APPROVALS_SHEET = "Action Plan Approvals";
+const APPROVAL_HEADERS = ["id", "action_plan_id", "owner_id", "division_id", "plan_updated_at", "decision", "note", "actor_id", "created_at"];
 
 type Row = { values: string[]; rowNumber: number };
 const value = (input: unknown) => String(input ?? "");
@@ -61,6 +63,10 @@ async function replace(range: string, values: string[]) {
 
 function rangeSheetName(sheetName: string) {
   return sheetName.includes(" ") ? `'${sheetName}'` : sheetName;
+}
+
+function assertApprovalHeaders(headers: string[]) {
+  if (APPROVAL_HEADERS.some((header, index) => headers[index] !== header)) throw new AppError("Header Action Plan Approvals tidak sesuai. Periksa sheet tanpa menghapus data existing.", "VALIDATION");
 }
 
 async function deleteRow(sheetName: string, rowNumber: number) {
@@ -171,6 +177,38 @@ export class GoogleSheetsActionPlanRepository implements ActionPlanRepository {
   async hardDelete(sheetName: string, id: string) { await this.ensureSchema(sheetName); const row = (await rows(`${rangeSheetName(sheetName)}!A:M`)).find((item) => item.values[6] === id); if (!row) throw new Error("Action Plan tidak ditemukan."); await deleteRow(sheetName, row.rowNumber); }
 }
 
+export class GoogleSheetsActionPlanApprovalRepository implements ActionPlanApprovalRepository {
+  private async ensureSchema() {
+    const metadata = await sheetsClient().spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });
+    if (!metadata.data.sheets?.some((sheet) => sheet.properties?.title === APPROVALS_SHEET)) {
+      await sheetsClient().spreadsheets.batchUpdate({ spreadsheetId: spreadsheetId(), requestBody: { requests: [{ addSheet: { properties: { title: APPROVALS_SHEET, gridProperties: { frozenRowCount: 1 } } } }] } });
+      await replace(`'${APPROVALS_SHEET}'!A1:I1`, APPROVAL_HEADERS);
+      return;
+    }
+    const current = await readValues(`'${APPROVALS_SHEET}'!A:I`);
+    if (!current.length) await replace(`'${APPROVALS_SHEET}'!A1:I1`, APPROVAL_HEADERS);
+    else assertApprovalHeaders(current[0]);
+  }
+  async list() {
+    try {
+      const values = await readValues(`'${APPROVALS_SHEET}'!A:I`);
+      if (!values.length) return [];
+      assertApprovalHeaders(values[0]);
+      return values.slice(1).filter((row) => row[0]).map(([id, actionPlanId, ownerId, divisionId, planUpdatedAt, decision, note, actorId, createdAt]): ActionPlanApproval => {
+        if (decision !== "submitted" && decision !== "approved" && decision !== "rejected") throw new AppError("Nilai keputusan pada Action Plan Approvals tidak valid.", "VALIDATION");
+        return { id, actionPlanId, ownerId, divisionId, planUpdatedAt, decision, note: note || undefined, actorId, createdAt };
+      });
+    } catch (error) {
+      const status = Number((error as { code?: number; response?: { status?: number } }).response?.status ?? (error as { code?: number }).code);
+      if (status !== 400) throw error;
+      const metadata = await sheetsClient().spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });
+      if (metadata.data.sheets?.some((sheet) => sheet.properties?.title === APPROVALS_SHEET)) throw error;
+      return [];
+    }
+  }
+  async create(approval: ActionPlanApproval) { await this.ensureSchema(); await append(`'${APPROVALS_SHEET}'!A:I`, [approval.id, approval.actionPlanId, approval.ownerId, approval.divisionId, approval.planUpdatedAt, approval.decision, approval.note ?? "", approval.actorId, approval.createdAt]); return approval; }
+}
+
 export class GoogleSheetsWeeklyPlanRepository implements WeeklyPlanRepository {
   private async ensureSchema() {
     const api = sheetsClient();
@@ -213,12 +251,13 @@ export class GoogleSheetsStatusRepository implements StatusRepository {
   async update(status: ActionPlanStatus) { await this.ensureSchema(); const row = (await rows("Settings!A:F")).find((item) => item.values[0] === status.id); if (!row) throw new Error("Status tidak ditemukan."); await replace(`Settings!A${row.rowNumber}:F${row.rowNumber}`, [status.id, status.label, String(status.isActive), status.createdAt, status.updatedAt, String(status.isCompleted)]); return status; }
 }
 
-const DIVISION_HEADERS = ["id", "name", "bod_user_id", "status", "created_at", "updated_at"];
+const DIVISION_HEADERS = ["id", "name", "bod_user_id", "status", "created_at", "updated_at", "approval_required"];
+const LEGACY_DIVISION_HEADERS = DIVISION_HEADERS.slice(0, 6);
 
 export class GoogleSheetsDivisionRepository implements DivisionRepository {
   async list(): Promise<Division[]> {
     let values: string[][];
-    try { values = await readValues("Divisions!A:F"); }
+    try { values = await readValues("Divisions!A:G"); }
     catch (error) {
       const status = Number((error as { code?: number; response?: { status?: number } }).response?.status ?? (error as { code?: number }).code);
       if (status !== 400) throw error;
@@ -227,8 +266,15 @@ export class GoogleSheetsDivisionRepository implements DivisionRepository {
       return [];
     }
     if (!values.length) return [];
-    if (DIVISION_HEADERS.some((header, index) => values[0][index] !== header)) throw new AppError("Header Divisions tidak sesuai. Periksa sheet tanpa menghapus data existing.", "VALIDATION");
-    return values.slice(1).filter((row) => row[0]).map(([id, name, bodUserId, status, createdAt, updatedAt]) => ({ id, name, bodUserId: bodUserId || undefined, status: status as Division["status"], createdAt, updatedAt }));
+    const headers = values[0];
+    const isLegacy = LEGACY_DIVISION_HEADERS.every((header, index) => headers[index] === header) && !headers[6];
+    if (!isLegacy && DIVISION_HEADERS.some((header, index) => headers[index] !== header)) throw new AppError("Header Divisions tidak sesuai. Periksa sheet tanpa menghapus data existing.", "VALIDATION");
+    return values.slice(1).filter((row) => row[0]).map(([id, name, bodUserId, status, createdAt, updatedAt, approvalRequired]) => ({ id, name, bodUserId: bodUserId || undefined, status: status as Division["status"], createdAt, updatedAt, approvalRequired: approvalRequired === "true" }));
+  }
+  private async ensureApprovalHeader() {
+    await this.list();
+    const headers = (await readValues("Divisions!A:G"))[0] ?? [];
+    if (!headers[6]) await replace("Divisions!A1:G1", DIVISION_HEADERS);
   }
   async create(division: Division) {
     const metadata = await sheetsClient().spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });
@@ -236,17 +282,18 @@ export class GoogleSheetsDivisionRepository implements DivisionRepository {
       await sheetsClient().spreadsheets.batchUpdate({ spreadsheetId: spreadsheetId(), requestBody: { requests: [{ addSheet: { properties: { title: "Divisions", gridProperties: { frozenRowCount: 1 } } } }] } });
       clearReadCache();
     }
-    const values = await readValues("Divisions!A:F");
-    if (!values.length) await replace("Divisions!A1:F1", DIVISION_HEADERS);
+    const values = await readValues("Divisions!A:G");
+    if (!values.length) await replace("Divisions!A1:G1", DIVISION_HEADERS);
     else await this.list();
-    await append("Divisions!A:F", [division.id, division.name, division.bodUserId ?? "", division.status, division.createdAt, division.updatedAt]);
+    await this.ensureApprovalHeader();
+    await append("Divisions!A:G", [division.id, division.name, division.bodUserId ?? "", division.status, division.createdAt, division.updatedAt, String(Boolean(division.approvalRequired))]);
     return division;
   }
   async update(division: Division) {
-    await this.list();
-    const row = (await rows("Divisions!A:F")).find((item) => item.values[0] === division.id);
+    await this.ensureApprovalHeader();
+    const row = (await rows("Divisions!A:G")).find((item) => item.values[0] === division.id);
     if (!row) throw new AppError("Divisi tidak ditemukan.", "NOT_FOUND");
-    await replace(`Divisions!A${row.rowNumber}:F${row.rowNumber}`, [division.id, division.name, division.bodUserId ?? "", division.status, division.createdAt, division.updatedAt]);
+    await replace(`Divisions!A${row.rowNumber}:G${row.rowNumber}`, [division.id, division.name, division.bodUserId ?? "", division.status, division.createdAt, division.updatedAt, String(Boolean(division.approvalRequired))]);
     return division;
   }
 }

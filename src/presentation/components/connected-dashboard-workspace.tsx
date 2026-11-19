@@ -17,6 +17,7 @@ type DashboardData = {
   divisionFilter?: ReactNode;
   users: SafeUser[];
   plans: DashboardPlan[];
+  pendingApprovals: DashboardPlan[];
   weeklyPlans: WeeklyPlan[];
   completedStatusLabels: string[];
   today: string;
@@ -43,16 +44,18 @@ function displayDate(value: string, year = false) {
   }).format(new Date(`${value}T00:00:00Z`));
 }
 
-function monitoringHref(userId: string, from: string, to: string, recordId?: string, divisionId?: string) {
-  const params = new URLSearchParams({ userId, from, to });
+function monitoringHref(userId: string | undefined, from: string, to: string, recordId?: string, divisionId?: string, scope?: "active" | "history") {
+  const params = new URLSearchParams({ from, to });
+  if (userId) params.set("userId", userId);
   if (recordId) params.set("recordId", recordId);
   if (divisionId) params.set("divisionId", divisionId);
+  if (scope) params.set("scope", scope);
   return `/monitoring?${params}`;
 }
 
 export function ConnectedDashboardWorkspace(initialData: DashboardData) {
   const [data, setData] = useState(initialData);
-  const { users, plans, weeklyPlans, completedStatusLabels, today, loadedAt, divisionId } = data;
+  const { users, plans, pendingApprovals, weeklyPlans, completedStatusLabels, today, loadedAt, divisionId } = data;
   const { notify } = useFeedback();
   const [{ preset, period, draft }, setFilters] = useState(() => {
     const period = presetPeriod("month", today);
@@ -68,8 +71,11 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
   const [refreshError, setRefreshError] = useState<{ message: string; accessDenied: boolean } | null>(null);
   const summary = useMemo(() => summarizeDashboard(users, plans, completedStatusLabels, period.from, period.to, today), [users, plans, completedStatusLabels, period, today]);
   const periodPlans = plans.filter((plan) => plan.date >= period.from && plan.date <= period.to);
+  const periodPendingApprovals = pendingApprovals.filter((plan) => plan.date >= period.from && plan.date <= period.to);
   const isCompleted = (plan: DashboardPlan) => Boolean(plan.afternoonStatus && completedStatusLabels.includes(plan.afternoonStatus));
   const scopedPlans = periodPlans.filter((plan) => scope === "completed" ? isCompleted(plan) : scope === "pending" ? !isCompleted(plan) : true);
+  const pendingCount = summary.total - summary.completed;
+  const pendingMembers = summary.byUser.filter((member) => member.total > member.completed).length;
   const weeklySummary = weeklyPlans.filter((plan) => !plan.deletedAt && plan.weekStart <= period.to && plan.weekEnd >= period.from).map((plan) => {
     const children = plans.filter((daily) => daily.weeklyPlanId === plan.id && !daily.deletedAt);
     return { ...plan, children, ownerName: users.find((user) => user.id === plan.userId)?.name ?? "User", completed: children.filter(isCompleted).length, total: plan.plannedActionPlanIds.length || children.length };
@@ -142,15 +148,15 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
           {refreshing ? "Memperbarui…" : "Perbarui data"}
         </button>
       } />
-      {data.scopeLabel && <p className="mt-3 text-sm font-semibold text-[#176d69]">{data.scopeLabel}</p>}
-      {initialData.divisionFilter}
+      {data.scopeLabel && !initialData.divisionFilter && <p className="mt-3 text-sm font-semibold text-[#176d69]">{data.scopeLabel}</p>}
+      {initialData.divisionFilter && <div className="mt-4">{initialData.divisionFilter}</div>}
       <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs leading-5 text-[#59706f]">
         <span>Dimuat {new Intl.DateTimeFormat("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Bangkok" }).format(new Date(loadedAt))} WIB</span>
         <span aria-hidden="true">·</span><span>Perubahan terbaru dapat memerlukan hingga 30 detik.</span>
       </div>
       {refreshError && <div role="alert" className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#e4c8c2] bg-[#fff4f1] p-4 text-sm text-[#813d32]"><div className="max-w-3xl"><p>{refreshError.message} Data sebelumnya tetap ditampilkan.</p>{refreshError.accessDenied && <p className="mt-1">Masuk kembali untuk memeriksa sesi Anda. Hubungi Admin jika akun dinonaktifkan atau hak akses berubah.</p>}</div>{refreshError.accessDenied ? <Link href="/login" className="inline-flex min-h-10 items-center rounded-lg px-3 font-semibold underline underline-offset-4">Masuk kembali</Link> : <button type="button" disabled={refreshing} onClick={refresh} className="min-h-10 rounded-lg px-3 font-semibold underline underline-offset-4 disabled:opacity-60">Coba lagi</button>}</div>}
 
-      <form onSubmit={applyPeriod} noValidate className="mt-6 rounded-2xl border bg-white p-4 sm:p-5">
+      <form onSubmit={applyPeriod} noValidate className="mt-3 border-y bg-white px-4 py-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex w-fit rounded-xl bg-[#f1f5f4] p-1" role="group" aria-label="Pilih periode Dashboard">
             {(["week", "month"] as const).map((value) => <button key={value} type="button" aria-pressed={preset === value} onClick={() => selectPeriod(value)} className={`min-h-10 rounded-lg px-4 text-sm font-semibold transition-colors ${preset === value ? "bg-[#173c3a] text-white" : "text-[#59706f] hover:bg-[#e3ecea]"}`}>{value === "week" ? "Minggu ini" : "Bulan ini"}</button>)}
@@ -168,17 +174,19 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
         </div>
       </form>
 
-      <section className="mt-5" aria-label="Ringkasan progres tim" aria-busy={refreshing}>
+      {summary.total === 0 ? <section className="mt-5 rounded-2xl border bg-white p-6 text-center sm:p-10" aria-labelledby="empty-dashboard-heading"><CalendarDays className="mx-auto size-7 text-[#59706f]" aria-hidden="true" /><h2 id="empty-dashboard-heading" className="mt-4 text-lg font-semibold text-[#173c3a]">Belum ada Action Plan pada periode ini</h2><p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-[#59706f]">Pilih periode lain untuk meninjau progres tim dan pekerjaan yang perlu ditindaklanjuti.</p><button type="button" onClick={() => setCustomOpen(true)} className={`${quietButton} mt-5 text-[#137d79]`}><CalendarDays className="size-4" aria-hidden="true" />Pilih periode lain</button></section> : <section className="mt-5" aria-label="Ringkasan progres tim" aria-busy={refreshing}>
         <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
           <Metric label="Total Action Plan" value={summary.total} detail="Pada periode terpilih" active={scope === "all"} onClick={() => selectScope("all")} />
           <Metric label="Selesai" value={summary.completed} detail="Status sore final" active={scope === "completed"} onClick={() => selectScope("completed")} />
           <Metric label="Penyelesaian" value={summary.total ? `${summary.completionRate}%` : "—"} detail={summary.total ? `${summary.completed} dari ${summary.total} selesai` : "Belum ada pekerjaan"} emphasis />
           <Metric label="Belum selesai" value={summary.total - summary.completed} detail="Termasuk hari ini" active={scope === "pending"} onClick={() => selectScope("pending")} />
         </div>
+        {periodPendingApprovals.length > 0 && <section className="mt-4 rounded-2xl border border-[#bcdce8] bg-[#f2fbfd] p-4 sm:px-5" aria-label="Antrean approval"><div className="flex flex-wrap items-start justify-between gap-4"><div><h2 className="font-semibold text-[#174b5a]">{periodPendingApprovals.length} approval menunggu keputusan</h2><p className="mt-1 text-sm text-[#426a75]">Buka task untuk memeriksa bukti dan memberi keputusan BOD.</p></div><Link href={monitoringHref(periodPendingApprovals[0].ownerId, period.from, period.to, periodPendingApprovals[0].id, divisionId)} className="inline-flex min-h-10 items-center rounded-xl bg-[#174b5a] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#123d49]">Buka antrean<ArrowRight className="ml-2 size-4" aria-hidden="true" /></Link></div><ul className="mt-3 divide-y border-t border-[#cfe5eb]">{periodPendingApprovals.slice(0, 3).map((plan) => <li key={plan.id} className="flex flex-wrap items-center justify-between gap-2 py-2 text-sm"><span className="min-w-0 truncate text-[#294846]"><strong className="font-semibold">{plan.ownerName}</strong> · {plan.task}</span><Link href={monitoringHref(plan.ownerId, period.from, period.to, plan.id, divisionId)} className="shrink-0 font-semibold text-[#176d69] underline underline-offset-4">Tinjau</Link></li>)}</ul>{periodPendingApprovals.length > 3 && <p className="mt-3 text-xs text-[#426a75]">+{periodPendingApprovals.length - 3} task lain menunggu approval.</p>}</section>}
+        {pendingCount > 0 && <section className="mt-4 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[#f0d49c] bg-[#fff8e8] p-4 sm:px-5" aria-label="Pekerjaan yang perlu ditinjau"><div className="flex min-w-0 items-start gap-3"><AlertCircle className="mt-0.5 size-5 shrink-0 text-[#9a5b16]" aria-hidden="true" /><div><h2 className="font-semibold text-[#704212]">{pendingCount} pekerjaan perlu ditinjau</h2><p className="mt-1 text-sm text-[#81561d]">Tersebar pada {pendingMembers} anggota di periode terpilih.</p></div></div><Link href={monitoringHref(undefined, period.from, period.to, undefined, divisionId, "active")} className="inline-flex min-h-10 items-center rounded-xl bg-[#173c3a] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#24514e]">Tinjau pekerjaan<ArrowRight className="ml-2 size-4" aria-hidden="true" /></Link></section>}
         <section id="dashboard-plan-list" hidden={!scope} className="mt-4 rounded-2xl border bg-white p-4 sm:p-5" aria-labelledby="plan-list-heading"><div className="flex items-start justify-between gap-4"><div><h2 id="plan-list-heading" className="font-semibold text-[#173c3a]">{scopeLabels[scope ?? "all"]}</h2><p className="mt-1 text-xs text-[#59706f]">{scopedPlans.length} pekerjaan pada periode terpilih</p></div><button type="button" onClick={closeScope} className="min-h-10 rounded-lg px-3 text-sm font-semibold text-[#59706f] hover:bg-[#f1f5f4]">Tutup daftar</button></div>{scope && <PlanList key={`${scope}-${period.from}-${period.to}`} plans={scopedPlans} from={period.from} to={period.to} completedStatusLabels={completedStatusLabels} divisionId={divisionId} />}</section>
-      </section>
+      </section>}
 
-      <div className="mt-6 grid items-start gap-5 min-[1280px]:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+      {summary.total > 0 && <><div className="mt-6 grid items-start gap-5 min-[1280px]:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
         <section className="min-w-0 overflow-hidden rounded-2xl border bg-white" aria-labelledby="team-heading">
           <div className="flex flex-wrap items-start justify-between gap-3 p-5 sm:p-6"><div><h2 id="team-heading" className="text-lg font-semibold tracking-tight text-[#173c3a]">Progres anggota tim</h2><p className="mt-1 text-sm text-[#59706f]">Buka anggota untuk melihat ringkasan pekerjaannya.</p></div><span className="rounded-lg bg-[#f1f5f4] px-2.5 py-1.5 text-xs font-medium text-[#59706f]">{users.length} anggota · {summary.activeUsers} aktif</span></div>
           {summary.byUser.length ? <div className="divide-y border-t">{summary.byUser.slice(0, memberLimit).map((member) => {
@@ -208,9 +216,10 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
         {weeklySummary.length > weeklyLimit && <div className="border-t p-4 text-center"><button type="button" className={quietButton} onClick={() => setWeeklyLimit(weeklyLimit + 4)}>Tampilkan lebih banyak ({weeklySummary.length - weeklyLimit})<ArrowDown className="size-4" aria-hidden="true" /></button></div>}
       </section>
 
-      <section className="mt-5" aria-label="Pekerjaan yang perlu ditindaklanjuti">
-        {summary.total === 0 ? <div className="flex items-start gap-3 rounded-xl border border-dashed p-4 text-sm text-[#59706f]"><CalendarDays className="mt-0.5 size-4 shrink-0" aria-hidden="true" /><p>Belum ada Action Plan pada periode ini. Pilih periode lain untuk melihat progres tim.</p></div> : summary.overdue.length ? <details className="group overflow-hidden rounded-2xl border border-[#e8d6b3] bg-[#fffbf2]"><summary className="flex cursor-pointer list-none items-center gap-3 p-5 [&::-webkit-details-marker]:hidden"><AlertCircle className="size-5 shrink-0 text-[#95601a]" aria-hidden="true" /><span className="flex-1"><span className="block text-sm font-semibold text-[#754b18]">{summary.overdue.length} pekerjaan perlu tindak lanjut</span><span className="mt-1 block text-xs leading-5 text-[#754b18]">Belum selesai dari tanggal sebelum hari ini, dalam periode terpilih.</span></span><ChevronDown className="size-4 shrink-0 text-[#754b18] transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" /></summary><div className="border-t border-[#e8d6b3] px-5 pb-3"><PlanList key={`${period.from}-${period.to}`} plans={summary.overdue} from={period.from} to={period.to} completedStatusLabels={completedStatusLabels} divisionId={divisionId} /></div></details> : <div className="flex items-start gap-3 rounded-xl border bg-white p-4 text-sm text-[#294846]"><CheckCircle2 className="mt-0.5 size-4 shrink-0 text-[#137d79]" aria-hidden="true" /><p>{summary.completed === summary.total ? "Seluruh Action Plan pada periode ini sudah selesai." : "Tidak ada pekerjaan sebelum hari ini yang belum selesai pada periode ini."}</p></div>}
+      <section className="mt-5" aria-label="Pekerjaan terlambat">
+        {summary.total === 0 ? <div className="flex items-start gap-3 rounded-xl border border-dashed p-4 text-sm text-[#59706f]"><CalendarDays className="mt-0.5 size-4 shrink-0" aria-hidden="true" /><p>Belum ada Action Plan pada periode ini. Pilih periode lain untuk melihat progres tim.</p></div> : summary.overdue.length ? <details className="group overflow-hidden rounded-2xl border border-[#e8d6b3] bg-[#fffbf2]"><summary className="flex cursor-pointer list-none items-center gap-3 p-5 [&::-webkit-details-marker]:hidden"><AlertCircle className="size-5 shrink-0 text-[#95601a]" aria-hidden="true" /><span className="flex-1"><span className="block text-sm font-semibold text-[#754b18]">{summary.overdue.length} pekerjaan terlambat</span><span className="mt-1 block text-xs leading-5 text-[#754b18]">Belum selesai dari tanggal sebelum hari ini, dalam periode terpilih.</span></span><ChevronDown className="size-4 shrink-0 text-[#754b18] transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" /></summary><div className="border-t border-[#e8d6b3] px-5 pb-3"><PlanList key={`${period.from}-${period.to}`} plans={summary.overdue} from={period.from} to={period.to} completedStatusLabels={completedStatusLabels} divisionId={divisionId} /></div></details> : <div className="flex items-start gap-3 rounded-xl border bg-white p-4 text-sm text-[#294846]"><CheckCircle2 className="mt-0.5 size-4 shrink-0 text-[#137d79]" aria-hidden="true" /><p>{summary.completed === summary.total ? "Seluruh Action Plan pada periode ini sudah selesai." : "Tidak ada pekerjaan sebelum hari ini yang belum selesai pada periode ini."}</p></div>}
       </section>
+      </>}
     </section>
   );
 }

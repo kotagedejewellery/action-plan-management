@@ -20,6 +20,11 @@ export function requireUserWorkspace(actor: Actor): void {
   if (actor.role !== "user" || !actor.divisionId) throw new AppError("Akses pengisian pekerjaan memerlukan akun User dengan divisi aktif. Hubungi SuperAdmin.", "FORBIDDEN");
 }
 
+export function requireApprovalBod(actor: Actor | null, division: Division): asserts actor is Actor & { role: "bod" } {
+  requireActiveActor(actor);
+  if (actor.role !== "bod" || actor.divisionId !== division.id || !division.approvalRequired) throw new AppError("Approval hanya tersedia untuk BOD pada divisi yang diaktifkan SuperAdmin.", "FORBIDDEN");
+}
+
 export function resolveActor(user: User, divisions: Division[]): Actor {
   const actor: Actor = { id: user.id, name: user.name, email: user.email, role: user.role, status: user.status, sheetName: user.sheetName };
   requireActiveActor(actor);

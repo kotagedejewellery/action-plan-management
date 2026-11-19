@@ -52,5 +52,13 @@ export const divisionInputSchema = z.object({
   name: z.string().trim().min(2, "Nama divisi minimal 2 karakter.").max(100),
   status: z.enum(["active", "inactive"]),
   bodUserId: z.union([z.string().min(1), z.literal("")]).optional(),
+  approvalRequired: z.boolean().optional().default(false),
   updatedAt: z.string().datetime().optional(),
+});
+
+export const approvalDecisionSchema = z.object({
+  decision: z.enum(["approved", "rejected"]),
+  note: z.string().trim().max(2_000, "Catatan maksimal 2.000 karakter.").optional(),
+}).superRefine((input, context) => {
+  if (input.decision === "rejected" && !input.note) context.addIssue({ code: "custom", path: ["note"], message: "Alasan penolakan wajib diisi." });
 });

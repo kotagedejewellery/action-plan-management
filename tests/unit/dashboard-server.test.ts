@@ -8,10 +8,11 @@ vi.mock("@/infrastructure/container", () => ({
   actionPlans: { list: vi.fn() },
   statuses: { list: vi.fn() },
   weeklyPlans: { list: vi.fn() },
+  approvals: { list: vi.fn() },
 }));
 vi.mock("@/presentation/server/actor", () => ({ currentActor: vi.fn() }));
 
-import { users, actionPlans, statuses, weeklyPlans, divisions } from "@/infrastructure/container";
+import { users, actionPlans, statuses, weeklyPlans, divisions, approvals } from "@/infrastructure/container";
 import { currentActor } from "@/presentation/server/actor";
 import { GET } from "@/app/api/dashboard/route";
 import { AppError } from "@/application/errors";
@@ -29,6 +30,7 @@ beforeEach(() => {
   ]);
   vi.mocked(statuses.list).mockResolvedValue([{ id: "s1", label: "Final", isActive: true, isCompleted: true, createdAt: "", updatedAt: "" }]);
   vi.mocked(weeklyPlans.list).mockResolvedValue([]);
+  vi.mocked(approvals.list).mockResolvedValue([]);
 });
 
 describe("dashboard refresh", () => {
@@ -73,5 +75,14 @@ describe("dashboard refresh", () => {
     const body = await response.json();
     expect(body.error).toContain("batas permintaan");
     expect(body.error).not.toContain("secret-token");
+  });
+
+  it("returns only pending approvals for divisions where approval is enabled", async () => {
+    vi.mocked(currentActor).mockResolvedValue(admin);
+    vi.mocked(users.list).mockResolvedValue([{ ...member, divisionId: "executive" }]);
+    vi.mocked(divisions.list).mockResolvedValue([{ id: "executive", name: "Executive Team", bodUserId: "bod", status: "active", approvalRequired: true, createdAt: "", updatedAt: "" }]);
+    vi.mocked(approvals.list).mockResolvedValue([{ id: "approval-1", actionPlanId: "p1", ownerId: "u1", divisionId: "executive", planUpdatedAt: "", decision: "submitted", actorId: "u1", createdAt: "2026-10-19T10:00:00.000Z" }]);
+    const body = await (await GET()).json();
+    expect(body.pendingApprovals).toMatchObject([{ id: "p1", ownerId: "u1" }]);
   });
 });

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { ActionPlan, ActionPlanAttachment } from "@/domain/models";
+import type { ApprovalState } from "@/application/approvals";
 import { Close, ExternalLink } from "./icons";
 import { StatusBadge } from "./workspace-ui";
 
@@ -18,8 +19,11 @@ function AttachmentImage({ attachment, url }: { attachment: ActionPlanAttachment
   </figure>;
 }
 
-export function MonitoringDetailPanel({ plan, userId, memberName, completedStatusLabels, onClose }: { plan: ActionPlan; userId: string; memberName: string; completedStatusLabels: string[]; onClose: () => void }) {
+export function MonitoringDetailPanel({ plan, userId, memberName, completedStatusLabels, approvalState, canApprove, onDecision, onClose }: { plan: ActionPlan; userId: string; memberName: string; completedStatusLabels: string[]; approvalState?: ApprovalState; canApprove: boolean; onDecision: (approvalId: string, decision: "approved" | "rejected", note?: string) => Promise<void>; onClose: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const [decisionNote, setDecisionNote] = useState("");
+  const [deciding, setDeciding] = useState(false);
+  const [decisionError, setDecisionError] = useState("");
   const close = useRef(onClose);
   useEffect(() => { close.current = onClose; }, [onClose]);
   useEffect(() => {
@@ -55,6 +59,15 @@ export function MonitoringDetailPanel({ plan, userId, memberName, completedStatu
   const images = plan.attachments?.filter((attachment) => attachment.mimeType.startsWith("image/")) ?? [];
   const documents = plan.attachments?.filter((attachment) => !attachment.mimeType.startsWith("image/")) ?? [];
   const date = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Bangkok" }).format(new Date(`${plan.date}T00:00:00+07:00`));
+  const approvalLabel = { belum_diajukan: "Belum diajukan", menunggu: "Menunggu approval", disetujui: "Disetujui", ditolak: "Perlu revisi" }[approvalState?.status ?? "belum_diajukan"];
+  async function decide(decision: "approved" | "rejected") {
+    if (!approvalState?.approvalId) return;
+    if (decision === "rejected" && !decisionNote.trim()) { setDecisionError("Alasan penolakan wajib diisi."); return; }
+    setDeciding(true); setDecisionError("");
+    try { await onDecision(approvalState.approvalId, decision, decisionNote.trim() || undefined); }
+    catch (error) { setDecisionError(error instanceof Error ? error.message : "Approval belum dapat diproses."); }
+    finally { setDeciding(false); }
+  }
 
   return <dialog ref={dialog} aria-labelledby="monitoring-detail-title" onCancel={(event) => { event.preventDefault(); onClose(); }} className="monitoring-detail fixed inset-y-0 right-0 left-auto z-50 m-0 h-dvh max-h-none w-full max-w-none overflow-hidden border-0 bg-white p-0 text-[#173c3a] shadow-[-12px_0_40px_-20px_rgba(23,60,58,0.3)] xl:w-[460px] xl:border-l">
     <div className="flex h-full flex-col">
@@ -64,6 +77,7 @@ export function MonitoringDetailPanel({ plan, userId, memberName, completedStatu
         <dl className="grid grid-cols-2 gap-3 border-y py-4 text-xs text-[#516967]">{[["Status pagi", plan.morningStatus], ["Status sore", plan.afternoonStatus]].map(([label, status]) => <div key={label}><dt>{label}</dt><dd className="mt-2">{status ? <StatusBadge status={status} completedStatusLabels={completedStatusLabels} /> : "Belum diisi"}</dd></div>)}</dl>
         <section><h3 className="text-sm font-semibold">Catatan</h3><p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-[#516967]">{plan.note || "Belum ada catatan."}</p></section>
         <section><h3 className="text-sm font-semibold">Hasil kerja</h3>{plan.resultLink ? <a href={plan.resultLink} target="_blank" rel="noreferrer" className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-xl border px-3 text-sm font-semibold text-[#137d79] hover:bg-[#eef4f3]">Buka hasil <ExternalLink className="size-4" /></a> : <p className="mt-2 text-sm text-[#516967]">Belum ada link hasil.</p>}</section>
+        <section className="rounded-xl border bg-[#f7faf9] p-4"><h3 className="text-sm font-semibold">Approval hasil</h3><p className="mt-1 text-sm text-[#516967]">{approvalLabel}</p>{approvalState?.note && <p className="mt-2 text-sm leading-6 text-[#9a5b16]">Catatan BOD: {approvalState.note}</p>}{canApprove && approvalState?.status === "menunggu" && <div className="mt-4 space-y-3"><label className="block text-sm font-medium text-[#294846]">Catatan review <span className="font-normal text-[#516967]">(wajib saat ditolak)</span><textarea value={decisionNote} onChange={(event) => setDecisionNote(event.target.value)} rows={3} className="mt-2 w-full resize-none rounded-xl border bg-white p-3 text-sm outline-none focus:border-[#137d79]" placeholder="Jelaskan alasan revisi atau catatan persetujuan" /></label>{decisionError && <p role="alert" className="text-sm text-[#9a5b16]">{decisionError}</p>}<div className="flex flex-wrap gap-2"><button type="button" disabled={deciding} onClick={() => void decide("approved")} className="min-h-10 rounded-xl bg-[#137d79] px-3 text-sm font-semibold text-white disabled:opacity-60">Setujui</button><button type="button" disabled={deciding} onClick={() => void decide("rejected")} className="min-h-10 rounded-xl border border-[#d9a55b] px-3 text-sm font-semibold text-[#9a5b16] disabled:opacity-60">Tolak & minta revisi</button></div></div>}</section>
         <section><h3 className="text-sm font-semibold">Lampiran{plan.attachments?.length ? ` (${plan.attachments.length})` : ""}</h3>{images.length > 0 && <div className="mt-3 grid grid-cols-2 gap-4">{images.map((attachment) => <AttachmentImage key={`${plan.id}-${attachment.id}`} attachment={attachment} url={`/api/action-plans/${encodeURIComponent(plan.id)}/attachments/${encodeURIComponent(attachment.id)}?userId=${encodeURIComponent(userId)}`} />)}</div>}{documents.length > 0 && <><ul className="mt-3 divide-y">{documents.map((attachment) => <li key={attachment.id} className="break-words py-3 text-sm text-[#516967]">{attachment.name}</li>)}</ul><p className="mt-1 text-xs leading-5 text-[#516967]">Nama dokumen ditampilkan sebagai referensi. Akses Admin terbatas pada pratinjau gambar.</p></>}{!plan.attachments?.length && <p className="mt-2 text-sm text-[#516967]">Belum ada lampiran.</p>}</section>
         <dl className="space-y-4 border-t pt-5 text-xs text-[#516967]"><div><dt>Dibuat</dt><dd className="mt-1">{displayTimestamp(plan.createdAt)}</dd></div><div><dt>Terakhir diperbarui</dt><dd className="mt-1">{displayTimestamp(plan.updatedAt)}</dd></div></dl>
       </div>
