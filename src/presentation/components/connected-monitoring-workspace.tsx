@@ -109,11 +109,14 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
   function closeDetail() {
     const id = detailId;
     const opener = detailOpener.current;
+    const restoreScroll = Boolean(opener?.isConnected && opener.getClientRects().length);
+    const scrollPosition = restoreScroll ? { left: window.scrollX, top: window.scrollY } : undefined;
     setDetailId("");
     requestAnimationFrame(() => {
       const target = opener?.isConnected && opener.getClientRects().length > 0 ? opener : Array.from(list.current?.querySelectorAll<HTMLButtonElement>("[data-plan-detail]") ?? []).find((element) => element.dataset.planDetail === id && element.getClientRects().length > 0);
-      if (target !== opener) target?.scrollIntoView({ block: "nearest", inline: "nearest" });
+      if (!restoreScroll) target?.scrollIntoView({ block: "nearest", inline: "nearest" });
       target?.focus({ preventScroll: true });
+      if (scrollPosition) window.scrollTo(scrollPosition);
     });
   }
 
