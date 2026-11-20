@@ -6,7 +6,7 @@ afterEach(() => { globalThis.__actionPlanNotesRuntime = undefined; });
 
 it("closes every accessible note when an account becomes inactive", async () => {
   const close = vi.fn();
-  globalThis.__actionPlanNotesRuntime = { closeNoteConnections: close };
+  globalThis.__actionPlanNotesRuntime = { closeNoteConnections: close, ready: async () => true };
 
   await closeNoteCollaborationConnectionsForUser({
     listForUser: async () => [

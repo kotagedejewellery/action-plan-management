@@ -10,6 +10,7 @@ type Workspace = { id: string; name: string; ownerId: string; updatedAt: string 
 type Note = { id: string; workspaceId: string; title: string; createdBy: string; updatedAt: string };
 type Member = { userId: string; role: "owner" | "member"; name: string; email: string };
 type Actor = { id: string; name: string };
+const refreshInterval = 60_000;
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, { ...options, headers: { "content-type": "application/json", ...options?.headers }, cache: "no-store" });
@@ -31,6 +32,7 @@ export function ConnectedNotesWorkspace({ actor }: { actor: Actor }) {
   const [removingMember, setRemovingMember] = useState<Member>();
   const [busy, setBusy] = useState(false);
   const [loadError, setLoadError] = useState("");
+  const [eventRefresh, setEventRefresh] = useState(0);
 
   const selectedWorkspace = workspaces.find((workspace) => workspace.id === workspaceId);
   const selectedNote = notes.find((note) => note.id === noteId);
@@ -54,27 +56,50 @@ export function ConnectedNotesWorkspace({ actor }: { actor: Actor }) {
 
   useEffect(() => {
     let active = true;
-    void request<Workspace[]>("/api/notes/workspaces").then((items) => {
-      if (!active) return;
-      setLoadError("");
-      setWorkspaces(items);
-      setWorkspaceId(items[0]?.id);
-    }).catch((error: unknown) => {
-      if (active) { const message = error instanceof Error ? error.message : "Coba lagi."; setLoadError(message); notify("error", "Catatan belum tersedia", message); }
-    });
-    return () => { active = false; };
-  }, [notify]);
+    let firstLoad = true;
+    const refresh = () => {
+      void request<Workspace[]>("/api/notes/workspaces").then((items) => {
+        if (!active) return;
+        setLoadError("");
+        setWorkspaces(items);
+        setWorkspaceId((current) => current && items.some((workspace) => workspace.id === current) ? current : items[0]?.id);
+      }).catch((error: unknown) => {
+        if (active && firstLoad) { const message = error instanceof Error ? error.message : "Coba lagi."; setLoadError(message); notify("error", "Catatan belum tersedia", message); }
+      }).finally(() => { firstLoad = false; });
+    };
+    const refreshWhenVisible = () => { if (document.visibilityState === "visible") refresh(); };
+    refresh();
+    const interval = window.setInterval(refresh, refreshInterval);
+    window.addEventListener("focus", refreshWhenVisible);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+    return () => { active = false; window.clearInterval(interval); window.removeEventListener("focus", refreshWhenVisible); document.removeEventListener("visibilitychange", refreshWhenVisible); };
+  }, [notify, eventRefresh]);
   useEffect(() => {
     if (!workspaceId) return;
     let active = true;
-    void Promise.all([request<Note[]>(`/api/notes/workspaces/${workspaceId}/notes`), request<Member[]>(`/api/notes/workspaces/${workspaceId}/members`)]).then(([nextNotes, nextMembers]) => {
-      if (!active) return;
-      setNotes(nextNotes); setMembers(nextMembers); setNoteId(nextNotes[0]?.id);
-    }).catch((error: unknown) => {
-      if (active) notify("error", "Workspace tidak dapat dibuka", error instanceof Error ? error.message : "Coba lagi.");
-    });
-    return () => { active = false; };
-  }, [workspaceId, notify]);
+    let firstLoad = true;
+    const refresh = () => {
+      void Promise.all([request<Note[]>(`/api/notes/workspaces/${workspaceId}/notes`), request<Member[]>(`/api/notes/workspaces/${workspaceId}/members`)]).then(([nextNotes, nextMembers]) => {
+        if (!active) return;
+        setNotes(nextNotes); setMembers(nextMembers);
+        setNoteId((current) => current && nextNotes.some((note) => note.id === current) ? current : nextNotes[0]?.id);
+      }).catch((error: unknown) => {
+        if (active && firstLoad) notify("error", "Workspace tidak dapat dibuka", error instanceof Error ? error.message : "Coba lagi.");
+      }).finally(() => { firstLoad = false; });
+    };
+    const refreshWhenVisible = () => { if (document.visibilityState === "visible") refresh(); };
+    refresh();
+    const interval = window.setInterval(refresh, refreshInterval);
+    window.addEventListener("focus", refreshWhenVisible);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+    return () => { active = false; window.clearInterval(interval); window.removeEventListener("focus", refreshWhenVisible); document.removeEventListener("visibilitychange", refreshWhenVisible); };
+  }, [workspaceId, notify, eventRefresh]);
+  useEffect(() => {
+    const source = new EventSource("/api/notes/events");
+    const refresh = () => setEventRefresh((current) => current + 1);
+    source.addEventListener("refresh", refresh);
+    return () => { source.removeEventListener("refresh", refresh); source.close(); };
+  }, []);
 
   const submitWorkspace = async (form: FormData) => {
     setBusy(true);

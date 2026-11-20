@@ -45,6 +45,11 @@ it("synchronizes two editors, refreshes the token on reconnect, and closes revok
   await waitFor(() => ownerSynced && memberSynced, "Kedua editor tidak tersinkron.");
   ownerDocument.getText("content").insert(0, "Keputusan bersama");
   await waitFor(() => memberDocument.getText("content").toString() === "Keputusan bersama", "Perubahan tidak sampai ke editor kedua.");
+  providers[0].setAwarenessField("user", { id: "owner", name: "Owner", color: "#137d79" });
+  const memberAwareness = providers[1].awareness;
+  if (!memberAwareness) throw new Error("Awareness editor kedua tidak tersedia.");
+  await waitFor(() => [...memberAwareness.getStates().values()].some((state) => state.user?.id === "owner"), "Presence pemilik tidak sampai ke editor kedua.");
+  expect([...memberAwareness.getStates().values()].find((state) => state.user?.id === "owner")?.user).toMatchObject({ name: "Owner", color: "#137d79" });
 
   const memberSocket = providers[1].configuration.websocketProvider;
   memberSocket.disconnect();

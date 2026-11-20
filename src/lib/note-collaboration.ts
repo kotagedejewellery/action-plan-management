@@ -1,4 +1,4 @@
-type NoteRuntime = { closeNoteConnections(noteIds: string[]): void };
+type NoteRuntime = { closeNoteConnections(noteIds: string[]): void; ready(): Promise<boolean> };
 type WorkspaceReader = { listForUser(userId: string): Promise<Array<{ id: string }>> };
 type NoteReader = { listByWorkspace(workspaceId: string): Promise<Array<{ id: string }>> };
 
@@ -8,6 +8,14 @@ declare global {
 
 export function noteCollaborationEnabled(): boolean {
   return Boolean(globalThis.__actionPlanNotesRuntime);
+}
+
+export function noteCollaborationConfigured(): boolean {
+  return Boolean(process.env.NOTES_DATABASE_URL && process.env.NOTES_COLLABORATION_SECRET);
+}
+
+export async function noteCollaborationReady(): Promise<boolean> {
+  return globalThis.__actionPlanNotesRuntime?.ready() ?? false;
 }
 
 export function closeNoteCollaborationConnections(noteIds: Iterable<string>): void {

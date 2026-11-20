@@ -2,12 +2,28 @@
 
 ## Urutan kerja
 
-1. Baca seluruh `AGENTS.md` sebelum melakukan analisis, perubahan, atau menjalankan perintah proyek lainnya.
+1. Pada awal setiap sesi, pekerjaan baru, atau resume setelah ringkasan/kompaksi konteks, baca seluruh `AGENTS.md` yang berlaku sebelum melakukan analisis, perubahan, atau menjalankan perintah proyek lainnya. Pembacaan ulang wajib dilakukan; jangan mengandalkan memori, ringkasan, atau instruksi dari sesi sebelumnya.
 2. Untuk setiap pekerjaan software engineering, pilih skill Matt Pocock terpasang yang paling relevan, baca seluruh `SKILL.md`, lalu ikuti workflow-nya. Muat hanya skill yang relevan dengan task.
 3. Untuk pekerjaan kode, gunakan Ponytail sebagai standar analisis dependency dan dampak perubahan. Gunakan level `full` untuk perubahan behavior, business logic, data flow, permission, shared code, bug, atau refactor. Analisis perubahan trivial dapat proporsional.
 4. Gunakan pembaruan dan/atau kueri Graphify sebelum memahami atau mengubah kode/arsitektur yang non-trivial. Baca source langsung hanya jika konteks Graphify belum cukup.
 5. Setelah satu perubahan logis selesai, perbarui indeks Graphify sebelum handoff. Ini berlaku untuk kode, konfigurasi, dan dokumentasi.
 6. Untuk pekerjaan yang membentuk, mengubah, atau meninjau UI/UX, gunakan Impeccable. Jalankan `impeccable context` satu kali per sesi sebelum perubahan UI dan ikuti arahannya.
+
+## Skill dan alat tambahan
+
+1. Jika tersedia, gunakan skill Superpowers yang relevan untuk merencanakan perubahan non-trivial, menelusuri akar masalah, atau memverifikasi hasil. Gabungkan langkahnya dengan workflow Matt Pocock dan Ponytail agar analisis serta validasi tidak diduplikasi.
+2. Untuk pekerjaan kode, nyatakan asumsi yang memengaruhi hasil, pilih solusi paling sederhana, batasi scope, dan gunakan acceptance criteria yang dapat diverifikasi.
+3. Jika tersedia, gunakan Agent Browser untuk memvalidasi langsung alur web seperti navigasi, formulir, dan interaksi. Setelah navigasi atau perubahan DOM, ambil snapshot baru sebelum memakai kembali referensi elemen.
+4. Jika tersedia, gunakan Agent Desktop hanya untuk E2E yang membutuhkan aplikasi desktop, dialog OS, atau alur lintas aplikasi. Periksa status serta panduannya sebelum penggunaan, jalankan snapshot → aksi → snapshot ulang, lalu laporkan hasil aktual, hasil yang diharapkan, dan hambatan pengujian.
+5. Baca seluruh `SKILL.md` yang relevan sebelum memakai skill tambahan. Bila tool wajib tidak tersedia atau gagal, ikuti aturan kegagalan tool pada dokumen ini dan gunakan alternatif existing yang setara bila ada.
+
+## Workflow UI/UX
+
+1. Baca `DESIGN.md`, kebutuhan pengguna, dan pola UI existing sebelum membentuk atau mengubah UI.
+2. Untuk tampilan baru, redesign, atau arah visual yang belum jelas, gunakan Inspo melalui MCP bila tersedia untuk mencari referensi yang relevan. Catat singkat sumber dan alasan adaptasinya; jangan menyalin desain mentah-mentah.
+3. Gunakan Impeccable untuk kualitas, konsistensi, dan validasi UI. Gunakan Hallmark bila tersedia untuk menentukan atau mengaudit karakter visual; gabungkan langkah yang tumpang tindih.
+4. Adaptasikan hasil ke brand, design system, komponen, dan stack existing. Perubahan kecil mengikuti desain existing; redesign dibatasi pada halaman atau komponen yang diminta.
+5. Validasi render, responsive layout, kontras, keyboard focus, dan interaksi yang terdampak. Gunakan Agent Browser atau Agent Desktop jika tersedia dan sesuai kebutuhan.
 
 ## Batas perubahan
 
@@ -17,6 +33,8 @@
 4. Ikuti architecture, convention, component, utility, dan dependency existing sebelum membuat pola baru.
 5. Gunakan stack existing; tambah dependency hanya jika kebutuhan tidak dapat diselesaikan secara wajar dengannya.
 6. Berhenti ketika acceptance criteria terpenuhi.
+
+Nyatakan asumsi hanya bila asumsi tersebut dapat memengaruhi hasil, permission, data, atau behavior yang diterima pengguna.
 
 ## Perbaikan bug
 
@@ -28,7 +46,7 @@
 
 ## Perlindungan data dan penyimpanan
 
-Google Spreadsheet adalah sumber data utama; Google Drive menyimpan lampiran. Data existing tidak boleh dianggap disposable, termasuk data pengembangan lokal dan spreadsheet percobaan.
+Google Spreadsheet adalah sumber data utama; Google Drive menyimpan lampiran; PostgreSQL Notes menyimpan Catatan Kolaboratif. Data existing tidak boleh dianggap disposable, termasuk database lokal, spreadsheet percobaan, dan volume Docker.
 
 Tanpa persetujuan eksplisit user, jangan:
 
@@ -36,6 +54,7 @@ Tanpa persetujuan eksplisit user, jangan:
 - mengosongkan range, melakukan truncate, atau delete massal;
 - menghapus file/folder Drive secara massal atau permanen;
 - menghapus Docker volume yang menyimpan data;
+- reset atau membuat ulang database, menjalankan `migrate:fresh`, `DROP DATABASE`, atau `DROP SCHEMA`;
 - menjalankan seed/bootstrap yang menimpa atau menghapus data existing;
 - membuat migrasi destruktif; atau
 - mengubah migrasi lama yang sudah digunakan pada environment shared, staging, atau production.
@@ -48,7 +67,7 @@ Gunakan migrasi forward-only dan non-destructive secara default. Sebelum migrasi
 
 Jika satu-satunya solusi berisiko kehilangan data, berhenti, jelaskan target serta risikonya, dan minta persetujuan eksplisit.
 
-Deploy, build, startup, CI/CD, Dockerfile, entrypoint, dan post-deploy tidak boleh mereset penyimpanan atau menghapus data existing. Bootstrap Admin hanya untuk inisialisasi ketika sheet `Users` kosong, sesuai `docs/SETUP.md`.
+Deploy, build, startup, CI/CD, Dockerfile, entrypoint, dan post-deploy tidak boleh mereset penyimpanan atau menghapus data existing. Migrasi harus forward-only, non-destructive, dan tidak dijalankan diam-diam pada startup. Bootstrap Admin hanya untuk inisialisasi ketika sheet `Users` kosong, sesuai `docs/SETUP.md`.
 
 Kebijakan penghapusan aplikasi mengacu pada `docs/DATABASE_DESIGN.md`: Action Plan mandiri memakai soft-delete; penghapusan lampiran individual memindahkannya ke Sampah Drive; penghapusan Weekly Plan menghapus permanen rencana tersebut, Action Plan terkait, dan file lampirannya. Mengembangkan atau menguji fitur ini bukan izin untuk menjalankan penghapusan pada data nyata.
 
@@ -64,7 +83,7 @@ Uji secara proporsional terhadap risiko perubahan. Prioritaskan test untuk:
 - shared behavior; dan
 - bug regression.
 
-Pilih pemeriksaan yang relevan dari script dan konfigurasi proyek. Perubahan dokumentasi cukup diperiksa konsistensi instruksi, referensi file, dan diff-nya. Klaim validasi harus sesuai dengan pemeriksaan yang benar-benar dijalankan; bedakan unit test dari pengujian integrasi Google atau produksi.
+Pilih pemeriksaan yang relevan dari script dan konfigurasi proyek. Perubahan dokumentasi cukup diperiksa konsistensi instruksi, referensi file, dan diff-nya. Klaim validasi harus sesuai dengan pemeriksaan yang benar-benar dijalankan; bedakan unit test dari pengujian integrasi Google, realtime, browser, dan produksi.
 
 Optimasi hanya jika relevan terhadap task atau bottleneck. Prioritasnya:
 

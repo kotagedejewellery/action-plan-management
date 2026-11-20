@@ -29,7 +29,7 @@ beforeEach(() => {
 
 it("closes the member's active Notes when SuperAdmin deactivates the account", async () => {
   const close = vi.fn();
-  globalThis.__actionPlanNotesRuntime = { closeNoteConnections: close };
+  globalThis.__actionPlanNotesRuntime = { closeNoteConnections: close, ready: async () => true };
   const response = await PATCH(new Request("http://localhost", { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: member.name, email: member.email, role: member.role, status: "inactive" }) }), { params: Promise.resolve({ userId: member.id }) });
 
   expect(response.status).toBe(200);

@@ -32,7 +32,7 @@ beforeEach(() => {
 
 it("closes active document connections after member access is revoked", async () => {
   const close = vi.fn();
-  Object.assign(globalThis, { __actionPlanNotesRuntime: { closeNoteConnections: close } });
+  Object.assign(globalThis, { __actionPlanNotesRuntime: { closeNoteConnections: close, ready: async () => true } });
 
   const response = await removeMember(new Request("http://localhost"), { params: Promise.resolve({ workspaceId: workspace.id, userId: "member" }) });
 
@@ -43,7 +43,7 @@ it("closes active document connections after member access is revoked", async ()
 
 it("closes active document connections after a note is deleted", async () => {
   const close = vi.fn();
-  Object.assign(globalThis, { __actionPlanNotesRuntime: { closeNoteConnections: close } });
+  Object.assign(globalThis, { __actionPlanNotesRuntime: { closeNoteConnections: close, ready: async () => true } });
 
   const response = await removeNote(new Request("http://localhost"), { params: Promise.resolve({ noteId: "note-1" }) });
 

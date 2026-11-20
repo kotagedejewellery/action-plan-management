@@ -76,7 +76,13 @@ function collaborationRuntime() {
 
 await app.prepare();
 const collaboration = collaborationRuntime();
-if (collaboration) globalThis.__actionPlanNotesRuntime = { closeNoteConnections: (noteIds) => noteIds.forEach((noteId) => collaboration.hocuspocus.closeConnections(noteId)) };
+if (collaboration) globalThis.__actionPlanNotesRuntime = {
+  closeNoteConnections: (noteIds) => noteIds.forEach((noteId) => collaboration.hocuspocus.closeConnections(noteId)),
+  ready: async () => {
+    try { await collaboration.pool.query("SELECT 1"); return true; }
+    catch { return false; }
+  },
+};
 const server = createServer((request, response) => handle(request, response));
 
 server.on("upgrade", (request, socket, head) => {
@@ -93,7 +99,8 @@ async function shutdown() {
   shuttingDown = true;
   const closed = new Promise((resolve) => server.close(resolve));
   try {
-    await collaboration?.hocuspocus.destroy();
+    collaboration?.hocuspocus.closeConnections();
+    collaboration?.hocuspocus.flushPendingStores();
     await closed;
     await collaboration?.pool.end();
   } finally {
