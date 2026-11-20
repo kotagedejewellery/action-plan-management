@@ -1,4 +1,4 @@
-import type { ActionPlan, ActionPlanApproval, ActionPlanAttachment, ActionPlanStatus, Division, User, WeeklyPlan } from "@/domain/models";
+import type { ActionPlan, ActionPlanApproval, ActionPlanAttachment, ActionPlanStatus, CollaborativeNote, Division, NoteWorkspace, NoteWorkspaceMember, User, WeeklyPlan } from "@/domain/models";
 
 export interface DivisionRepository {
   list(): Promise<Division[]>;
@@ -50,4 +50,21 @@ export interface StatusRepository {
   list(): Promise<ActionPlanStatus[]>;
   create(status: ActionPlanStatus): Promise<ActionPlanStatus>;
   update(status: ActionPlanStatus): Promise<ActionPlanStatus>;
+}
+
+export interface NoteWorkspaceRepository {
+  listForUser(userId: string): Promise<NoteWorkspace[]>;
+  findById(id: string): Promise<NoteWorkspace | null>;
+  createWithOwner(workspace: NoteWorkspace, owner: NoteWorkspaceMember): Promise<NoteWorkspace>;
+  listMembers(workspaceId: string): Promise<NoteWorkspaceMember[]>;
+  addMember(member: NoteWorkspaceMember): Promise<NoteWorkspaceMember>;
+  removeMember(workspaceId: string, userId: string): Promise<void>;
+}
+
+export interface NoteRepository {
+  listByWorkspace(workspaceId: string): Promise<CollaborativeNote[]>;
+  findById(id: string): Promise<CollaborativeNote | null>;
+  create(note: CollaborativeNote): Promise<CollaborativeNote>;
+  updateTitle(note: CollaborativeNote): Promise<CollaborativeNote>;
+  remove(id: string): Promise<void>;
 }

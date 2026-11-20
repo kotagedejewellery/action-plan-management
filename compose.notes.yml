@@ -1,0 +1,20 @@
+services:
+  notes-db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: action_plan_notes
+      POSTGRES_USER: ${NOTES_POSTGRES_USER:?NOTES_POSTGRES_USER wajib diisi}
+      POSTGRES_PASSWORD: ${NOTES_POSTGRES_PASSWORD:?NOTES_POSTGRES_PASSWORD wajib diisi}
+    volumes:
+      - notes_postgres_data:/var/lib/postgresql/data
+    networks:
+      - notes
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  notes_postgres_data:

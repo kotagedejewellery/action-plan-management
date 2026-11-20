@@ -14,6 +14,7 @@ import {
   History,
   LogOut,
   Menu,
+  Note,
   Users,
 } from "./icons";
 import { ConfirmDialog } from "./workspace-ui";
@@ -28,6 +29,7 @@ const baseNavigation = [
   },
   { href: "/weekly-plans", label: "Rencana Mingguan", icon: Calendar, roles: ["user"] },
   { href: "/history", label: "Riwayat", icon: History, roles: ["user"] },
+  { href: "/notes", label: "Catatan", icon: Note, roles: ["admin", "bod", "user"] },
   { href: "/dashboard", label: "Dashboard", icon: Chart, roles: ["admin", "bod"] },
   { href: "/monitoring", label: "Monitoring", icon: Grid, roles: ["admin", "bod"] },
   { href: "/divisions", label: "Divisi", icon: Grid, roles: ["admin"] },

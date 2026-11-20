@@ -10,6 +10,7 @@ services:
       - .env
     networks:
       - proxy
+      - notes
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
@@ -26,3 +27,5 @@ services:
 networks:
   proxy:
     external: true
+  notes:
+    internal: true

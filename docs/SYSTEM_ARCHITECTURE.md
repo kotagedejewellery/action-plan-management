@@ -166,4 +166,10 @@ Arsitektur ini ditujukan untuk MVP dengan jumlah User dan record yang wajar. Jik
 
 `application/access.ts` menjadi policy bersama untuk actor aktif, SuperAdmin, pemantau divisi dan pemilik pekerjaan. `currentActor` mengabaikan claim role JWT sebagai otoritas dan me-resolve BOD dari penugasan Divisions. Dashboard dan Monitoring menyaring daftar anggota sebelum membaca sheet kerja; rencana mingguan disaring melalui ID pemilik yang terlihat sebelum serialisasi. API plan dan lampiran memeriksa target anggota sebelum membaca record atau binary Drive. Halaman dan navigasi mencerminkan policy yang sama; menyembunyikan menu bukan batas keamanan.
 
+### Catatan Kolaboratif
+
+Catatan Kolaboratif adalah modul tambahan dengan storage PostgreSQL sendiri; Google Spreadsheet dan Drive tidak terlibat. REST handler hanya mengelola Workspace, membership, serta metadata note. Setelah policy membership server-side berhasil, route session menerbitkan token HMAC singkat untuk satu note. Endpoint WebSocket `/api/notes/collaboration` memverifikasi token dan membership lagi sebelum Hocuspocus/Yjs menyinkronkan perubahan serta presence. State Yjs disimpan dalam format binary `BYTEA`, sehingga edit concurrent tidak memakai last-write-wins.
+
+Role `owner`/`member` berlaku hanya dalam workspace Notes; role `admin`/`bod`/`user` tidak berubah dan tidak memberi akses otomatis terhadap isi note. PostgreSQL Notes tidak dimigrasikan pada startup atau deploy. Service `notes-db` berada di `compose.notes.yml`, sehingga deployment lama yang memakai `compose.yml` saja tidak bergantung pada database baru.
+
 `application/divisions.ts` mengoordinasikan mutasi akun/divisi melalui antrean satu proses. Invarian: satu BOD per divisi aktif, satu divisi per BOD, anggota tanpa perpindahan divisi, dan minimal satu SuperAdmin aktif. Tidak ada migrasi startup atau perubahan lokasi data. Riwayat tetap mengikuti afiliasi anggota yang tidak berubah. Batas satu proses, cache akses 5 detik dan persiapan mapping dijelaskan pada `docs/TECH_STACK.md` serta `docs/MULTI_DIVISION_ROLLOUT.md`.

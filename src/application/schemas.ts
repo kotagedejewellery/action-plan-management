@@ -62,3 +62,7 @@ export const approvalDecisionSchema = z.object({
 }).superRefine((input, context) => {
   if (input.decision === "rejected" && !input.note) context.addIssue({ code: "custom", path: ["note"], message: "Alasan penolakan wajib diisi." });
 });
+
+export const noteWorkspaceInputSchema = z.object({ name: z.string().trim().min(2, "Nama workspace minimal 2 karakter.").max(100) });
+export const noteInviteInputSchema = z.object({ email: z.string().trim().email("Email tidak valid.") });
+export const noteInputSchema = z.object({ title: z.string().trim().min(1, "Judul catatan wajib diisi.").max(200) });

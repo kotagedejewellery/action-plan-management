@@ -160,3 +160,16 @@ Lihat `docs/MULTI_DIVISION_ROLLOUT.md` sebelum mengubah pemetaan environment nya
 Tab ini dibuat secara lazy hanya ketika User pertama kali mengajukan approval, sehingga deploy atau pembacaan data tidak mengubah Spreadsheet. Sheet yang sudah ada harus memiliki header persis sesuai skema; header berbeda ditolak tanpa menulis atau menghapus data. Setiap baris adalah event append-only: `id`, `action_plan_id`, `owner_id`, `division_id`, `plan_updated_at`, `decision`, `note`, `actor_id`, `created_at`.
 
 `decision` bernilai `submitted`, `approved`, atau `rejected`. Status yang berlaku adalah event terakhir berdasarkan urutan append pada `action_plan_id` dengan `plan_updated_at` yang sama. Karena itu edit Action Plan setelah submit atau keputusan otomatis membuat event lama kedaluwarsa dan User perlu mengajukan ulang. Action Plan yang sudah disetujui tidak dapat diajukan ulang tanpa perubahan. Hanya BOD canonical pada divisi dengan `approval_required=true` yang dapat membuat event `approved` atau `rejected`; alasan penolakan wajib diisi. Bukti submit minimal berupa `link_hasil` atau satu lampiran yang telah tersimpan.
+
+## 13. PostgreSQL Catatan Kolaboratif
+
+Catatan Kolaboratif tidak memakai Spreadsheet karena dokumen Yjs memerlukan persistence biner dan penyatuan edit concurrent. Database ini terpisah dari Spreadsheet Action Plan; satu-satunya referensi lintas storage adalah `Users.id`, yang tetap divalidasi aplikasi ketika modul diakses.
+
+| Tabel | Isi |
+| --- | --- |
+| `note_workspaces` | Workspace, nama, Owner, dan timestamp. |
+| `note_workspace_members` | Membership eksplisit dengan role lokal `owner` atau `member`. |
+| `notes` | Metadata note: workspace, judul, pembuat, dan timestamp. |
+| `note_documents` | State dokumen Yjs dalam `BYTEA`; bukan JSON atau HTML sebagai sumber utama. |
+
+Owner dapat mengundang/menghapus member serta menghapus note; member dapat membuat dan mengedit note. SuperAdmin dan BOD tidak menerima akses otomatis hanya karena role/divisinya. Penghapusan note merupakan aksi eksplisit Owner dan menghapus dokumen Yjs melalui foreign key cascade. Tidak ada migrasi startup: `npm run migrate:notes` dijalankan secara eksplisit.

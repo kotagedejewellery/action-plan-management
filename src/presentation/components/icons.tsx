@@ -50,6 +50,14 @@ export function History({ ...props }: IconProps) {
     </Icon>
   );
 }
+export function Note({ ...props }: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M6 3h9l3 3v15H6z" />
+      <path d="M15 3v4h4M9 11h6M9 15h6" />
+    </Icon>
+  );
+}
 export function Trash({ ...props }: IconProps) {
   return (
     <Icon {...props}>

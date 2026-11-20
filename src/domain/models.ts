@@ -85,6 +85,32 @@ export type ActionPlanStatus = {
 
 export type Actor = Pick<User, "id" | "role" | "status" | "sheetName" | "email" | "name" | "divisionId"> & { divisionName?: string };
 
+export type NoteWorkspaceRole = "owner" | "member";
+
+export type NoteWorkspace = {
+  id: string;
+  name: string;
+  ownerId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type NoteWorkspaceMember = {
+  workspaceId: string;
+  userId: string;
+  role: NoteWorkspaceRole;
+  createdAt: string;
+};
+
+export type CollaborativeNote = {
+  id: string;
+  workspaceId: string;
+  title: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export function toSafeUser(user: User): SafeUser {
   const safeUser: Partial<User> = { ...user };
   delete safeUser.passwordHash;

@@ -20,6 +20,8 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/server.mjs ./server.mjs
+COPY --from=builder /app/scripts/migrate-notes.mjs ./scripts/migrate-notes.mjs
 
 USER node
 EXPOSE 3000
