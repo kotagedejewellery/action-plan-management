@@ -779,7 +779,7 @@
       "label": "server",
       "file_type": "code",
       "source_file": "server.mjs",
-      "source_location": "L80",
+      "source_location": "L86",
       "_origin": "ast"
     },
     {
@@ -787,7 +787,7 @@
       "label": "shutdown()",
       "file_type": "code",
       "source_file": "server.mjs",
-      "source_location": "L91",
+      "source_location": "L97",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1230,7 +1230,7 @@
       "label": "GET()",
       "file_type": "code",
       "source_file": "src/app/api/health/route.ts",
-      "source_location": "L3",
+      "source_location": "L5",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1281,7 +1281,7 @@
       "label": "Context",
       "file_type": "code",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast"
@@ -1291,7 +1291,7 @@
       "label": "DELETE()",
       "file_type": "code",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1323,6 +1323,31 @@
       "_origin": "ast"
     },
     {
+      "id": "src_app_api_notes_events_route",
+      "label": "events/route.ts",
+      "file_type": "code",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_api_notes_events_route_runtime",
+      "label": "runtime",
+      "file_type": "code",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_api_notes_events_route_get",
+      "label": "GET()",
+      "file_type": "code",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L7",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
       "id": "src_app_api_notes_workspaces_workspaceid_members_userid_route",
       "label": "members/[userId]/route.ts",
       "file_type": "code",
@@ -1335,7 +1360,7 @@
       "label": "Context",
       "file_type": "code",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast"
@@ -1345,7 +1370,7 @@
       "label": "DELETE()",
       "file_type": "code",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1362,7 +1387,7 @@
       "label": "Context",
       "file_type": "code",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast"
@@ -1372,7 +1397,7 @@
       "label": "GET()",
       "file_type": "code",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1381,7 +1406,7 @@
       "label": "POST()",
       "file_type": "code",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L16",
+      "source_location": "L17",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1398,7 +1423,7 @@
       "label": "Context",
       "file_type": "code",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast"
@@ -1408,7 +1433,7 @@
       "label": "GET()",
       "file_type": "code",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1417,7 +1442,7 @@
       "label": "POST()",
       "file_type": "code",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L16",
+      "source_location": "L17",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1434,7 +1459,7 @@
       "label": "GET()",
       "file_type": "code",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1443,7 +1468,7 @@
       "label": "POST()",
       "file_type": "code",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "_callable": true,
       "_origin": "ast"
     },
@@ -4219,11 +4244,29 @@
       "_origin": "ast"
     },
     {
+      "id": "src_lib_note_collaboration_notecollaborationconfigured",
+      "label": "noteCollaborationConfigured()",
+      "file_type": "code",
+      "source_file": "src/lib/note-collaboration.ts",
+      "source_location": "L13",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_lib_note_collaboration_notecollaborationready",
+      "label": "noteCollaborationReady()",
+      "file_type": "code",
+      "source_file": "src/lib/note-collaboration.ts",
+      "source_location": "L17",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
       "id": "src_lib_note_collaboration_closenotecollaborationconnections",
       "label": "closeNoteCollaborationConnections()",
       "file_type": "code",
       "source_file": "src/lib/note-collaboration.ts",
-      "source_location": "L13",
+      "source_location": "L21",
       "_callable": true,
       "_origin": "ast"
     },
@@ -4232,7 +4275,7 @@
       "label": "closeNoteCollaborationConnectionsForUser()",
       "file_type": "code",
       "source_file": "src/lib/note-collaboration.ts",
-      "source_location": "L18",
+      "source_location": "L26",
       "_callable": true,
       "_origin": "ast"
     },
@@ -4286,6 +4329,51 @@
       "label": "readNoteSession()",
       "file_type": "code",
       "source_file": "src/lib/note-session.ts",
+      "source_location": "L22",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_lib_note_workspace_events",
+      "label": "note-workspace-events.ts",
+      "file_type": "code",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_lib_note_workspace_events_noteworkspaceevents",
+      "label": "NoteWorkspaceEvents",
+      "file_type": "code",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L3",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_lib_note_workspace_events_events",
+      "label": "events()",
+      "file_type": "code",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L9",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "label": "publishNoteWorkspaceChange()",
+      "file_type": "code",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L18",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "src_lib_note_workspace_events_subscribetonoteworkspacechanges",
+      "label": "subscribeToNoteWorkspaceChanges()",
+      "file_type": "code",
+      "source_file": "src/lib/note-workspace-events.ts",
       "source_location": "L22",
       "_callable": true,
       "_origin": "ast"
@@ -4490,7 +4578,7 @@
       "label": "CollaborativeNoteEditor()",
       "file_type": "code",
       "source_file": "src/presentation/components/collaborative-note-editor.tsx",
-      "source_location": "L115",
+      "source_location": "L116",
       "_callable": true,
       "_origin": "ast"
     },
@@ -5125,7 +5213,7 @@
       "label": "request()",
       "file_type": "code",
       "source_file": "src/presentation/components/connected-notes-workspace.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "_callable": true,
       "_origin": "ast"
     },
@@ -5134,7 +5222,7 @@
       "label": "ConnectedNotesWorkspace()",
       "file_type": "code",
       "source_file": "src/presentation/components/connected-notes-workspace.tsx",
-      "source_location": "L22",
+      "source_location": "L21",
       "_callable": true,
       "_origin": "ast"
     },
@@ -5879,7 +5967,16 @@
       "label": "noteEditorFeedback",
       "file_type": "code",
       "source_file": "src/presentation/components/note-editor-feedback.ts",
+      "source_location": "L19",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_presentation_components_note_editor_feedback_noteeditoreditable",
+      "label": "noteEditorEditable()",
+      "file_type": "code",
+      "source_file": "src/presentation/components/note-editor-feedback.ts",
       "source_location": "L15",
+      "_callable": true,
       "_origin": "ast"
     },
     {
@@ -6690,6 +6787,14 @@
       "label": "note-session.test.ts",
       "file_type": "code",
       "source_file": "tests/unit/note-session.test.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tests_unit_note_workspace_events_test",
+      "label": "note-workspace-events.test.ts",
+      "file_type": "code",
+      "source_file": "tests/unit/note-workspace-events.test.ts",
       "source_location": "L1",
       "_origin": "ast"
     },
@@ -8871,6 +8976,15 @@
       "norm_label": "ref_node_url",
       "source_file": "",
       "type": "external"
+    },
+    {
+      "id": "ref_node_events",
+      "label": "ref_node_events",
+      "file_type": "concept",
+      "type": "external",
+      "external": true,
+      "source_file": "",
+      "_origin": "semantic"
     }
   ],
   "links": [
@@ -9967,7 +10081,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server.mjs",
-      "source_location": "L80",
+      "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9977,7 +10091,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server.mjs",
-      "source_location": "L91",
+      "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -9999,7 +10113,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server.mjs",
-      "source_location": "L80",
+      "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10010,7 +10124,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server.mjs",
-      "source_location": "L106",
+      "source_location": "L112",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -13334,11 +13448,44 @@
     },
     {
       "source": "src_app_api_health_route",
+      "target": "src_lib_note_collaboration",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/health/route.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_health_route",
+      "target": "src_lib_note_collaboration_notecollaborationconfigured",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/health/route.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_health_route",
+      "target": "src_lib_note_collaboration_notecollaborationready",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/health/route.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_health_route",
       "target": "src_app_api_health_route_get",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/health/route.ts",
-      "source_location": "L3",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -13716,12 +13863,34 @@
     },
     {
       "source": "src_app_api_notes_noteid_route",
-      "target": "src_presentation_server_actor",
+      "target": "src_lib_note_workspace_events",
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
       "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_noteid_route",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/[noteId]/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_noteid_route",
+      "target": "src_presentation_server_actor",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/[noteId]/route.ts",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -13732,7 +13901,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -13743,7 +13912,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -13754,7 +13923,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -13764,7 +13933,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -13774,7 +13943,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -13931,6 +14100,92 @@
       "_origin": "ast"
     },
     {
+      "source": "src_app_api_notes_events_route",
+      "target": "src_lib_note_workspace_events",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_events_route",
+      "target": "src_lib_note_workspace_events_subscribetonoteworkspacechanges",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_events_route",
+      "target": "src_presentation_server_actor",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_events_route",
+      "target": "src_presentation_server_actor_currentactor",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_events_route",
+      "target": "src_presentation_server_api_error",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_events_route",
+      "target": "src_presentation_server_api_error_apierror",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_events_route",
+      "target": "src_app_api_notes_events_route_runtime",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_events_route",
+      "target": "src_app_api_notes_events_route_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "src_app_api_notes_workspaces_workspaceid_members_userid_route",
       "target": "ref_next",
       "relation": "imports_from",
@@ -14020,12 +14275,34 @@
     },
     {
       "source": "src_app_api_notes_workspaces_workspaceid_members_userid_route",
-      "target": "src_presentation_server_actor",
+      "target": "src_lib_note_workspace_events",
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
       "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_workspaceid_members_userid_route",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_workspaceid_members_userid_route",
+      "target": "src_presentation_server_actor",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14036,7 +14313,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14047,7 +14324,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14058,7 +14335,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14068,7 +14345,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14078,7 +14355,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14183,12 +14460,34 @@
     },
     {
       "source": "src_app_api_notes_workspaces_workspaceid_members_route",
-      "target": "src_presentation_server_actor",
+      "target": "src_lib_note_workspace_events",
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
       "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_workspaceid_members_route",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_workspaceid_members_route",
+      "target": "src_presentation_server_actor",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14199,7 +14498,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14210,7 +14509,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14221,7 +14520,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14231,7 +14530,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14241,7 +14540,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14251,7 +14550,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14356,12 +14655,34 @@
     },
     {
       "source": "src_app_api_notes_workspaces_workspaceid_notes_route",
-      "target": "src_presentation_server_actor",
+      "target": "src_lib_note_workspace_events",
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
       "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_workspaceid_notes_route",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_workspaceid_notes_route",
+      "target": "src_presentation_server_actor",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14372,7 +14693,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14383,7 +14704,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14394,7 +14715,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14404,7 +14725,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14414,7 +14735,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14424,7 +14745,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14518,12 +14839,34 @@
     },
     {
       "source": "src_app_api_notes_workspaces_route",
-      "target": "src_presentation_server_actor",
+      "target": "src_lib_note_workspace_events",
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
       "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_route",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_route",
+      "target": "src_presentation_server_actor",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/route.ts",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14534,7 +14877,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14545,7 +14888,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14556,7 +14899,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14566,7 +14909,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -14576,7 +14919,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -22049,7 +22392,7 @@
     },
     {
       "source": "src_lib_note_collaboration",
-      "target": "src_lib_note_collaboration_closenotecollaborationconnections",
+      "target": "src_lib_note_collaboration_notecollaborationconfigured",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/note-collaboration.ts",
@@ -22059,11 +22402,31 @@
     },
     {
       "source": "src_lib_note_collaboration",
+      "target": "src_lib_note_collaboration_notecollaborationready",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/note-collaboration.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_lib_note_collaboration",
+      "target": "src_lib_note_collaboration_closenotecollaborationconnections",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/note-collaboration.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_lib_note_collaboration",
       "target": "src_lib_note_collaboration_closenotecollaborationconnectionsforuser",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/note-collaboration.ts",
-      "source_location": "L18",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -22074,7 +22437,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/note-collaboration.ts",
-      "source_location": "L21",
+      "source_location": "L29",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -22191,6 +22554,79 @@
       "confidence": "EXTRACTED",
       "source_file": "src/lib/note-session.ts",
       "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_lib_note_workspace_events",
+      "target": "ref_node_events",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_lib_note_workspace_events",
+      "target": "src_lib_note_workspace_events_noteworkspaceevents",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_lib_note_workspace_events",
+      "target": "src_lib_note_workspace_events_events",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_lib_note_workspace_events",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_lib_note_workspace_events",
+      "target": "src_lib_note_workspace_events_subscribetonoteworkspacechanges",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "target": "src_lib_note_workspace_events_events",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_lib_note_workspace_events_subscribetonoteworkspacechanges",
+      "target": "src_lib_note_workspace_events_events",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/note-workspace-events.ts",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -22793,6 +23229,17 @@
     },
     {
       "source": "src_presentation_components_collaborative_note_editor",
+      "target": "src_presentation_components_note_editor_feedback_noteeditoreditable",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/collaborative-note-editor.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_presentation_components_collaborative_note_editor",
       "target": "src_presentation_components_note_editor_feedback_noteeditorfeedback",
       "relation": "imports",
       "context": "import",
@@ -22920,7 +23367,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/collaborative-note-editor.tsx",
-      "source_location": "L115",
+      "source_location": "L116",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -22953,7 +23400,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/collaborative-note-editor.tsx",
-      "source_location": "L103",
+      "source_location": "L104",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -22964,7 +23411,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/collaborative-note-editor.tsx",
-      "source_location": "L127",
+      "source_location": "L128",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -25017,7 +25464,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-notes-workspace.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -25027,7 +25474,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-notes-workspace.tsx",
-      "source_location": "L22",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -26954,6 +27401,16 @@
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/note-editor-feedback.ts",
       "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_presentation_components_note_editor_feedback",
+      "target": "src_presentation_components_note_editor_feedback_noteeditoreditable",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/note-editor-feedback.ts",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -30515,6 +30972,17 @@
     },
     {
       "source": "tests_unit_note_editor_feedback_test",
+      "target": "src_presentation_components_note_editor_feedback_noteeditoreditable",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/note-editor-feedback.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tests_unit_note_editor_feedback_test",
       "target": "src_presentation_components_note_editor_feedback_noteeditorfeedback",
       "relation": "imports",
       "context": "import",
@@ -30564,6 +31032,50 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "tests/unit/note-session.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tests_unit_note_workspace_events_test",
+      "target": "ref_vitest",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/note-workspace-events.test.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tests_unit_note_workspace_events_test",
+      "target": "src_lib_note_workspace_events",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/note-workspace-events.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tests_unit_note_workspace_events_test",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/note-workspace-events.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tests_unit_note_workspace_events_test",
+      "target": "src_lib_note_workspace_events_subscribetonoteworkspacechanges",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/note-workspace-events.test.ts",
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast"
@@ -34651,6 +35163,28 @@
       "_origin": "ast"
     },
     {
+      "source": "src_app_api_health_route_get",
+      "target": "src_lib_note_collaboration_notecollaborationconfigured",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/health/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_health_route_get",
+      "target": "src_lib_note_collaboration_notecollaborationready",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/health/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "src_app_api_integrations_google_drive_callback_route_get",
       "target": "src_application_access_requireadmin",
       "relation": "calls",
@@ -34756,7 +35290,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L14",
+      "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34767,7 +35301,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L14",
+      "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34778,7 +35312,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L15",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_noteid_route_delete",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/[noteId]/route.ts",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34789,7 +35334,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/[noteId]/route.ts",
-      "source_location": "L18",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34838,13 +35383,46 @@
       "_origin": "ast"
     },
     {
+      "source": "src_app_api_notes_events_route_get",
+      "target": "src_presentation_server_actor_currentactor",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_events_route_get",
+      "target": "src_lib_note_workspace_events_subscribetonoteworkspacechanges",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_events_route_get",
+      "target": "src_presentation_server_api_error_apierror",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/events/route.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "src_app_api_notes_workspaces_workspaceid_members_userid_route_delete",
       "target": "src_application_notes_removenoteworkspacemember",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L15",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34855,7 +35433,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L15",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34866,7 +35444,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L16",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_workspaceid_members_userid_route_delete",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34877,7 +35466,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/[userId]/route.ts",
-      "source_location": "L18",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34888,7 +35477,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34899,7 +35488,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34910,7 +35499,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34921,7 +35510,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L17",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34932,7 +35521,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L17",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_workspaceid_members_route_post",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34943,7 +35543,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/members/route.ts",
-      "source_location": "L18",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34954,7 +35554,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34965,7 +35565,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34976,7 +35576,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L13",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_workspaceid_notes_route_post",
+      "target": "src_presentation_server_actor_currentactor",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -34987,18 +35598,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L17",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "src_app_api_notes_workspaces_workspaceid_notes_route_post",
-      "target": "src_presentation_server_actor_currentactor",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L17",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -35009,7 +35620,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/[workspaceId]/notes/route.ts",
-      "source_location": "L18",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -35020,7 +35631,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -35031,7 +35642,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -35042,7 +35653,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L11",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app_api_notes_workspaces_route_post",
+      "target": "src_presentation_server_actor_currentactor",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/api/notes/workspaces/route.ts",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -35053,18 +35675,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L15",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "src_app_api_notes_workspaces_route_post",
-      "target": "src_presentation_server_actor_currentactor",
+      "target": "src_lib_note_workspace_events_publishnoteworkspacechange",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L15",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -35075,7 +35697,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/app/api/notes/workspaces/route.ts",
-      "source_location": "L16",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -35950,12 +36572,23 @@
     },
     {
       "source": "src_presentation_components_collaborative_note_editor_liveeditor",
+      "target": "src_presentation_components_note_editor_feedback_noteeditoreditable",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/collaborative-note-editor.tsx",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_presentation_components_collaborative_note_editor_liveeditor",
       "target": "src_presentation_components_note_editor_feedback_noteeditorfeedback",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/collaborative-note-editor.tsx",
-      "source_location": "L90",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -36054,7 +36687,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/connected-notes-workspace.tsx",
-      "source_location": "L23",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -36958,7 +37591,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.85,
       "source_file": "server.mjs",
-      "source_location": "L84",
+      "source_location": "L90",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -38542,7 +39175,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-notes-workspace.tsx",
-      "source_location": "L134",
+      "source_location": "L140",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -38554,7 +39187,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-notes-workspace.tsx",
-      "source_location": "L148",
+      "source_location": "L154",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -38566,7 +39199,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-notes-workspace.tsx",
-      "source_location": "L153",
+      "source_location": "L159",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -38578,7 +39211,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/components/connected-notes-workspace.tsx",
-      "source_location": "L156",
+      "source_location": "L162",
       "weight": 1.0,
       "_origin": "ast"
     },

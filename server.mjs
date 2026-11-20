@@ -42,14 +42,22 @@ function collaborationRuntime() {
     maxPendingDocuments: 5,
     extensions: [new Database({
       fetch: async ({ documentName }) => {
-        const result = await pool.query("SELECT state FROM note_documents WHERE note_id = $1", [documentName]);
-        return result.rows[0] ? new Uint8Array(result.rows[0].state) : null;
+        try {
+          const result = await pool.query("SELECT state FROM note_documents WHERE note_id = $1", [documentName]);
+          console.info("[notes-realtime] document_load", { persisted: Boolean(result.rows[0]) });
+          return result.rows[0] ? new Uint8Array(result.rows[0].state) : null;
+        } catch (error) {
+          console.error("[notes-realtime] document_load_failed", error);
+          throw error;
+        }
       },
       store: async ({ documentName, state }) => {
         try {
           await pool.query("WITH live_note AS (UPDATE notes SET updated_at = NOW() WHERE id = $1 RETURNING id) INSERT INTO note_documents (note_id, state, updated_at) SELECT id, $2, NOW() FROM live_note ON CONFLICT (note_id) DO UPDATE SET state = EXCLUDED.state, updated_at = EXCLUDED.updated_at", [documentName, Buffer.from(state)]);
+          console.info("[notes-realtime] document_store");
         } catch (error) {
           broadcastPersistence(documentName, "failed");
+          console.error("[notes-realtime] document_store_failed", error);
           throw error;
         }
       },
@@ -57,18 +65,39 @@ function collaborationRuntime() {
     afterStoreDocument: ({ documentName }) => broadcastPersistence(documentName, "saved"),
     onAuthenticate: async ({ token, documentName }) => {
       const session = readSession(token);
-      if (!session || session.noteId !== documentName) throw new Error("Akses kolaborasi ditolak.");
-      const allowed = await pool.query("SELECT 1 FROM notes n INNER JOIN note_workspace_members m ON m.workspace_id = n.workspace_id WHERE n.id = $1 AND m.user_id = $2", [documentName, session.userId]);
-      if (!allowed.rows[0]) throw new Error("Akses kolaborasi ditolak.");
+      if (!session || session.noteId !== documentName) {
+        console.warn("[notes-realtime] authentication_rejected", { reason: "invalid_session" });
+        throw new Error("Akses kolaborasi ditolak.");
+      }
+      try {
+        const allowed = await pool.query("SELECT 1 FROM notes n INNER JOIN note_workspace_members m ON m.workspace_id = n.workspace_id WHERE n.id = $1 AND m.user_id = $2", [documentName, session.userId]);
+        if (!allowed.rows[0]) {
+          console.warn("[notes-realtime] authentication_rejected", { reason: "membership" });
+          throw new Error("Akses kolaborasi ditolak.");
+        }
+      } catch (error) {
+        if (!(error instanceof Error) || error.message !== "Akses kolaborasi ditolak.") console.error("[notes-realtime] authentication_failed", error);
+        throw error;
+      }
+      console.info("[notes-realtime] authentication_accepted");
       return { userId: session.userId };
     },
+    afterLoadDocument: async () => { console.info("[notes-realtime] document_ready"); },
+    connected: async () => { console.info("[notes-realtime] synchronized"); },
+    onDisconnect: async () => { console.info("[notes-realtime] disconnected"); },
   });
   const websocket = crossws({
     hooks: {
-      open(peer) { peer._collaboration = hocuspocus.handleConnection(peer.websocket, peer.request); },
+      open(peer) {
+        console.info("[notes-realtime] socket_opened");
+        peer._collaboration = hocuspocus.handleConnection(peer.websocket, peer.request);
+      },
       message(peer, message) { peer._collaboration?.handleMessage(message.uint8Array()); },
-      close(peer, event) { peer._collaboration?.handleClose({ code: event.code, reason: event.reason }); },
-      error(_peer, error) { console.error("Catatan Kolaboratif WebSocket error", error); },
+      close(peer, event) {
+        console.info("[notes-realtime] socket_closed", { code: event.code });
+        peer._collaboration?.handleClose({ code: event.code, reason: event.reason });
+      },
+      error(_peer, error) { console.error("[notes-realtime] websocket_failed", error); },
     },
   });
   return { pool, websocket, hocuspocus };
