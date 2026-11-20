@@ -90,9 +90,24 @@ function collaborationRuntime() {
     hooks: {
       open(peer) {
         console.info("[notes-realtime] socket_opened");
-        peer._collaboration = hocuspocus.handleConnection(peer.websocket, peer.request);
+        try {
+          peer._collaboration = hocuspocus.handleConnection(peer.websocket, peer.request);
+          console.info("[notes-realtime] connection_handler_ready");
+        } catch (error) {
+          console.error("[notes-realtime] connection_handler_failed", error);
+          peer.close(1011, "Collaboration connection failed");
+        }
       },
-      message(peer, message) { peer._collaboration?.handleMessage(message.uint8Array()); },
+      message(peer, message) {
+        const payload = message.uint8Array();
+        console.info("[notes-realtime] socket_message", { bytes: payload.byteLength });
+        try {
+          peer._collaboration?.handleMessage(payload);
+        } catch (error) {
+          console.error("[notes-realtime] message_handle_failed", error);
+          peer.close(1011, "Collaboration message failed");
+        }
+      },
       close(peer, event) {
         console.info("[notes-realtime] socket_closed", { code: event.code });
         peer._collaboration?.handleClose({ code: event.code, reason: event.reason });

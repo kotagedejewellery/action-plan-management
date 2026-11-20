@@ -771,7 +771,7 @@
       "label": "collaboration",
       "file_type": "code",
       "source_file": "server.mjs",
-      "source_location": "L78",
+      "source_location": "L107",
       "_origin": "ast"
     },
     {
@@ -779,7 +779,7 @@
       "label": "server",
       "file_type": "code",
       "source_file": "server.mjs",
-      "source_location": "L86",
+      "source_location": "L115",
       "_origin": "ast"
     },
     {
@@ -787,7 +787,7 @@
       "label": "shutdown()",
       "file_type": "code",
       "source_file": "server.mjs",
-      "source_location": "L97",
+      "source_location": "L126",
       "_callable": true,
       "_origin": "ast"
     },
@@ -10071,7 +10071,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server.mjs",
-      "source_location": "L78",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10081,7 +10081,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server.mjs",
-      "source_location": "L86",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10091,7 +10091,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server.mjs",
-      "source_location": "L97",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10102,7 +10102,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server.mjs",
-      "source_location": "L59",
+      "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10113,7 +10113,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server.mjs",
-      "source_location": "L86",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -10124,7 +10124,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server.mjs",
-      "source_location": "L112",
+      "source_location": "L141",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -37591,7 +37591,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.85,
       "source_file": "server.mjs",
-      "source_location": "L90",
+      "source_location": "L119",
       "weight": 1.0,
       "_origin": "ast"
     },
