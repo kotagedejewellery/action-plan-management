@@ -3,5 +3,35 @@ import { CheckMark } from "@/presentation/components/icons";
 import { LoginForm } from "@/presentation/components/login-form";
 
 export default function LoginPage() {
-  return <main className="min-h-[100svh] bg-[#f6f8f8] sm:p-4 lg:p-6"><div className="grid min-h-[100svh] w-full bg-white sm:min-h-[calc(100vh-2rem)] sm:overflow-hidden sm:rounded-2xl sm:border sm:shadow-[0_24px_60px_-38px_rgba(26,55,54,0.38)] lg:min-h-[calc(100vh-3rem)] lg:grid-cols-[1.1fr_0.9fr]"><section className="hidden flex-col justify-between bg-[#173c3a] p-12 text-white lg:flex"><div><BrandLogo className="h-32 w-52" /><p className="mt-1 text-xs font-semibold tracking-[0.1em] text-[#c4d8d5]">ACTION PLAN MANAGEMENT</p><div className="mt-28 max-w-md"><h1 className="text-balance text-5xl font-semibold tracking-[-0.035em]">Pekerjaan harian, tetap bergerak dengan jelas.</h1><p className="mt-5 max-w-sm text-base leading-7 text-[#c4d8d5]">Catat rencana, perbarui progres, dan simpan hasil kerja dalam satu alur yang rapi.</p></div></div><p className="text-sm text-[#a9c5c1]">Internal workspace · Action Plan Management System</p></section><section className="flex min-h-[100svh] flex-col px-6 py-6 sm:min-h-[calc(100svh-2rem)] sm:px-12 sm:py-10 lg:min-h-0 lg:items-center lg:justify-center lg:px-12"><div className="lg:hidden"><BrandLogo className="h-16 w-40" /><p className="mt-1 text-xs font-semibold tracking-[0.1em] text-[#294846]">ACTION PLAN MANAGEMENT</p></div><div className="my-auto w-full max-w-md lg:my-0"><h2 className="text-2xl font-semibold tracking-[-0.03em] text-[#173c3a] sm:text-3xl">Masuk ke workspace</h2><p className="mt-2 text-sm leading-6 text-[#667c7c] sm:mt-3">Gunakan akun yang sudah diberikan oleh Admin.</p><LoginForm /><div className="mt-6 border-t pt-5 text-sm text-[#667c7c] sm:mt-8 sm:pt-6"><p className="flex items-center gap-2"><CheckMark className="size-4 text-[#137d79]" />Akses dibatasi sesuai role akun.</p></div></div></section></div></main>;
+  return (
+    <main className="min-h-[100svh] bg-[#f6f8f8] sm:p-4 lg:p-6">
+      <div className="grid min-h-[100svh] w-full bg-white sm:min-h-[calc(100vh-2rem)] sm:overflow-hidden sm:rounded-2xl sm:border sm:shadow-[0_24px_60px_-38px_rgba(26,55,54,0.38)] lg:min-h-[calc(100vh-3rem)] lg:grid-cols-[1.1fr_0.9fr]">
+        <section className="hidden flex-col justify-between bg-[#173c3a] p-12 text-white lg:flex">
+          <div>
+            <BrandLogo className="h-32 w-52" />
+            <p className="mt-1 text-xs font-semibold tracking-[0.1em] text-[#c4d8d5]">ACTION PLAN MANAGEMENT</p>
+            <div className="mt-28 max-w-md">
+              <h1 className="text-balance text-5xl font-semibold tracking-[-0.035em]">Pekerjaan harian, tetap bergerak dengan jelas.</h1>
+              <p className="mt-5 max-w-sm text-base leading-7 text-[#c4d8d5]">Catat rencana, perbarui progres, dan simpan hasil kerja dalam satu alur yang rapi.</p>
+            </div>
+          </div>
+          <p className="text-sm text-[#a9c5c1]">Internal workspace · Action Plan Management System</p>
+        </section>
+        <section className="flex min-h-[100svh] flex-col px-6 py-6 sm:min-h-[calc(100svh-2rem)] sm:px-12 sm:py-10 lg:min-h-0 lg:items-center lg:justify-center lg:px-12">
+          <div className="lg:hidden">
+            <BrandLogo className="h-20 w-48" />
+            <p className="mt-1 text-xs font-semibold tracking-[0.1em] text-[#294846]">ACTION PLAN MANAGEMENT</p>
+          </div>
+          <div className="mt-[clamp(3.5rem,9svh,5rem)] w-full max-w-md lg:mt-0">
+            <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[#173c3a] sm:text-3xl">Masuk ke workspace</h2>
+            <p className="mt-2 text-sm leading-6 text-[#667c7c] sm:mt-3">Gunakan akun yang sudah diberikan oleh Admin.</p>
+            <LoginForm />
+            <div className="mt-5 text-sm text-[#667c7c] sm:mt-6">
+              <p className="flex items-center gap-2"><CheckMark className="size-4 text-[#137d79]" />Akses dibatasi sesuai role akun.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
 }

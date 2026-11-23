@@ -1,7 +1,7 @@
 # Graph Report - action-plan-management  (2026-11-23)
 
 ## Corpus Check
-- 156 files · ~249,906 words
+- 156 files · ~249,934 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 5 file(s) not represented in the graph (top: (none) 3, .ico 1, .css 1)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cf5d421a`
+- Built from commit: `3146949e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
