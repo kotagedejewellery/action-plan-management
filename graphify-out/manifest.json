@@ -1248,9 +1248,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/collaborative-note-editor.tsx": {
-    "mtime": 1795165901.1303432,
-    "seen": 1795166107.2592988,
-    "ast_hash": "efa264f077f8aebe2069e8a3ee5787d7",
+    "mtime": 1795396624.9033391,
+    "seen": 1795396736.4005437,
+    "ast_hash": "f32aa329a59b0ea33e16148fecbc0b62",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-notes-workspace.tsx": {

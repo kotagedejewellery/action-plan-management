@@ -37,7 +37,19 @@ function LiveEditor({ note, actor }: { note: Note; actor: Actor }) {
   const [persistence, setPersistence] = useState<NotePersistenceState>("idle");
   const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
   const provider = useMemo(() => new HocuspocusProvider({
-    url: endpoint(), name: note.id, token: async () => (await fetchSession(note.id)).token,
+    url: endpoint(), name: note.id, token: async () => {
+      console.info("[notes-realtime-client] session_requested");
+      try {
+        const session = await fetchSession(note.id);
+        console.info("[notes-realtime-client] session_ready");
+        return session.token;
+      } catch (error) {
+        console.error("[notes-realtime-client] session_failed", error);
+        throw error;
+      }
+    },
+    onOpen: () => console.info("[notes-realtime-client] socket_opened"),
+    onOutgoingMessage: ({ message }) => console.info("[notes-realtime-client] message_sent", { type: message.description }),
     onStatus: ({ status }) => setConnection(status === "connected" ? "connected" : "connecting"),
     onSynced: () => setConnection("connected"),
     onUnsyncedChanges: ({ number }) => { if (number > 0) setPersistence("saving"); },
@@ -47,8 +59,11 @@ function LiveEditor({ note, actor }: { note: Note; actor: Actor }) {
         if (message.type === "persistence") setPersistence(message.status === "saved" ? "saved" : "failed");
       } catch { /* Stateless messages from other extensions are ignored. */ }
     },
-    onAuthenticationFailed: () => setConnection("unauthorized"),
-    onClose: ({ event }) => { if (event.code === 4205) setConnection("unauthorized"); },
+    onAuthenticationFailed: () => { console.warn("[notes-realtime-client] authentication_rejected"); setConnection("unauthorized"); },
+    onClose: ({ event }) => {
+      console.warn("[notes-realtime-client] socket_closed", { code: event.code });
+      if (event.code === 4205) setConnection("unauthorized");
+    },
   }), [note.id]);
   const editor = useEditor({
     extensions: [
@@ -73,7 +88,7 @@ function LiveEditor({ note, actor }: { note: Note; actor: Actor }) {
     };
     awareness.on("change", updateCollaborators);
     updateCollaborators();
-    return () => { awareness.off("change", updateCollaborators); provider.destroy(); };
+    return () => { console.info("[notes-realtime-client] editor_unmounted"); awareness.off("change", updateCollaborators); provider.destroy(); };
   }, [provider]);
 
   useEffect(() => {
