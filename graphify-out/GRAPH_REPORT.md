@@ -1,41 +1,44 @@
 # Graph Report - action-plan-management  (2026-11-23)
 
 ## Corpus Check
-- 156 files · ~249,934 words
+- 158 files · ~250,191 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 5 file(s) not represented in the graph (top: (none) 3, .ico 1, .css 1)
 
 ## Summary
-- 1017 nodes · 2896 edges · 49 communities (44 shown, 5 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 123 edges (avg confidence: 0.85)
+- 1032 nodes · 2959 edges · 61 communities (56 shown, 5 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 128 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3146949e`
+- Built from commit: `0c796052`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - currentActor
 - repositories.ts
-- vitest
-- models.ts
+- app/layout.tsx
+- connected-dashboard-workspace.tsx
 - attachments.ts
-- use-cases.ts
-- ConnectedMonitoringWorkspace
+- divisions.ts
+- connected-monitoring-workspace.tsx
+- postgres.ts
+- [noteId]/route.ts
 - AppError
-- action-plan-workspace.tsx
+- fixture.ts
+- PageHeading
 - connected-user-management-workspace.tsx
 - icons.tsx
 - Design System: Action Plan Management System
 - collaborative-note-editor.tsx
 - dependencies
 - compilerOptions
-- feedback.tsx
+- main.tsx
 - server.mjs
 - Users
 - connected-action-plan-workspace.tsx
-- connected-weekly-plan-workspace.tsx
+- monitoring/page.tsx
 - System Architecture — Action Plan Management System
 - notes-websocket-bridge.test.ts
 - Tech Stack — Action Plan Management System
@@ -44,7 +47,9 @@
 - AGENTS.md
 - Product Requirements Document — Action Plan Management System
 - Product
+- container.ts
 - PROJECT_BRIEF.md
+- use-cases.ts
 - Setup Action Plan Management
 - scripts
 - Brief Proyek Action Plan Management
@@ -52,8 +57,8 @@
 - Penerapan multi-divisi
 - Glossary
 - finish-review.md
-- connected-monitoring-workspace.tsx
-- errors.ts
+- models.ts
+- bootstrap-admin.mjs
 - Division extension documentation check
 - Monitoring anggota
 - Multi-division gap closure — 18 November 2026
@@ -64,12 +69,19 @@
 - postcss.config.mjs
 - package.json
 - { GET, POST }
+- note-session.ts
+- users/[userId]/route.ts
+- schemas.ts
+- (dashboard)/layout.tsx
+- ActionPlanRepository
+- User
+- callback/route.ts
 
 ## God Nodes (most connected - your core abstractions)
-1. `currentActor()` - 90 edges
-2. `AppError` - 68 edges
-3. `apiError()` - 62 edges
-4. `next` - 47 edges
+1. `currentActor()` - 93 edges
+2. `AppError` - 70 edges
+3. `apiError()` - 65 edges
+4. `next` - 48 edges
 5. `requireAdmin()` - 29 edges
 6. `vitest` - 23 edges
 7. `requireUserWorkspace()` - 22 edges
@@ -92,59 +104,71 @@
 ## Import Cycles
 - None detected.
 
-## Communities (49 total, 5 thin omitted)
+## Communities (61 total, 5 thin omitted)
 
 ### Community 0 - "currentActor"
-Cohesion: 0.05
-Nodes (99): nextConfig, next, ref_node_events, POST(), DELETE(), GET(), acceptedTypes, POST() (+91 more)
+Cohesion: 0.11
+Nodes (37): POST(), DELETE(), GET(), POST(), DELETE(), PATCH(), POST(), PATCH() (+29 more)
 
 ### Community 1 - "repositories.ts"
 Cohesion: 0.07
-Nodes (43): Infrastructure, required(), sheetsClient(), spreadsheetId(), append(), appendMany(), APPROVAL_HEADERS, assertApprovalHeaders() (+35 more)
+Nodes (46): 2. Clean Architecture, Infrastructure, Presentation, ActionPlan, required(), sheetsClient(), spreadsheetId(), append() (+38 more)
 
-### Community 2 - "vitest"
-Cohesion: 0.11
-Nodes (17): ref_node_fs, ref_node_path, vitest, GET(), src_app_globals, metadata, RootLayout(), viewport (+9 more)
+### Community 2 - "app/layout.tsx"
+Cohesion: 0.21
+Nodes (8): ref_node_fs, ref_node_path, src_app_globals, metadata, RootLayout(), viewport, FeedbackProvider(), appDirectory
 
-### Community 3 - "models.ts"
-Cohesion: 0.06
-Nodes (43): @playwright/test, react-dom, DashboardLoading(), calendarDates(), DashboardPlan, DashboardSummary, summarizeDashboard(), UserSummary (+35 more)
+### Community 3 - "connected-dashboard-workspace.tsx"
+Cohesion: 0.17
+Nodes (17): ConnectedDashboardWorkspace(), refresh(), selectPeriod(), DailyTrend(), DashboardData, DateField(), displayDate(), EmptyCopy() (+9 more)
 
 ### Community 4 - "attachments.ts"
-Cohesion: 0.16
-Nodes (11): googleapis, ref_node_stream, AttachmentStorage, ActionPlanAttachment, driveQueryValue(), GoogleDriveAttachmentStorage, safeFileName(), safeFolderName() (+3 more)
+Cohesion: 0.28
+Nodes (7): ref_node_stream, driveQueryValue(), GoogleDriveAttachmentStorage, safeFileName(), safeFolderName(), driveFolderId(), googleDriveClient()
 
-### Community 5 - "use-cases.ts"
-Cohesion: 0.05
-Nodes (74): 2. Clean Architecture, Application, Domain, Presentation, ActionPlansPage(), DashboardPage(), HistoryPage(), MonitoringPage() (+66 more)
-
-### Community 6 - "ConnectedMonitoringWorkspace"
+### Community 5 - "divisions.ts"
 Cohesion: 0.19
-Nodes (12): ConnectedMonitoringWorkspace(), choosePeriod(), clearFilters(), loadPlans(), openDetail(), renderDate(), renderMemberPicker(), renderResult() (+4 more)
+Nodes (15): resolveActor(), accessWrite, activeAdmin(), DivisionInput, ManagedUserInput, saveDivision(), saveManagedUser(), serializeAccessWrite() (+7 more)
 
-### Community 7 - "AppError"
-Cohesion: 0.09
-Nodes (35): GET(), POST(), requireActiveActor(), AppError, assertCanAccessNote(), createNote(), createNoteWorkspace(), deleteNote() (+27 more)
+### Community 6 - "connected-monitoring-workspace.tsx"
+Cohesion: 0.10
+Nodes (22): react, approvalState, dashboardPeriodInputSchema, ConnectedMonitoringWorkspace(), choosePeriod(), clearFilters(), loadPlans(), openDetail() (+14 more)
 
-### Community 11 - "action-plan-workspace.tsx"
+### Community 7 - "postgres.ts"
+Cohesion: 0.14
+Nodes (13): NoteWorkspaceRepository, NoteWorkspace, NoteWorkspaceMember, databaseUrl(), iso(), loadNoteDocument(), memberFrom(), noteFrom() (+5 more)
+
+### Community 8 - "[noteId]/route.ts"
+Cohesion: 0.12
+Nodes (26): ref_node_events, GET(), runtime, Context, DELETE(), PATCH(), GET(), POST() (+18 more)
+
+### Community 9 - "AppError"
 Cohesion: 0.18
-Nodes (15): ActionPlanWorkspace(), Field(), PlanForm(), statusOptions, Pencil(), Plus(), Search(), UserField() (+7 more)
+Nodes (23): requireActiveActor(), AppError, assertCanAccessNote(), createNote(), createNoteWorkspace(), deleteNote(), deleteNoteWorkspace(), inviteNoteWorkspaceMember() (+15 more)
+
+### Community 10 - "fixture.ts"
+Cohesion: 0.09
+Nodes (19): port, @playwright/test, calendarDates(), DashboardPlan, DashboardSummary, summarizeDashboard(), UserSummary, divisionFixture (+11 more)
+
+### Community 11 - "PageHeading"
+Cohesion: 0.18
+Nodes (19): ActionPlanWorkspace(), Field(), PlanForm(), statusOptions, ExternalLink(), Pencil(), Plus(), Search() (+11 more)
 
 ### Community 12 - "connected-user-management-workspace.tsx"
 Cohesion: 0.13
-Nodes (21): Evidence checked, ConnectedDivisionWorkspace(), save(), toggleApproval(), DivisionForm(), ConnectedUserManagementWorkspace(), roleLabel(), StatusEditor() (+13 more)
+Nodes (21): Evidence checked, SafeUser, ConnectedDivisionWorkspace(), save(), toggleApproval(), DivisionForm(), ConnectedUserManagementWorkspace(), roleLabel() (+13 more)
 
 ### Community 13 - "icons.tsx"
-Cohesion: 0.20
-Nodes (19): LoginPage(), AppShell(), baseNavigation, BrandLogo(), ArrowRight(), Calendar(), Chart(), CheckMark() (+11 more)
+Cohesion: 0.21
+Nodes (19): LoginPage(), AppShell(), baseNavigation, BrandLogo(), useFeedback(), ArrowRight(), Calendar(), Chart() (+11 more)
 
 ### Community 14 - "Design System: Action Plan Management System"
 Cohesion: 0.09
 Nodes (22): Buttons, Cards / Containers, Colors, Components, Design System: Action Plan Management System, Dialogs, Do:, Do's and Don'ts (+14 more)
 
 ### Community 15 - "collaborative-note-editor.tsx"
-Cohesion: 0.13
-Nodes (20): lucide-react, @tiptap/extension-collaboration, @tiptap/extension-collaboration-caret, @tiptap/react, @tiptap/starter-kit, Actor, CollaborativeNoteEditor(), Collaborator (+12 more)
+Cohesion: 0.14
+Nodes (19): lucide-react, @tiptap/extension-collaboration, @tiptap/extension-collaboration-caret, @tiptap/react, @tiptap/starter-kit, Actor, Collaborator, colors (+11 more)
 
 ### Community 16 - "dependencies"
 Cohesion: 0.11
@@ -154,9 +178,9 @@ Nodes (19): dependencies, bcryptjs, googleapis, @hocuspocus/extension-database, 
 Cohesion: 0.11
 Nodes (18): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+10 more)
 
-### Community 18 - "feedback.tsx"
-Cohesion: 0.16
-Nodes (12): NotesPage(), Actor, ConnectedNotesWorkspace(), Member, Note, request(), Workspace, Feedback (+4 more)
+### Community 18 - "main.tsx"
+Cohesion: 0.12
+Nodes (17): DashboardLoading(), CollaborativeNoteEditor(), Actor, ConnectedNotesWorkspace(), Member, Note, NotesRequestError, request() (+9 more)
 
 ### Community 19 - "server.mjs"
 Cohesion: 0.18
@@ -167,12 +191,12 @@ Cohesion: 0.15
 Nodes (16): 10. Konsekuensi Google Sheets sebagai database, 11. Divisi dan kompatibilitas akun lama, 12. Sheet `Action Plan Approvals`, 13. PostgreSQL Catatan Kolaboratif, 1. Model penyimpanan, 2. Sheet `Users`, 3. Sheet `Settings`, 4. Sheet Action Plan per User (+8 more)
 
 ### Community 21 - "connected-action-plan-workspace.tsx"
-Cohesion: 0.17
-Nodes (10): acceptedAttachmentTypes, ConnectedActionPlanWorkspace(), approvalControl(), submitApproval(), displayDate(), Draft, Field(), getWeekBounds() (+2 more)
+Cohesion: 0.18
+Nodes (11): acceptedAttachmentTypes, ConnectedActionPlanWorkspace(), approvalControl(), submitApproval(), displayDate(), Draft, Field(), getWeekBounds() (+3 more)
 
-### Community 22 - "connected-weekly-plan-workspace.tsx"
-Cohesion: 0.20
-Nodes (11): ConnectedWeeklyPlanWorkspace(), currentWeek(), displayDate(), Field(), mondayThisWeek(), WeeklyPlanEditForm(), WeeklyPlanForm(), WeeklyStats (+3 more)
+### Community 22 - "monitoring/page.tsx"
+Cohesion: 0.14
+Nodes (24): ActionPlansPage(), DashboardPage(), HistoryPage(), MonitoringPage(), WeeklyPlansPage(), requireMonitorActor(), visibleMembers(), approvalStates() (+16 more)
 
 ### Community 23 - "System Architecture — Action Plan Management System"
 Cohesion: 0.13
@@ -206,9 +230,17 @@ Nodes (11): 11. Perluasan role multi-divisi ? disetujui 18 November 2026, 1. Rin
 Cohesion: 0.18
 Nodes (10): Capabilities and Constraints, Evidence on Hand, Operating Context, Platform, Positioning, Product, Product Principles, Product Purpose (+2 more)
 
+### Community 31 - "container.ts"
+Cohesion: 0.18
+Nodes (17): nextConfig, next, acceptedTypes, GET(), AppErrorCode, actionPlans, approvals, attachments (+9 more)
+
 ### Community 32 - "PROJECT_BRIEF.md"
 Cohesion: 0.29
 Nodes (4): Action Plan Management, Dokumentasi, Menjalankan lokal, Pemeriksaan
+
+### Community 33 - "use-cases.ts"
+Cohesion: 0.15
+Nodes (19): Domain, bcryptjs, requireUserWorkspace(), StatusRepository, WeeklyPlanRepository, ActionPlanScope, addOwnActionPlanAttachments(), createOwnWeeklyPlan() (+11 more)
 
 ### Community 34 - "Setup Action Plan Management"
 Cohesion: 0.22
@@ -238,13 +270,13 @@ Nodes (5): Approval Action Plan, BOD Approver, Bukti hasil, Glossary, Perlu revi
 Cohesion: 0.33
 Nodes (5): ceiling, fidelity, keep, material_fixes, persistence
 
-### Community 41 - "connected-monitoring-workspace.tsx"
-Cohesion: 0.21
-Nodes (11): react, Period, PlanStatus(), Preset, Scope, ExternalLink(), AttachmentImage(), displayTimestamp() (+3 more)
+### Community 41 - "models.ts"
+Cohesion: 0.15
+Nodes (18): assertCanReadMember(), requireApprovalBod(), approvalWrite, decideApproval(), latestForPlan(), listMemberApprovalStates(), serializeApprovalWrite(), submitForApproval() (+10 more)
 
-### Community 42 - "errors.ts"
-Cohesion: 0.11
-Nodes (18): bcryptjs, ref_next_env, ref_node_crypto, sheets, spreadsheetId, timestamp, DashboardError(), DashboardLayout() (+10 more)
+### Community 42 - "bootstrap-admin.mjs"
+Cohesion: 0.25
+Nodes (6): googleapis, ref_next_env, ref_node_crypto, sheets, spreadsheetId, timestamp
 
 ### Community 43 - "Division extension documentation check"
 Cohesion: 0.40
@@ -267,28 +299,56 @@ Cohesion: 0.33
 Nodes (6): 3. Keputusan implementasi utama, Antarmuka, Autentikasi, Catatan Kolaboratif, Google Drive, Google Sheets
 
 ### Community 52 - "package.json"
-Cohesion: 0.11
-Nodes (17): eslintConfig, name, private, version, eslint, eslint-config-next, ref_node_url, tailwindcss (+9 more)
+Cohesion: 0.10
+Nodes (18): eslintConfig, name, private, version, eslint, eslint-config-next, ref_node_url, react-dom (+10 more)
+
+### Community 54 - "note-session.ts"
+Cohesion: 0.52
+Nodes (5): createNoteSession(), NoteSession, readNoteSession(), secret(), signature()
+
+### Community 55 - "users/[userId]/route.ts"
+Cohesion: 0.13
+Nodes (17): vitest, GET(), PATCH(), userInputSchema, auth, handlers, signIn, signOut (+9 more)
+
+### Community 56 - "schemas.ts"
+Cohesion: 0.14
+Nodes (13): Context, GET(), POST(), GET(), actionPlanInputSchema, approvalDecisionSchema, divisionInputSchema, noteInviteInputSchema (+5 more)
+
+### Community 57 - "(dashboard)/layout.tsx"
+Cohesion: 0.36
+Nodes (6): DashboardError(), DashboardLayout(), errorStatus(), publicError(), DataUnavailable(), DataUnavailableProps
+
+### Community 58 - "ActionPlanRepository"
+Cohesion: 0.20
+Nodes (4): Application, ActionPlanRepository, AttachmentStorage, deleteOwnWeeklyPlan()
+
+### Community 59 - "User"
+Cohesion: 0.36
+Nodes (6): UserRepository, authenticateUser(), createUser(), updateUser(), toSafeUser(), User
+
+### Community 60 - "callback/route.ts"
+Cohesion: 0.42
+Nodes (6): GET(), GET(), configuredDriveFolderId(), src_infrastructure_google_drive_oauth_drivescope, googleDriveOAuthClient(), required()
 
 ## Knowledge Gaps
-- **301 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+296 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 368 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **304 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+299 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 372 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `next` connect `container.ts` to `currentActor`, `app/layout.tsx`, `connected-dashboard-workspace.tsx`, `connected-monitoring-workspace.tsx`, `[noteId]/route.ts`, `connected-user-management-workspace.tsx`, `icons.tsx`, `server.mjs`, `package.json`, `monitoring/page.tsx`, `users/[userId]/route.ts`, `schemas.ts`, `(dashboard)/layout.tsx`, `callback/route.ts`?**
+  _High betweenness centrality (0.108) - this node is a cross-community bridge._
 - **Why does `Users()` connect `Users` to `Setup Action Plan Management`, `Brief Proyek Action Plan Management`, `icons.tsx`, `3. Keputusan implementasi utama`, `System Architecture — Action Plan Management System`, `Tech Stack — Action Plan Management System`, `AGENTS.md`, `Product Requirements Document — Action Plan Management System`?**
-  _High betweenness centrality (0.109) - this node is a cross-community bridge._
-- **Why does `next` connect `currentActor` to `vitest`, `models.ts`, `use-cases.ts`, `AppError`, `connected-monitoring-workspace.tsx`, `errors.ts`, `connected-user-management-workspace.tsx`, `icons.tsx`, `server.mjs`, `package.json`, `connected-weekly-plan-workspace.tsx`?**
-  _High betweenness centrality (0.101) - this node is a cross-community bridge._
-- **Why does `react` connect `connected-monitoring-workspace.tsx` to `vitest`, `models.ts`, `errors.ts`, `action-plan-workspace.tsx`, `connected-user-management-workspace.tsx`, `icons.tsx`, `collaborative-note-editor.tsx`, `feedback.tsx`, `package.json`, `connected-action-plan-workspace.tsx`, `connected-weekly-plan-workspace.tsx`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
+  _High betweenness centrality (0.104) - this node is a cross-community bridge._
+- **Why does `currentActor()` connect `currentActor` to `divisions.ts`, `[noteId]/route.ts`, `AppError`, `(dashboard)/layout.tsx`, `users/[userId]/route.ts`, `monitoring/page.tsx`, `System Architecture — Action Plan Management System`, `schemas.ts`, `Tech Stack — Action Plan Management System`, `callback/route.ts`, `container.ts`?**
+  _High betweenness centrality (0.065) - this node is a cross-community bridge._
 - **Are the 4 inferred relationships involving `currentActor()` (e.g. with `Isolasi divisi` and `Otorisasi multi-divisi`) actually correct?**
   _`currentActor()` has 4 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**
-  _301 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _304 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `currentActor` be split into smaller, more focused modules?**
-  _Cohesion score 0.05473978623514134 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10628019323671498 - nodes in this community are weakly interconnected._
 - **Should `repositories.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.06859806859806859 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0654320987654321 - nodes in this community are weakly interconnected._

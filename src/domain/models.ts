@@ -109,6 +109,7 @@ export type CollaborativeNote = {
   createdBy: string;
   createdAt: string;
   updatedAt: string;
+  titleUpdatedAt: string;
 };
 
 export function toSafeUser(user: User): SafeUser {

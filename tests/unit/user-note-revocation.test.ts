@@ -24,7 +24,7 @@ beforeEach(() => {
   vi.mocked(divisions.list).mockResolvedValue([]);
   vi.mocked(saveManagedUser).mockResolvedValue({ ...member, status: "inactive" });
   vi.mocked(noteWorkspaces.listForUser).mockResolvedValue([{ id: "workspace-1", name: "Strategi", ownerId: "owner", createdAt: "", updatedAt: "" }]);
-  vi.mocked(notes.listByWorkspace).mockResolvedValue([{ id: "note-1", workspaceId: "workspace-1", title: "Keputusan", createdBy: "owner", createdAt: "", updatedAt: "" }]);
+  vi.mocked(notes.listByWorkspace).mockResolvedValue([{ id: "note-1", workspaceId: "workspace-1", title: "Keputusan", createdBy: "owner", createdAt: "", updatedAt: "", titleUpdatedAt: "" }]);
 });
 
 it("closes the member's active Notes when SuperAdmin deactivates the account", async () => {

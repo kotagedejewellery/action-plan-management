@@ -172,4 +172,6 @@ Catatan Kolaboratif adalah modul tambahan dengan storage PostgreSQL sendiri; Goo
 
 Role `owner`/`member` berlaku hanya dalam workspace Notes; role `admin`/`bod`/`user` tidak berubah dan tidak memberi akses otomatis terhadap isi note. PostgreSQL Notes tidak dimigrasikan pada startup atau deploy. Service `notes-db` berada di `compose.notes.yml`, sehingga deployment lama yang memakai `compose.yml` saja tidak bergantung pada database baru.
 
+Pemberitahuan metadata Workspace memakai event emitter proses lokal untuk deployment satu container aplikasi saat ini. Jika aplikasi kelak dijalankan dengan lebih dari satu replica, event tersebut harus diganti dengan fan-out bersama (misalnya PostgreSQL `LISTEN/NOTIFY` atau Redis) sebelum scale-out; koneksi Yjs tetap membutuhkan routing yang konsisten ke runtime kolaborasi.
+
 `application/divisions.ts` mengoordinasikan mutasi akun/divisi melalui antrean satu proses. Invarian: satu BOD per divisi aktif, satu divisi per BOD, anggota tanpa perpindahan divisi, dan minimal satu SuperAdmin aktif. Tidak ada migrasi startup atau perubahan lokasi data. Riwayat tetap mengikuti afiliasi anggota yang tidak berubah. Batas satu proses, cache akses 5 detik dan persiapan mapping dijelaskan pada `docs/TECH_STACK.md` serta `docs/MULTI_DIVISION_ROLLOUT.md`.

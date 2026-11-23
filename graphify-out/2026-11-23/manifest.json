@@ -6,9 +6,9 @@
     "semantic_hash": ""
   },
   "docs/DATABASE_DESIGN.md": {
-    "mtime": 1795147995.6120193,
-    "seen": 1795148677.3300042,
-    "ast_hash": "91d0d4a7afad3e74b56a8b9c907974fc",
+    "mtime": 1795418337.84866,
+    "seen": 1795418509.1976821,
+    "ast_hash": "9ffff1a5050e4f813c5e69cafb3bdee7",
     "semantic_hash": ""
   },
   "docs/PRD.md": {
@@ -138,9 +138,9 @@
     "semantic_hash": ""
   },
   "src/app/login/page.tsx": {
-    "mtime": 1795414869.8691263,
-    "seen": 1795414908.5041466,
-    "ast_hash": "21b0a2acdee2ea7b56b613fd5721e8f3",
+    "mtime": 1795416460.400684,
+    "seen": 1795416512.5819507,
+    "ast_hash": "d392071b3ba113c4850e44aa79560eff",
     "semantic_hash": ""
   },
   "src/presentation/components/action-plan-workspace.tsx": {
@@ -246,9 +246,9 @@
     "semantic_hash": ""
   },
   "src/application/ports.ts": {
-    "mtime": 1795147946.3177252,
-    "seen": 1795148677.3298848,
-    "ast_hash": "0812f25d9b23b9d19a762cdc41a949d7",
+    "mtime": 1795418337.8436184,
+    "seen": 1795418509.1975148,
+    "ast_hash": "f0a5072b28927884e918a88c419808d6",
     "semantic_hash": ""
   },
   "src/application/schemas.ts": {
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "src/app/api/notes/[noteId]/route.ts": {
-    "mtime": 1795165950.5480242,
-    "seen": 1795166107.2591634,
-    "ast_hash": "505cd6a7bd97163078acd1ae812b0e71",
+    "mtime": 1795418337.8468204,
+    "seen": 1795418509.1974552,
+    "ast_hash": "1339d9bea71aa271381effa660fa84f9",
     "semantic_hash": ""
   },
   "src/app/api/notes/[noteId]/session/route.ts": {
@@ -1230,15 +1230,15 @@
     "semantic_hash": ""
   },
   "src/application/notes.ts": {
-    "mtime": 1795147946.3183284,
-    "seen": 1795148677.329883,
-    "ast_hash": "405bba1c35df00f1dddf139b042471e2",
+    "mtime": 1795418337.8452709,
+    "seen": 1795418509.1975136,
+    "ast_hash": "ba380d3c0946988f18ef0ae0ac82e73f",
     "semantic_hash": ""
   },
   "src/infrastructure/notes/postgres.ts": {
-    "mtime": 1795155197.4183664,
-    "seen": 1795155782.7490532,
-    "ast_hash": "0fb9c0970edb1eae552f6f1c34c56114",
+    "mtime": 1795418337.8441856,
+    "seen": 1795418509.1975315,
+    "ast_hash": "d2338d63ea9e1e0f6e20d9c9d8761ade",
     "semantic_hash": ""
   },
   "src/lib/note-session.ts": {
@@ -1254,9 +1254,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-notes-workspace.tsx": {
-    "mtime": 1795165964.3099701,
-    "seen": 1795166107.2593162,
-    "ast_hash": "60f450c56c812bd3b56497e631903389",
+    "mtime": 1795418419.6511984,
+    "seen": 1795418509.1975553,
+    "ast_hash": "18790bdde5b11dc485ececce41ad5e1b",
     "semantic_hash": ""
   },
   "tests/unit/note-session.test.ts": {
@@ -1266,9 +1266,9 @@
     "semantic_hash": ""
   },
   "tests/unit/notes.test.ts": {
-    "mtime": 1795147946.3203316,
-    "seen": 1795148677.3299706,
-    "ast_hash": "5122bf3972f549f260356b88fd40f24d",
+    "mtime": 1795418250.16847,
+    "seen": 1795418509.197642,
+    "ast_hash": "bcfc769babb7db0ed41688af1ebb2580",
     "semantic_hash": ""
   },
   "compose.notes.yml": {
@@ -1290,9 +1290,9 @@
     "semantic_hash": ""
   },
   "tests/unit/notes-api.test.ts": {
-    "mtime": 1795166006.1703947,
-    "seen": 1795166107.2594624,
-    "ast_hash": "9ca5b9ca13780a7928f1977a18d1bebe",
+    "mtime": 1795418662.8818629,
+    "seen": 1795418739.0316026,
+    "ast_hash": "4a1639741d30ec91e4316eeaf4e83a29",
     "semantic_hash": ""
   },
   "tests/unit/user-note-revocation.test.ts": {
@@ -1341,6 +1341,12 @@
     "mtime": 1795165874.6129107,
     "seen": 1795166107.259459,
     "ast_hash": "1d88917c95d063ba7e90434283b4a3f5",
+    "semantic_hash": ""
+  },
+  "src/app/api/notes/workspaces/[workspaceId]/route.ts": {
+    "mtime": 1795418337.8473837,
+    "seen": 1795418509.197475,
+    "ast_hash": "42243db1feb5e635c0a5d108bdc2e640",
     "semantic_hash": ""
   }
 }

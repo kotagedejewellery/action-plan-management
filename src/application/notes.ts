@@ -7,6 +7,7 @@ import type { Actor, CollaborativeNote, NoteWorkspace, NoteWorkspaceMember } fro
 
 type WorkspaceInput = { name: string };
 type NoteInput = { title: string };
+type NoteRenameInput = NoteInput & { titleUpdatedAt: string };
 
 function nonEmpty(value: string, label: string): string {
   const normalized = value.trim();
@@ -59,6 +60,16 @@ export async function removeNoteWorkspaceMember(repository: NoteWorkspaceReposit
   await repository.removeMember(workspaceId, userId);
 }
 
+export async function deleteNoteWorkspace(workspaces: NoteWorkspaceRepository, notes: NoteRepository, actor: Actor, workspaceId: string, confirmationName: string): Promise<{ memberIds: string[]; noteIds: string[] }> {
+  requireActiveActor(actor);
+  await owner(workspaces, actor, workspaceId);
+  const workspace = await workspaces.findById(workspaceId);
+  if (!workspace || nonEmpty(confirmationName, "Nama workspace") !== workspace.name) throw new AppError("Ketik nama workspace dengan tepat untuk mengonfirmasi penghapusan.", "VALIDATION");
+  const [members, workspaceNotes] = await Promise.all([workspaces.listMembers(workspaceId), notes.listByWorkspace(workspaceId)]);
+  await workspaces.remove(workspaceId);
+  return { memberIds: members.map((member) => member.userId), noteIds: workspaceNotes.map((note) => note.id) };
+}
+
 export async function listWorkspaceNotes(workspaces: NoteWorkspaceRepository, notes: NoteRepository, actor: Actor, workspaceId: string): Promise<CollaborativeNote[]> {
   requireActiveActor(actor);
   await membership(workspaces, workspaceId, actor.id);
@@ -79,7 +90,7 @@ export async function createNote(workspaces: NoteWorkspaceRepository, notes: Not
   requireActiveActor(actor);
   await membership(workspaces, workspaceId, actor.id);
   const now = new Date().toISOString();
-  return notes.create({ id: randomUUID(), workspaceId, title: nonEmpty(input.title, "Judul catatan"), createdBy: actor.id, createdAt: now, updatedAt: now });
+  return notes.create({ id: randomUUID(), workspaceId, title: nonEmpty(input.title, "Judul catatan"), createdBy: actor.id, createdAt: now, updatedAt: now, titleUpdatedAt: now });
 }
 
 export async function deleteNote(workspaces: NoteWorkspaceRepository, notes: NoteRepository, actor: Actor, noteId: string): Promise<void> {
@@ -88,6 +99,14 @@ export async function deleteNote(workspaces: NoteWorkspaceRepository, notes: Not
   if (!note) throw new AppError("Catatan tidak ditemukan.", "NOT_FOUND");
   await owner(workspaces, actor, note.workspaceId);
   await notes.remove(noteId);
+}
+
+export async function renameNote(workspaces: NoteWorkspaceRepository, notes: NoteRepository, actor: Actor, noteId: string, input: NoteRenameInput): Promise<CollaborativeNote> {
+  const note = await assertCanAccessNote(workspaces, notes, actor, noteId);
+  const titleUpdatedAt = new Date().toISOString();
+  const renamed = await notes.updateTitle({ ...note, title: nonEmpty(input.title, "Judul catatan"), updatedAt: titleUpdatedAt, titleUpdatedAt }, input.titleUpdatedAt);
+  if (!renamed) throw new AppError("Judul telah diubah anggota lain. Muat data terbaru lalu coba lagi.", "CONFLICT");
+  return renamed;
 }
 
 export async function assertCanAccessNote(workspaces: NoteWorkspaceRepository, notes: NoteRepository, actor: Actor, noteId: string): Promise<CollaborativeNote> {

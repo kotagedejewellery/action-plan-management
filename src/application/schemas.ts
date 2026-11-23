@@ -64,5 +64,7 @@ export const approvalDecisionSchema = z.object({
 });
 
 export const noteWorkspaceInputSchema = z.object({ name: z.string().trim().min(2, "Nama workspace minimal 2 karakter.").max(100) });
+export const noteWorkspaceDeleteInputSchema = z.object({ confirmationName: z.string().trim().min(2, "Ketik nama workspace untuk mengonfirmasi penghapusan.").max(100) });
 export const noteInviteInputSchema = z.object({ email: z.string().trim().email("Email tidak valid.") });
 export const noteInputSchema = z.object({ title: z.string().trim().min(1, "Judul catatan wajib diisi.").max(200) });
+export const noteRenameInputSchema = noteInputSchema.extend({ titleUpdatedAt: z.string().datetime("Versi judul catatan tidak valid.") });

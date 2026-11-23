@@ -59,12 +59,13 @@ export interface NoteWorkspaceRepository {
   listMembers(workspaceId: string): Promise<NoteWorkspaceMember[]>;
   addMember(member: NoteWorkspaceMember): Promise<NoteWorkspaceMember>;
   removeMember(workspaceId: string, userId: string): Promise<void>;
+  remove(id: string): Promise<void>;
 }
 
 export interface NoteRepository {
   listByWorkspace(workspaceId: string): Promise<CollaborativeNote[]>;
   findById(id: string): Promise<CollaborativeNote | null>;
   create(note: CollaborativeNote): Promise<CollaborativeNote>;
-  updateTitle(note: CollaborativeNote): Promise<CollaborativeNote>;
+  updateTitle(note: CollaborativeNote, expectedTitleUpdatedAt: string): Promise<CollaborativeNote | null>;
   remove(id: string): Promise<void>;
 }

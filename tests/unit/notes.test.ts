@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { createNote, createNoteWorkspace, inviteNoteWorkspaceMember, listVisibleNoteWorkspaces, removeNoteWorkspaceMember } from "@/application/notes";
+import { createNote, createNoteWorkspace, deleteNoteWorkspace, inviteNoteWorkspaceMember, listVisibleNoteWorkspaces, removeNoteWorkspaceMember, renameNote } from "@/application/notes";
 import type { NoteRepository, NoteWorkspaceRepository, UserRepository } from "@/application/ports";
 import type { Actor, NoteWorkspace, NoteWorkspaceMember, User } from "@/domain/models";
 
@@ -11,7 +11,7 @@ const user = (id: string, status: User["status"] = "active"): User => ({ id, nam
 function setup() {
   const workspaces: NoteWorkspace[] = [];
   const members: NoteWorkspaceMember[] = [];
-  const notes: { id: string; workspaceId: string; title: string; createdBy: string; createdAt: string; updatedAt: string }[] = [];
+  const notes: { id: string; workspaceId: string; title: string; createdBy: string; createdAt: string; updatedAt: string; titleUpdatedAt: string }[] = [];
   const users = [user("owner"), user("member"), user("inactive", "inactive")];
   const workspaceRepository: NoteWorkspaceRepository = {
     listForUser: async (userId) => workspaces.filter((workspace) => members.some((member) => member.workspaceId === workspace.id && member.userId === userId)),
@@ -20,6 +20,12 @@ function setup() {
     listMembers: async (workspaceId) => members.filter((member) => member.workspaceId === workspaceId),
     addMember: async (member) => { members.push(member); return member; },
     removeMember: async (workspaceId, userId) => { const index = members.findIndex((member) => member.workspaceId === workspaceId && member.userId === userId); if (index >= 0) members.splice(index, 1); },
+    remove: async (workspaceId) => {
+      const workspaceIndex = workspaces.findIndex((workspace) => workspace.id === workspaceId);
+      if (workspaceIndex >= 0) workspaces.splice(workspaceIndex, 1);
+      for (let index = members.length - 1; index >= 0; index -= 1) if (members[index].workspaceId === workspaceId) members.splice(index, 1);
+      for (let index = notes.length - 1; index >= 0; index -= 1) if (notes[index].workspaceId === workspaceId) notes.splice(index, 1);
+    },
   };
   const noteRepository: NoteRepository = {
     listByWorkspace: async (workspaceId) => notes.filter((note) => note.workspaceId === workspaceId),
@@ -55,5 +61,30 @@ describe("Collaborative Notes", () => {
     const workspace = await createNoteWorkspace(fixture.workspaceRepository, actor("owner"), { name: "Catatan strategi" });
     await expect(createNote(fixture.workspaceRepository, fixture.noteRepository, actor("member"), workspace.id, { title: "Tidak boleh" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(removeNoteWorkspaceMember(fixture.workspaceRepository, actor("owner"), workspace.id, "owner")).rejects.toMatchObject({ code: "VALIDATION" });
+  });
+
+  it("lets members rename a workspace note but requires the owner to confirm permanent workspace deletion", async () => {
+    const fixture = setup();
+    const workspace = await createNoteWorkspace(fixture.workspaceRepository, actor("owner"), { name: "Catatan strategi" });
+    await inviteNoteWorkspaceMember(fixture.workspaceRepository, fixture.userRepository, actor("owner"), workspace.id, "member@example.test");
+    const note = await createNote(fixture.workspaceRepository, fixture.noteRepository, actor("member"), workspace.id, { title: "Judul lama" });
+
+    await expect(renameNote(fixture.workspaceRepository, fixture.noteRepository, actor("member"), note.id, { title: "Judul baru", titleUpdatedAt: note.titleUpdatedAt })).resolves.toMatchObject({ title: "Judul baru" });
+    await expect(deleteNoteWorkspace(fixture.workspaceRepository, fixture.noteRepository, actor("member"), workspace.id, workspace.name)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(deleteNoteWorkspace(fixture.workspaceRepository, fixture.noteRepository, actor("owner"), workspace.id, "nama salah")).rejects.toMatchObject({ code: "VALIDATION" });
+    expect(fixture.workspaces).toHaveLength(1);
+
+    await expect(deleteNoteWorkspace(fixture.workspaceRepository, fixture.noteRepository, actor("owner"), workspace.id, workspace.name)).resolves.toEqual({ memberIds: ["owner", "member"], noteIds: [note.id] });
+    expect(fixture.workspaces).toEqual([]);
+    expect(fixture.notes).toEqual([]);
+  });
+
+  it("rejects a title rename when another member has already changed that title", async () => {
+    const fixture = setup();
+    const workspace = await createNoteWorkspace(fixture.workspaceRepository, actor("owner"), { name: "Catatan strategi" });
+    const note = await createNote(fixture.workspaceRepository, fixture.noteRepository, actor("owner"), workspace.id, { title: "Judul lama" });
+    fixture.noteRepository.updateTitle = async () => null as never;
+
+    await expect(renameNote(fixture.workspaceRepository, fixture.noteRepository, actor("owner"), note.id, { title: "Judul terbaru", titleUpdatedAt: note.titleUpdatedAt })).rejects.toMatchObject({ code: "CONFLICT" });
   });
 });

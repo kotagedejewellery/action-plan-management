@@ -30,7 +30,8 @@ function memberFrom(row: Record<string, unknown>): NoteWorkspaceMember {
 }
 
 function noteFrom(row: Record<string, unknown>): CollaborativeNote {
-  return { id: String(row.id), workspaceId: String(row.workspace_id), title: String(row.title), createdBy: String(row.created_by), createdAt: iso(row.created_at as Date | string), updatedAt: iso(row.updated_at as Date | string) };
+  const updatedAt = iso(row.updated_at as Date | string);
+  return { id: String(row.id), workspaceId: String(row.workspace_id), title: String(row.title), createdBy: String(row.created_by), createdAt: iso(row.created_at as Date | string), updatedAt, titleUpdatedAt: row.title_updated_at ? iso(row.title_updated_at as Date | string) : updatedAt };
 }
 
 export class PostgresNoteWorkspaceRepository implements NoteWorkspaceRepository {
@@ -73,6 +74,10 @@ export class PostgresNoteWorkspaceRepository implements NoteWorkspaceRepository 
   async removeMember(workspaceId: string, userId: string): Promise<void> {
     await notesPool().query("DELETE FROM note_workspace_members WHERE workspace_id = $1 AND user_id = $2", [workspaceId, userId]);
   }
+
+  async remove(id: string): Promise<void> {
+    await notesPool().query("DELETE FROM note_workspaces WHERE id = $1", [id]);
+  }
 }
 
 export class PostgresNoteRepository implements NoteRepository {
@@ -87,13 +92,13 @@ export class PostgresNoteRepository implements NoteRepository {
   }
 
   async create(note: CollaborativeNote): Promise<CollaborativeNote> {
-    const result = await notesPool().query("INSERT INTO notes (id, workspace_id, title, created_by, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *", [note.id, note.workspaceId, note.title, note.createdBy, note.createdAt, note.updatedAt]);
+    const result = await notesPool().query("INSERT INTO notes (id, workspace_id, title, created_by, created_at, updated_at, title_updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *", [note.id, note.workspaceId, note.title, note.createdBy, note.createdAt, note.updatedAt, note.titleUpdatedAt]);
     return noteFrom(result.rows[0]);
   }
 
-  async updateTitle(note: CollaborativeNote): Promise<CollaborativeNote> {
-    const result = await notesPool().query("UPDATE notes SET title = $2, updated_at = $3 WHERE id = $1 RETURNING *", [note.id, note.title, note.updatedAt]);
-    return noteFrom(result.rows[0]);
+  async updateTitle(note: CollaborativeNote, expectedTitleUpdatedAt: string): Promise<CollaborativeNote | null> {
+    const result = await notesPool().query("UPDATE notes SET title = $2, updated_at = $3, title_updated_at = $4 WHERE id = $1 AND title_updated_at = $5 RETURNING *", [note.id, note.title, note.updatedAt, note.titleUpdatedAt, expectedTitleUpdatedAt]);
+    return result.rows[0] ? noteFrom(result.rows[0]) : null;
   }
 
   async remove(id: string): Promise<void> {

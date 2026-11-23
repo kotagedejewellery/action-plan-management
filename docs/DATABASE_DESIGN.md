@@ -169,7 +169,7 @@ Catatan Kolaboratif tidak memakai Spreadsheet karena dokumen Yjs memerlukan pers
 | --- | --- |
 | `note_workspaces` | Workspace, nama, Owner, dan timestamp. |
 | `note_workspace_members` | Membership eksplisit dengan role lokal `owner` atau `member`. |
-| `notes` | Metadata note: workspace, judul, pembuat, dan timestamp. |
+| `notes` | Metadata note: workspace, judul, pembuat, timestamp isi, dan `title_updated_at` untuk konflik rename judul. |
 | `note_documents` | State dokumen Yjs dalam `BYTEA`; bukan JSON atau HTML sebagai sumber utama. |
 
-Owner dapat mengundang/menghapus member serta menghapus note; member dapat membuat dan mengedit note. SuperAdmin dan BOD tidak menerima akses otomatis hanya karena role/divisinya. Penghapusan note merupakan aksi eksplisit Owner dan menghapus dokumen Yjs melalui foreign key cascade. Tidak ada migrasi startup: `npm run migrate:notes` dijalankan secara eksplisit.
+Owner dapat mengundang/menghapus member, menghapus note, serta menghapus workspace; member dapat membuat, mengedit isi, dan mengganti judul note. SuperAdmin dan BOD tidak menerima akses otomatis hanya karena role/divisinya. Rename judul membandingkan `title_updated_at`, sehingga perubahan judul bersamaan ditolak tanpa memengaruhi sinkronisasi isi Yjs yang memakai `updated_at`. Penghapusan note merupakan aksi eksplisit Owner dan menghapus dokumen Yjs melalui foreign key cascade. Penghapusan workspace juga permanen dan mencascade membership, seluruh note, serta dokumen Yjs terkait; endpoint hanya melanjutkan setelah nama workspace yang tepat dikirim ulang. Tidak ada migrasi startup: `npm run migrate:notes` dijalankan secara eksplisit.
