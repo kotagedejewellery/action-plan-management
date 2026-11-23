@@ -1374,9 +1374,9 @@
     "semantic_hash": ""
   },
   "scripts/check-notes-schema.mjs": {
-    "mtime": 1795424019.2402022,
-    "seen": 1795424388.4784288,
-    "ast_hash": "e4eca4b0a339aebe35ec0f0291e6bf4a",
+    "mtime": 1795425129.8935652,
+    "seen": 1795425338.4972746,
+    "ast_hash": "a7f795ae471430e19b6a5097dfa8e44f",
     "semantic_hash": ""
   }
 }

@@ -6,8 +6,21 @@ if (!databaseUrl) throw new Error("NOTES_DATABASE_URL wajib diisi sebelum memeri
 const client = new Client({ connectionString: databaseUrl });
 await client.connect();
 try {
-  const result = await client.query("SELECT to_regclass('public.note_images') AS note_images");
-  if (!result.rows[0]?.note_images) throw new Error("Skema gambar Notes belum tersedia. Jalankan npm run migrate:notes terlebih dahulu.");
+  const result = await client.query(`
+    SELECT
+      to_regclass('public.note_images') AS note_images,
+      EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'notes'
+          AND column_name = 'title_updated_at'
+          AND is_nullable = 'NO'
+      ) AS title_updated_at
+  `);
+  if (!result.rows[0]?.note_images || !result.rows[0]?.title_updated_at) {
+    throw new Error("Skema Catatan Kolaboratif belum lengkap. Jalankan npm run migrate:notes terlebih dahulu.");
+  }
   console.log("Skema Catatan Kolaboratif siap.");
 } finally {
   await client.end();
