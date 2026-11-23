@@ -1,8 +1,8 @@
 import { Pool } from "pg";
 
 import { AppError } from "@/application/errors";
-import type { NoteRepository, NoteWorkspaceRepository } from "@/application/ports";
-import type { CollaborativeNote, NoteWorkspace, NoteWorkspaceMember } from "@/domain/models";
+import type { NoteImageRepository, NoteRepository, NoteWorkspaceRepository } from "@/application/ports";
+import type { CollaborativeNote, NoteImage, NoteWorkspace, NoteWorkspaceMember } from "@/domain/models";
 
 let pool: Pool | undefined;
 
@@ -32,6 +32,10 @@ function memberFrom(row: Record<string, unknown>): NoteWorkspaceMember {
 function noteFrom(row: Record<string, unknown>): CollaborativeNote {
   const updatedAt = iso(row.updated_at as Date | string);
   return { id: String(row.id), workspaceId: String(row.workspace_id), title: String(row.title), createdBy: String(row.created_by), createdAt: iso(row.created_at as Date | string), updatedAt, titleUpdatedAt: row.title_updated_at ? iso(row.title_updated_at as Date | string) : updatedAt };
+}
+
+function noteImageFrom(row: Record<string, unknown>): NoteImage {
+  return { id: String(row.id), noteId: String(row.note_id), driveFileId: String(row.drive_file_id), name: String(row.name), mimeType: String(row.mime_type), sizeBytes: Number(row.size_bytes), createdBy: String(row.created_by), createdAt: iso(row.created_at as Date | string) };
 }
 
 export class PostgresNoteWorkspaceRepository implements NoteWorkspaceRepository {
@@ -103,6 +107,37 @@ export class PostgresNoteRepository implements NoteRepository {
 
   async remove(id: string): Promise<void> {
     await notesPool().query("DELETE FROM notes WHERE id = $1", [id]);
+  }
+}
+
+export class PostgresNoteImageRepository implements NoteImageRepository {
+  async listByNote(noteId: string): Promise<NoteImage[]> {
+    const result = await notesPool().query("SELECT * FROM note_images WHERE note_id = $1 ORDER BY created_at ASC", [noteId]);
+    return result.rows.map(noteImageFrom);
+  }
+
+  async findById(id: string): Promise<NoteImage | null> {
+    const result = await notesPool().query("SELECT * FROM note_images WHERE id = $1", [id]);
+    return result.rows[0] ? noteImageFrom(result.rows[0]) : null;
+  }
+
+  async countByNote(noteId: string): Promise<number> {
+    const result = await notesPool().query<{ count: string }>("SELECT COUNT(*) FROM note_images WHERE note_id = $1", [noteId]);
+    return Number(result.rows[0]?.count ?? 0);
+  }
+
+  async countByWorkspace(workspaceId: string): Promise<number> {
+    const result = await notesPool().query<{ count: string }>("SELECT COUNT(*) FROM note_images i INNER JOIN notes n ON n.id = i.note_id WHERE n.workspace_id = $1", [workspaceId]);
+    return Number(result.rows[0]?.count ?? 0);
+  }
+
+  async create(image: NoteImage): Promise<NoteImage> {
+    const result = await notesPool().query("INSERT INTO note_images (id, note_id, drive_file_id, name, mime_type, size_bytes, created_by, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *", [image.id, image.noteId, image.driveFileId, image.name, image.mimeType, image.sizeBytes, image.createdBy, image.createdAt]);
+    return noteImageFrom(result.rows[0]);
+  }
+
+  async remove(id: string): Promise<void> {
+    await notesPool().query("DELETE FROM note_images WHERE id = $1", [id]);
   }
 }
 

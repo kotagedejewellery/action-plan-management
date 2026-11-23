@@ -61,16 +61,17 @@ Push ke `main` akan menjalankan TypeScript, lint, dan Vitest sebelum GitHub Acti
 
 Catatan Kolaboratif adalah modul tambahan dan tidak aktif tanpa environment baru. Tambahkan `NOTES_COLLABORATION_SECRET`, `NOTES_POSTGRES_USER`, dan `NOTES_POSTGRES_PASSWORD` yang kuat ke `.env`, lalu isi `NOTES_DATABASE_URL` dengan hostname `notes-db` seperti `.env.example`.
 
-Pada aktivasi pertama, build image lebih dulu, tunggu database sehat, lalu jalankan migrasi sekali secara eksplisit:
+Pada aktivasi pertama, build image lebih dulu, tunggu database sehat, lalu jalankan migrasi sekali secara eksplisit. Jalankan perintah migrasi yang sama pada setiap rilis yang menambah skema Notes; migrasi bersifat forward-only dan tidak diaktifkan otomatis saat startup:
 
 ```bash
 docker compose -f compose.yml -f compose.notes.yml build app
 docker compose -f compose.yml -f compose.notes.yml up -d --wait notes-db
 docker compose -f compose.yml -f compose.notes.yml run --rm app npm run migrate:notes
+docker compose -f compose.yml -f compose.notes.yml run --rm app npm run check:notes
 docker compose -f compose.yml -f compose.notes.yml up -d --force-recreate --wait app
 ```
 
-Database Notes hanya terhubung ke network internal `notes`; aplikasi tetap juga terhubung ke `proxy` untuk Traefik. Setelah aktivasi awal, deployment otomatis biasa dengan `compose.yml` tetap dapat menjangkau database Notes melalui network internal itu. Jangan gunakan `docker compose -f compose.yml -f compose.notes.yml down -v` karena menghapus volume `notes_postgres_data`. Deployment tidak mengubah Spreadsheet, Drive, ataupun data Action Plan.
+Database Notes hanya terhubung ke network internal `notes`; aplikasi tetap juga terhubung ke `proxy` untuk Traefik. Setelah aktivasi awal, deployment otomatis biasa dengan `compose.yml` tetap dapat menjangkau database Notes melalui network internal itu. Jangan gunakan `docker compose -f compose.yml -f compose.notes.yml down -v` karena menghapus volume `notes_postgres_data`. Deployment tidak mengubah Spreadsheet atau data Action Plan. Ketika fitur gambar Notes digunakan, file baru saja yang disimpan privat pada folder `notes/` di Google Drive root; tidak ada file atau folder lama yang diubah saat deploy maupun migrasi.
 
 ### Backup dan pemulihan Notes
 

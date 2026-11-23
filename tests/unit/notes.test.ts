@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { createNote, createNoteWorkspace, deleteNoteWorkspace, inviteNoteWorkspaceMember, listVisibleNoteWorkspaces, removeNoteWorkspaceMember, renameNote } from "@/application/notes";
-import type { NoteRepository, NoteWorkspaceRepository, UserRepository } from "@/application/ports";
-import type { Actor, NoteWorkspace, NoteWorkspaceMember, User } from "@/domain/models";
+import { createNote, createNoteWorkspace, deleteNote, deleteNoteImage, deleteNoteWorkspace, inviteNoteWorkspaceMember, listVisibleNoteWorkspaces, removeNoteWorkspaceMember, renameNote, uploadNoteImage } from "@/application/notes";
+import type { NoteImageRepository, NoteImageStorage, NoteRepository, NoteWorkspaceRepository, UserRepository } from "@/application/ports";
+import type { Actor, NoteImage, NoteWorkspace, NoteWorkspaceMember, User } from "@/domain/models";
 
 const now = "2026-11-20T00:00:00.000Z";
 const actor = (id: string): Actor => ({ id, name: id, email: `${id}@example.test`, role: "user", status: "active", sheetName: "" });
@@ -12,6 +12,7 @@ function setup() {
   const workspaces: NoteWorkspace[] = [];
   const members: NoteWorkspaceMember[] = [];
   const notes: { id: string; workspaceId: string; title: string; createdBy: string; createdAt: string; updatedAt: string; titleUpdatedAt: string }[] = [];
+  const images: NoteImage[] = [];
   const users = [user("owner"), user("member"), user("inactive", "inactive")];
   const workspaceRepository: NoteWorkspaceRepository = {
     listForUser: async (userId) => workspaces.filter((workspace) => members.some((member) => member.workspaceId === workspace.id && member.userId === userId)),
@@ -34,8 +35,24 @@ function setup() {
     updateTitle: async (note) => { const index = notes.findIndex((item) => item.id === note.id); notes[index] = note; return note; },
     remove: async (id) => { const index = notes.findIndex((note) => note.id === id); if (index >= 0) notes.splice(index, 1); },
   };
+  const imageRepository: NoteImageRepository = {
+    listByNote: async (noteId) => images.filter((image) => image.noteId === noteId),
+    findById: async (id) => images.find((image) => image.id === id) ?? null,
+    countByNote: async (noteId) => images.filter((image) => image.noteId === noteId).length,
+    countByWorkspace: async (workspaceId) => images.filter((image) => notes.some((note) => note.id === image.noteId && note.workspaceId === workspaceId)).length,
+    create: async (image) => { images.push(image); return image; },
+    remove: async (id) => { const index = images.findIndex((image) => image.id === id); if (index >= 0) images.splice(index, 1); },
+  };
+  const trashed: string[] = [];
+  const restored: string[] = [];
+  const imageStorage: NoteImageStorage = {
+    upload: async (input) => ({ id: `drive-${input.name}`, name: input.name, mimeType: input.mimeType }),
+    download: async () => Buffer.from([]),
+    trash: async (id) => { trashed.push(id); },
+    restore: async (id) => { restored.push(id); },
+  };
   const userRepository: UserRepository = { list: async () => users, findById: async (id) => users.find((item) => item.id === id) ?? null, findByEmail: async (email) => users.find((item) => item.email === email) ?? null, create: async (item) => item, update: async (item) => item, createActionPlanSheet: async () => undefined };
-  return { workspaces, members, notes, workspaceRepository, noteRepository, userRepository };
+  return { workspaces, members, notes, images, trashed, restored, workspaceRepository, noteRepository, imageRepository, imageStorage, userRepository };
 }
 
 describe("Collaborative Notes", () => {
@@ -70,13 +87,53 @@ describe("Collaborative Notes", () => {
     const note = await createNote(fixture.workspaceRepository, fixture.noteRepository, actor("member"), workspace.id, { title: "Judul lama" });
 
     await expect(renameNote(fixture.workspaceRepository, fixture.noteRepository, actor("member"), note.id, { title: "Judul baru", titleUpdatedAt: note.titleUpdatedAt })).resolves.toMatchObject({ title: "Judul baru" });
-    await expect(deleteNoteWorkspace(fixture.workspaceRepository, fixture.noteRepository, actor("member"), workspace.id, workspace.name)).rejects.toMatchObject({ code: "FORBIDDEN" });
-    await expect(deleteNoteWorkspace(fixture.workspaceRepository, fixture.noteRepository, actor("owner"), workspace.id, "nama salah")).rejects.toMatchObject({ code: "VALIDATION" });
+    await expect(deleteNoteWorkspace(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("member"), workspace.id, workspace.name)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(deleteNoteWorkspace(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("owner"), workspace.id, "nama salah")).rejects.toMatchObject({ code: "VALIDATION" });
     expect(fixture.workspaces).toHaveLength(1);
 
-    await expect(deleteNoteWorkspace(fixture.workspaceRepository, fixture.noteRepository, actor("owner"), workspace.id, workspace.name)).resolves.toEqual({ memberIds: ["owner", "member"], noteIds: [note.id] });
+    await expect(deleteNoteWorkspace(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("owner"), workspace.id, workspace.name)).resolves.toEqual({ memberIds: ["owner", "member"], noteIds: [note.id] });
     expect(fixture.workspaces).toEqual([]);
     expect(fixture.notes).toEqual([]);
+  });
+
+  it("stores an image privately for a workspace member and trashes it when the workspace is deleted", async () => {
+    const fixture = setup();
+    const workspace = await createNoteWorkspace(fixture.workspaceRepository, actor("owner"), { name: "Catatan strategi" });
+    const note = await createNote(fixture.workspaceRepository, fixture.noteRepository, actor("owner"), workspace.id, { title: "Keputusan" });
+
+    const image = await uploadNoteImage(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("owner"), note.id, { name: "diagram.png", mimeType: "image/png", content: Buffer.from([1]) });
+    await deleteNoteWorkspace(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("owner"), workspace.id, workspace.name);
+
+    expect(image.noteId).toBe(note.id);
+    expect(fixture.trashed).toEqual(["drive-diagram.png"]);
+  });
+
+  it("restores images when note deletion cannot be committed", async () => {
+    const fixture = setup();
+    const workspace = await createNoteWorkspace(fixture.workspaceRepository, actor("owner"), { name: "Catatan strategi" });
+    const note = await createNote(fixture.workspaceRepository, fixture.noteRepository, actor("owner"), workspace.id, { title: "Keputusan" });
+    await uploadNoteImage(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("owner"), note.id, { name: "diagram.png", mimeType: "image/png", content: Buffer.from([1]) });
+    fixture.noteRepository.remove = async () => { throw new Error("database unavailable"); };
+
+    await expect(deleteNote(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("owner"), note.id)).rejects.toThrow("database unavailable");
+    expect(fixture.trashed).toEqual(["drive-diagram.png"]);
+    expect(fixture.restored).toEqual(["drive-diagram.png"]);
+  });
+
+  it("enforces image limits and lets a member remove an unused image", async () => {
+    const fixture = setup();
+    const workspace = await createNoteWorkspace(fixture.workspaceRepository, actor("owner"), { name: "Catatan strategi" });
+    await inviteNoteWorkspaceMember(fixture.workspaceRepository, fixture.userRepository, actor("owner"), workspace.id, "member@example.test");
+    const note = await createNote(fixture.workspaceRepository, fixture.noteRepository, actor("owner"), workspace.id, { title: "Keputusan" });
+    const image = await uploadNoteImage(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("member"), note.id, { name: "diagram.png", mimeType: "image/png", content: Buffer.from([1]) });
+
+    await deleteNoteImage(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("member"), note.id, image.id);
+    fixture.imageRepository.countByNote = async () => 30;
+    await expect(uploadNoteImage(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("member"), note.id, { name: "batas.png", mimeType: "image/png", content: Buffer.from([1]) })).rejects.toMatchObject({ code: "VALIDATION" });
+    fixture.imageRepository.countByNote = async () => 0;
+    fixture.imageRepository.countByWorkspace = async () => 100;
+    await expect(uploadNoteImage(fixture.workspaceRepository, fixture.noteRepository, fixture.imageRepository, fixture.imageStorage, actor("member"), note.id, { name: "batas-workspace.png", mimeType: "image/png", content: Buffer.from([1]) })).rejects.toMatchObject({ code: "VALIDATION" });
+    expect(fixture.trashed).toContain("drive-diagram.png");
   });
 
   it("rejects a title rename when another member has already changed that title", async () => {

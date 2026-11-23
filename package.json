@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:ui": "playwright test",
     "bootstrap:admin": "node scripts/bootstrap-admin.mjs",
-    "migrate:notes": "node scripts/migrate-notes.mjs"
+    "migrate:notes": "node scripts/migrate-notes.mjs",
+    "check:notes": "node scripts/check-notes-schema.mjs"
   },
   "dependencies": {
     "@hocuspocus/extension-database": "^4.8.0",

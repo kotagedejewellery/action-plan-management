@@ -1,4 +1,4 @@
-import type { ActionPlan, ActionPlanApproval, ActionPlanAttachment, ActionPlanStatus, CollaborativeNote, Division, NoteWorkspace, NoteWorkspaceMember, User, WeeklyPlan } from "@/domain/models";
+import type { ActionPlan, ActionPlanApproval, ActionPlanAttachment, ActionPlanStatus, CollaborativeNote, Division, NoteImage, NoteWorkspace, NoteWorkspaceMember, User, WeeklyPlan } from "@/domain/models";
 
 export interface DivisionRepository {
   list(): Promise<Division[]>;
@@ -68,4 +68,20 @@ export interface NoteRepository {
   create(note: CollaborativeNote): Promise<CollaborativeNote>;
   updateTitle(note: CollaborativeNote, expectedTitleUpdatedAt: string): Promise<CollaborativeNote | null>;
   remove(id: string): Promise<void>;
+}
+
+export interface NoteImageRepository {
+  listByNote(noteId: string): Promise<NoteImage[]>;
+  findById(id: string): Promise<NoteImage | null>;
+  countByNote(noteId: string): Promise<number>;
+  countByWorkspace(workspaceId: string): Promise<number>;
+  create(image: NoteImage): Promise<NoteImage>;
+  remove(id: string): Promise<void>;
+}
+
+export interface NoteImageStorage {
+  upload(input: { name: string; mimeType: string; content: Buffer; folder: { workspaceId: string; noteId: string } }): Promise<{ id: string; name: string; mimeType: string }>;
+  download(id: string): Promise<Buffer>;
+  trash(id: string): Promise<void>;
+  restore(id: string): Promise<void>;
 }

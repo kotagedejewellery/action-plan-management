@@ -3,12 +3,14 @@
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCaret from "@tiptap/extension-collaboration-caret";
 import StarterKit from "@tiptap/starter-kit";
+import { Node } from "@tiptap/core";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { HocuspocusProvider } from "@hocuspocus/provider";
-import { Check, List } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Check, ImagePlus, List, Trash2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { noteEditorEditable, noteEditorFeedback, type NoteConnectionState, type NotePersistenceState } from "./note-editor-feedback";
+import { DialogFrame } from "./workspace-ui";
 
 type Note = { id: string; title: string };
 type Actor = { id: string; name: string };
@@ -16,6 +18,8 @@ type Actor = { id: string; name: string };
 type Session = { token: string };
 type Collaborator = { id: string; name: string; color: string; editing: boolean };
 const colors = ["#137d79", "#265b9b", "#9a5b16", "#8a4d83", "#277145"];
+const imageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+const maxImageBytes = 10 * 1024 * 1024;
 
 function endpoint() {
   return `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/_notes/collaboration`;
@@ -32,10 +36,31 @@ function initials(name: string) {
   return name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2);
 }
 
+function noteImageNode(noteId: string) {
+  return Node.create({
+    name: "noteImage",
+    group: "block",
+    atom: true,
+    draggable: true,
+    addAttributes: () => ({ imageId: { default: null }, alt: { default: "" } }),
+    parseHTML: () => [{ tag: "img[data-note-image-id]" }],
+    renderHTML: ({ HTMLAttributes }) => {
+      const imageId = typeof HTMLAttributes.imageId === "string" ? HTMLAttributes.imageId : "";
+      return ["img", { "data-note-image-id": imageId, src: `/api/notes/${noteId}/images/${encodeURIComponent(imageId)}`, alt: typeof HTMLAttributes.alt === "string" ? HTMLAttributes.alt : "" }];
+    },
+  });
+}
+
 function LiveEditor({ note, actor }: { note: Note; actor: Actor }) {
   const [connection, setConnection] = useState<NoteConnectionState>("connecting");
   const [persistence, setPersistence] = useState<NotePersistenceState>("idle");
   const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [removingImage, setRemovingImage] = useState(false);
+  const [imageError, setImageError] = useState("");
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
+  const [selectedImageId, setSelectedImageId] = useState("");
+  const imageFileInputRef = useRef<HTMLInputElement>(null);
   const provider = useMemo(() => new HocuspocusProvider({
     url: endpoint(), name: note.id, token: async () => {
       console.info("[notes-realtime-client] session_requested");
@@ -65,14 +90,16 @@ function LiveEditor({ note, actor }: { note: Note; actor: Actor }) {
       if (event.code === 4205) setConnection("unauthorized");
     },
   }), [note.id]);
+  const imageExtension = useMemo(() => noteImageNode(note.id), [note.id]);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ undoRedo: false }),
       Collaboration.configure({ document: provider.document }),
       CollaborationCaret.configure({ provider, user: { id: actor.id, name: actor.name, color: colors[actor.id.charCodeAt(0) % colors.length] } }),
+      imageExtension,
     ],
     editorProps: { attributes: { class: "min-h-[22rem] px-5 py-5 text-sm leading-7 text-[#244542] outline-none sm:px-7" } },
-  }, [provider]);
+  }, [provider, imageExtension]);
 
   useEffect(() => {
     const awareness = provider.awareness;
@@ -102,10 +129,78 @@ function LiveEditor({ note, actor }: { note: Note; actor: Actor }) {
     return () => window.clearTimeout(timeout);
   }, [persistence]);
   useEffect(() => { editor?.setEditable(noteEditorEditable(connection)); }, [connection, editor]);
+  useEffect(() => {
+    if (!editor) return;
+    const updateSelection = () => {
+      const attributes = editor.isActive("noteImage") ? editor.getAttributes("noteImage") : {};
+      setSelectedImageId(typeof attributes.imageId === "string" ? attributes.imageId : "");
+    };
+    editor.on("selectionUpdate", updateSelection);
+    updateSelection();
+    return () => { editor.off("selectionUpdate", updateSelection); };
+  }, [editor]);
 
   const feedback = noteEditorFeedback({ connection, persistence });
   const activeCollaborators = collaborators.filter((user) => user.id !== actor.id);
   const editingCollaborator = activeCollaborators.find((user) => user.editing);
+
+  function imageReferenceCount(imageId: string): number {
+    let count = 0;
+    const visit = (node: { type?: string; attrs?: { imageId?: unknown }; content?: unknown[] }) => {
+      if (node.type === "noteImage" && node.attrs?.imageId === imageId) count += 1;
+      node.content?.forEach((child) => { if (typeof child === "object" && child) visit(child as { type?: string; attrs?: { imageId?: unknown }; content?: unknown[] }); });
+    };
+    if (editor) visit(editor.getJSON());
+    return count;
+  }
+
+  async function insertImage(file: File, alt: string): Promise<boolean> {
+    if (!imageTypes.has(file.type) || file.size > maxImageBytes) {
+      setImageError("Gunakan JPG, PNG, atau WebP dengan ukuran maksimal 10 MB.");
+      return false;
+    }
+    setUploadingImage(true);
+    setImageError("");
+    try {
+      const form = new FormData();
+      form.append("image", file);
+      const response = await fetch(`/api/notes/${note.id}/images`, { method: "POST", body: form });
+      const payload = await response.json() as { id?: string; name?: string; error?: string };
+      if (!response.ok || !payload.id) throw new Error(payload.error ?? "Gambar tidak dapat diunggah.");
+      if (!editor?.isEditable) throw new Error("Editor belum siap. Tunggu hingga koneksi catatan tersambung.");
+      editor.chain().focus().insertContent({ type: "noteImage", attrs: { imageId: payload.id, alt: alt.trim() || payload.name || file.name } }).run();
+      return true;
+    } catch (error) {
+      setImageError(error instanceof Error ? error.message : "Gambar tidak dapat diunggah.");
+    } finally {
+      setUploadingImage(false);
+    }
+    return false;
+  }
+
+  async function removeSelectedImage() {
+    if (!editor || !selectedImageId) return;
+    if (imageReferenceCount(selectedImageId) !== 1) {
+      setImageError("Gambar ini digunakan lebih dari sekali. Hapus salinan lain terlebih dahulu agar tidak merusak referensi gambar.");
+      return;
+    }
+    const attributes = editor.getAttributes("noteImage");
+    setRemovingImage(true);
+    setImageError("");
+    editor.chain().focus().deleteSelection().run();
+    try {
+      const response = await fetch(`/api/notes/${note.id}/images/${selectedImageId}`, { method: "DELETE" });
+      if (!response.ok) {
+        const payload = await response.json() as { error?: string };
+        throw new Error(payload.error ?? "Gambar tidak dapat dihapus.");
+      }
+    } catch (error) {
+      editor.chain().focus().insertContent({ type: "noteImage", attrs: { imageId: selectedImageId, alt: typeof attributes.alt === "string" ? attributes.alt : "" } }).run();
+      setImageError(error instanceof Error ? error.message : "Gambar tidak dapat dihapus.");
+    } finally {
+      setRemovingImage(false);
+    }
+  }
 
   return <section className="overflow-hidden rounded-2xl border border-[#dce5e4] bg-white shadow-[0_18px_36px_-32px_rgba(23,60,58,0.35)]">
     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#dce5e4] px-4 py-3 sm:px-5">
@@ -113,6 +208,8 @@ function LiveEditor({ note, actor }: { note: Note; actor: Actor }) {
         <button type="button" className={`grid size-9 place-items-center rounded-lg text-sm font-bold ${editor?.isActive("bold") ? "bg-[#e3f3f0] text-[#116b67]" : "text-[#59706f] hover:bg-[#f1f5f4]"}`} onClick={() => editor?.chain().focus().toggleBold().run()} aria-label="Tebal">B</button>
         <button type="button" className={`grid size-9 place-items-center rounded-lg text-sm italic ${editor?.isActive("italic") ? "bg-[#e3f3f0] text-[#116b67]" : "text-[#59706f] hover:bg-[#f1f5f4]"}`} onClick={() => editor?.chain().focus().toggleItalic().run()} aria-label="Miring">I</button>
         <button type="button" className={`grid size-9 place-items-center rounded-lg ${editor?.isActive("bulletList") ? "bg-[#e3f3f0] text-[#116b67]" : "text-[#59706f] hover:bg-[#f1f5f4]"}`} onClick={() => editor?.chain().focus().toggleBulletList().run()} aria-label="Daftar berpoin"><List aria-hidden className="size-4" /></button>
+        <button type="button" disabled={!editor?.isEditable || uploadingImage || removingImage} className="grid size-9 place-items-center rounded-lg text-[#59706f] hover:bg-[#f1f5f4] disabled:opacity-50" onClick={() => { setImageError(""); setImageDialogOpen(true); }} aria-label="Tambahkan gambar" title="Tambahkan gambar"><ImagePlus aria-hidden className="size-4" /></button>
+        {selectedImageId && <button type="button" disabled={removingImage || uploadingImage} className="grid size-9 place-items-center rounded-lg text-[#a34c3f] hover:bg-[#fff4f1] disabled:opacity-50" onClick={() => void removeSelectedImage()} aria-label="Hapus gambar" title="Hapus gambar"><Trash2 aria-hidden className="size-4" /></button>}
       </div>
       <div className="flex min-w-0 items-center gap-3 text-xs text-[#667c7c]">
         {activeCollaborators.length > 0 && <div className="flex min-w-0 items-center gap-2" aria-label={`${activeCollaborators.map((user) => user.name).join(", ")} sedang aktif di catatan ini`}>
@@ -120,11 +217,14 @@ function LiveEditor({ note, actor }: { note: Note; actor: Actor }) {
           <span className="truncate">{(editingCollaborator ?? activeCollaborators[0]).name} {editingCollaborator ? "sedang menulis" : "sedang melihat"}</span>
         </div>}
         {feedback.saved && <span className="inline-flex items-center text-[#206b43]" title="Perubahan tersimpan"><Check aria-hidden className="size-4" /><span className="sr-only">Perubahan tersimpan</span></span>}
+        {(uploadingImage || removingImage) && <span role="status" aria-live="polite">{uploadingImage ? "Mengunggah gambar..." : "Menghapus gambar..."}</span>}
         <span className="sr-only" role="status" aria-live="polite">{feedback.liveMessage}</span>
       </div>
     </div>
     {feedback.notice && <div className={`border-b px-5 py-3 text-sm ${connection === "unauthorized" || persistence === "failed" ? "border-[#f2d3ce] bg-[#fff4f1] text-[#8b3c31]" : "border-[#f5dfad] bg-[#fff9ed] text-[#8a5b17]"}`} role="alert"><div className="flex flex-wrap items-center justify-between gap-3"><span>{feedback.notice}</span>{connection === "unauthorized" && <button type="button" className="font-semibold underline underline-offset-2" onClick={() => window.location.reload()}>Muat ulang</button>}</div></div>}
+    {imageError && <p className="border-b border-[#f2d3ce] bg-[#fff4f1] px-5 py-3 text-sm text-[#8b3c31]" role="alert">{imageError}</p>}
     <EditorContent editor={editor} />
+    {imageDialogOpen && <DialogFrame title="Tambahkan gambar" description="Gunakan JPG, PNG, atau WebP dengan ukuran maksimal 10 MB." onClose={() => !uploadingImage && setImageDialogOpen(false)} initialFocusRef={imageFileInputRef}><form className="mt-6 space-y-5" aria-busy={uploadingImage} onSubmit={(event) => { event.preventDefault(); const form = new FormData(event.currentTarget); const file = form.get("image"); if (!(file instanceof File)) { setImageError("Pilih gambar untuk disisipkan."); return; } void insertImage(file, String(form.get("alt") ?? "")).then((inserted) => { if (inserted) setImageDialogOpen(false); }); }}><label className="block text-sm font-semibold text-[#315452]">File gambar<input ref={imageFileInputRef} required name="image" type="file" accept="image/jpeg,image/png,image/webp" className="mt-2 block w-full rounded-xl border border-[#dce5e4] px-3 py-2 text-sm text-[#244542] file:mr-3 file:rounded-lg file:border-0 file:bg-[#e3f3f0] file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[#116b67] hover:file:bg-[#c8ebe7]" /></label><label className="block text-sm font-semibold text-[#315452]">Deskripsi gambar <span className="font-normal text-[#667c7c]">(opsional)</span><input name="alt" maxLength={200} className="mt-2 h-11 w-full rounded-xl border border-[#dce5e4] px-3 text-sm text-[#244542] outline-none focus:border-[#137d79]" placeholder="Contoh: Diagram alur pelayanan" /></label><div className="flex justify-end gap-3"><button type="button" disabled={uploadingImage} onClick={() => setImageDialogOpen(false)} className="h-11 rounded-xl px-4 text-sm font-semibold text-[#59706f] hover:bg-[#f1f5f4] disabled:opacity-60">Batal</button><button type="submit" disabled={uploadingImage} className="h-11 rounded-xl bg-[#137d79] px-4 text-sm font-semibold text-white hover:bg-[#0e6865] disabled:opacity-60">{uploadingImage ? "Mengunggah..." : "Sisipkan gambar"}</button></div></form></DialogFrame>}
   </section>;
 }
 

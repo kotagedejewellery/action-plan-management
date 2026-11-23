@@ -112,6 +112,17 @@ export type CollaborativeNote = {
   titleUpdatedAt: string;
 };
 
+export type NoteImage = {
+  id: string;
+  noteId: string;
+  driveFileId: string;
+  name: string;
+  mimeType: string;
+  sizeBytes: number;
+  createdBy: string;
+  createdAt: string;
+};
+
 export function toSafeUser(user: User): SafeUser {
   const safeUser: Partial<User> = { ...user };
   delete safeUser.passwordHash;

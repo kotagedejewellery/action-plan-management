@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { deleteNote, renameNote } from "@/application/notes";
 import { noteRenameInputSchema } from "@/application/schemas";
-import { noteWorkspaces, notes } from "@/infrastructure/container";
+import { noteImageStorage, noteImages, noteWorkspaces, notes } from "@/infrastructure/container";
 import { closeNoteCollaborationConnections } from "@/lib/note-collaboration";
 import { publishNoteWorkspaceChange } from "@/lib/note-workspace-events";
 import { currentActor } from "@/presentation/server/actor";
@@ -24,7 +24,7 @@ export async function DELETE(_request: Request, { params }: Context) {
   try {
     const noteId = (await params).noteId;
     const note = await notes.findById(noteId);
-    await deleteNote(noteWorkspaces, notes, await currentActor(), noteId);
+    await deleteNote(noteWorkspaces, notes, noteImages, noteImageStorage, await currentActor(), noteId);
     closeNoteCollaborationConnections([noteId]);
     if (note) publishNoteWorkspaceChange((await noteWorkspaces.listMembers(note.workspaceId)).map((member) => member.userId));
     return new NextResponse(null, { status: 204 });

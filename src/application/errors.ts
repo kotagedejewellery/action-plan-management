@@ -17,6 +17,8 @@ export function publicError(error: unknown): Error {
   if (error instanceof AppError) return error;
   if (!(error instanceof Error)) return new Error("Terjadi kesalahan pada server. Coba lagi.");
 
+  if ("code" in error && error.code === "42P01") return new AppError("Skema Catatan Kolaboratif belum diperbarui. Jalankan migrasi Notes sebelum mencoba lagi.", "UNAVAILABLE");
+
   const url = "config" in error && typeof error.config === "object" && error.config && "url" in error.config ? String(error.config.url) : "";
   const details = `${error.message} ${url}`.toLowerCase();
   const google = details.includes("googleapis.com") || details.includes("google_") || details.includes("quota exceeded");
