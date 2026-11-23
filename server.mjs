@@ -101,6 +101,21 @@ function collaborationRuntime() {
           return original(...args);
         };
       }
+      const transport = socket._socket;
+      if (transport) {
+        for (const method of ["end", "destroy"]) {
+          const original = transport[method].bind(transport);
+          transport[method] = (...args) => {
+            console.warn("[DEBUG-notes-transport] tcp_shutdown_requested", {
+              method,
+              stack: new Error().stack?.split("\n").slice(1, 5),
+            });
+            return original(...args);
+          };
+        }
+        transport.once("end", () => console.info("[DEBUG-notes-transport] tcp_end_received"));
+        transport.once("close", (hadError) => console.info("[DEBUG-notes-transport] tcp_closed", { hadError }));
+      }
       socket.once("pong", () => console.info("[DEBUG-notes-transport] browser_round_trip_confirmed"));
       socket.ping();
     }
