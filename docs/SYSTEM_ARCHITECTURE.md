@@ -168,7 +168,7 @@ Arsitektur ini ditujukan untuk MVP dengan jumlah User dan record yang wajar. Jik
 
 ### Catatan Kolaboratif
 
-Catatan Kolaboratif adalah modul tambahan dengan storage PostgreSQL sendiri; Google Spreadsheet dan Drive tidak terlibat. REST handler hanya mengelola Workspace, membership, serta metadata note. Setelah policy membership server-side berhasil, route session menerbitkan token HMAC singkat untuk satu note. Endpoint WebSocket `/api/notes/collaboration` memverifikasi token dan membership lagi sebelum Hocuspocus/Yjs menyinkronkan perubahan serta presence. State Yjs disimpan dalam format binary `BYTEA`, sehingga edit concurrent tidak memakai last-write-wins.
+Catatan Kolaboratif adalah modul tambahan dengan storage PostgreSQL sendiri; Google Spreadsheet dan Drive tidak terlibat. REST handler hanya mengelola Workspace, membership, serta metadata note. Setelah policy membership server-side berhasil, route session menerbitkan token HMAC singkat untuk satu note. Endpoint WebSocket `/_notes/collaboration` memverifikasi token dan membership lagi sebelum Hocuspocus/Yjs menyinkronkan perubahan serta presence. State Yjs disimpan dalam format binary `BYTEA`, sehingga edit concurrent tidak memakai last-write-wins.
 
 Role `owner`/`member` berlaku hanya dalam workspace Notes; role `admin`/`bod`/`user` tidak berubah dan tidak memberi akses otomatis terhadap isi note. PostgreSQL Notes tidak dimigrasikan pada startup atau deploy. Service `notes-db` berada di `compose.notes.yml`, sehingga deployment lama yang memakai `compose.yml` saja tidak bergantung pada database baru.
 

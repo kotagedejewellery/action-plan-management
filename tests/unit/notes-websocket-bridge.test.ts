@@ -41,8 +41,12 @@ it("synchronizes a note through the same native WebSocket bridge used by the cus
   });
   server = createServer((_request, response) => response.end());
   server.on("upgrade", (request, socket, head) => {
-    if (new URL(request.url ?? "/", "http://localhost").pathname === "/api/notes/collaboration") websocket.handleUpgrade(request, socket, head, (connection) => websocket.emit("connection", connection, request));
+    if (new URL(request.url ?? "/", "http://localhost").pathname === "/_notes/collaboration") websocket.handleUpgrade(request, socket, head, (connection) => websocket.emit("connection", connection, request));
     else socket.destroy();
+  });
+  // Next ends upgrade requests that resolve to an application API route.
+  server.on("upgrade", (request, socket) => {
+    if (new URL(request.url ?? "/", "http://localhost").pathname.startsWith("/api/notes/")) socket.end();
   });
   await new Promise<void>((resolve) => server?.listen(0, "127.0.0.1", resolve));
   const address = server.address();
@@ -53,8 +57,8 @@ it("synchronizes a note through the same native WebSocket bridge used by the cus
   let firstSynced = false;
   let secondSynced = false;
   providers = [
-    new HocuspocusProvider({ url: `ws://127.0.0.1:${address.port}/api/notes/collaboration`, name: "note-1", document: first, token: "owner", onSynced: () => { firstSynced = true; } }),
-    new HocuspocusProvider({ url: `ws://127.0.0.1:${address.port}/api/notes/collaboration`, name: "note-1", document: second, token: "member", onSynced: () => { secondSynced = true; } }),
+    new HocuspocusProvider({ url: `ws://127.0.0.1:${address.port}/_notes/collaboration`, name: "note-1", document: first, token: "owner", onSynced: () => { firstSynced = true; } }),
+    new HocuspocusProvider({ url: `ws://127.0.0.1:${address.port}/_notes/collaboration`, name: "note-1", document: second, token: "member", onSynced: () => { secondSynced = true; } }),
   ];
 
   await waitFor(() => firstSynced && secondSynced && controlFrameRoundTrip, "Native WebSocket tidak menyelesaikan sinkronisasi editor atau kontrol frame.");

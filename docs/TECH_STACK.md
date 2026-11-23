@@ -52,7 +52,7 @@ Versi paket dipasang menggunakan versi stabil yang saling kompatibel saat implem
 - Catatan Kolaboratif memakai PostgreSQL, Yjs, Tiptap, dan Hocuspocus karena Spreadsheet tidak aman untuk sinkronisasi dokumen concurrent.
 - Ia aktif hanya bila `NOTES_DATABASE_URL` dan `NOTES_COLLABORATION_SECRET` tersedia; tanpa keduanya Action Plan tetap berjalan.
 - PostgreSQL menyimpan hanya workspace, membership, metadata note, serta state biner Yjs. Ia tidak menggantikan atau menyalin Spreadsheet/Drive.
-- Hocuspocus berjalan dalam proses Node aplikasi pada endpoint WebSocket `/api/notes/collaboration`; Redis atau replica tambahan tidak diperlukan untuk MVP satu-container.
+- Hocuspocus berjalan dalam proses Node aplikasi pada endpoint WebSocket `/_notes/collaboration`; Redis atau replica tambahan tidak diperlukan untuk MVP satu-container.
 
 ### Antarmuka
 

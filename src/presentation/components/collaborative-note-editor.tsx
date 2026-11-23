@@ -18,7 +18,7 @@ type Collaborator = { id: string; name: string; color: string; editing: boolean 
 const colors = ["#137d79", "#265b9b", "#9a5b16", "#8a4d83", "#277145"];
 
 function endpoint() {
-  return `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/api/notes/collaboration`;
+  return `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/_notes/collaboration`;
 }
 
 async function fetchSession(noteId: string): Promise<Session> {

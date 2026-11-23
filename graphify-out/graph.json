@@ -3187,7 +3187,7 @@
       "file_type": "code",
       "norm_label": "collaborationruntime()",
       "source_file": "server.mjs",
-      "source_location": "L30"
+      "source_location": "L31"
     },
     {
       "id": "server_readsession",
@@ -3199,7 +3199,7 @@
       "file_type": "code",
       "norm_label": "readsession()",
       "source_file": "server.mjs",
-      "source_location": "L15"
+      "source_location": "L16"
     },
     {
       "id": "server_shutdown",
@@ -3211,7 +3211,7 @@
       "file_type": "code",
       "norm_label": "shutdown()",
       "source_file": "server.mjs",
-      "source_location": "L172"
+      "source_location": "L143"
     },
     {
       "id": "src_app_api_health_route_get",
@@ -8168,7 +8168,7 @@
       "file_type": "code",
       "norm_label": "collaboration",
       "source_file": "server.mjs",
-      "source_location": "L151"
+      "source_location": "L122"
     },
     {
       "id": "server_handle",
@@ -8201,7 +8201,7 @@
       "file_type": "code",
       "norm_label": "server",
       "source_file": "server.mjs",
-      "source_location": "L159"
+      "source_location": "L130"
     },
     {
       "id": "ref_hocuspocus_extension_database",
@@ -12006,7 +12006,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "server.mjs",
-      "source_location": "L67",
+      "source_location": "L68",
       "weight": 1.0
     },
     {
@@ -12018,7 +12018,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "server.mjs",
-      "source_location": "L159",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -19722,7 +19722,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "server.mjs",
-      "source_location": "L172",
+      "source_location": "L143",
       "weight": 1.0
     },
     {
@@ -38125,24 +38125,13 @@
     },
     {
       "source": "server",
-      "target": "server_readsession",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "server.mjs",
-      "source_location": "L15",
-      "weight": 1.0
-    },
-    {
-      "source": "server",
       "target": "server_collaboration",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "server.mjs",
-      "source_location": "L151",
+      "source_location": "L122",
       "weight": 1.0
     },
     {
@@ -38153,7 +38142,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "server.mjs",
-      "source_location": "L159",
+      "source_location": "L130",
+      "weight": 1.0
+    },
+    {
+      "source": "server",
+      "target": "server_readsession",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "server.mjs",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -38164,7 +38164,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "server.mjs",
-      "source_location": "L30",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -45326,7 +45326,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "server.mjs",
-      "source_location": "L163",
+      "source_location": "L134",
       "weight": 1.0
     },
     {
@@ -45578,7 +45578,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "server.mjs",
-      "source_location": "L32",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -46003,5 +46003,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "87f453f1380a1bee0f6acda137998c69e17918bd"
+  "built_at_commit": "6c3c212fe7f73b74f13bbaf975574f279dcebcb2"
 }

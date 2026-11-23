@@ -18,15 +18,15 @@
     "semantic_hash": ""
   },
   "docs/SYSTEM_ARCHITECTURE.md": {
-    "mtime": 1795148257.6575058,
-    "seen": 1795148677.330011,
-    "ast_hash": "76a75346e88de910c81ae4158352d0c3",
+    "mtime": 1795405866.7836022,
+    "seen": 1795405970.6667376,
+    "ast_hash": "f6b8966a13c846396bf56fb5550846b6",
     "semantic_hash": ""
   },
   "docs/TECH_STACK.md": {
-    "mtime": 1795147995.4954896,
-    "seen": 1795148677.3300123,
-    "ast_hash": "a0b556099ea4731b09017ca8cc697cfd",
+    "mtime": 1795405866.7711353,
+    "seen": 1795405970.6667397,
+    "ast_hash": "6fd07cf627e10c7b741e16efdf106da6",
     "semantic_hash": ""
   },
   "PRODUCT.md": {
@@ -1182,9 +1182,9 @@
     "semantic_hash": ""
   },
   "server.mjs": {
-    "mtime": 1795404956.7461655,
-    "seen": 1795405018.4852762,
-    "ast_hash": "b614b5542b47d564eb56e902ba2055c1",
+    "mtime": 1795405835.6039143,
+    "seen": 1795405970.6664388,
+    "ast_hash": "e1518a727fb11bf57c606ac25370580b",
     "semantic_hash": ""
   },
   "src/app/(dashboard)/notes/page.tsx": {
@@ -1248,9 +1248,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/collaborative-note-editor.tsx": {
-    "mtime": 1795396624.9033391,
-    "seen": 1795396736.4005437,
-    "ast_hash": "f32aa329a59b0ea33e16148fecbc0b62",
+    "mtime": 1795405866.7592692,
+    "seen": 1795405970.666583,
+    "ast_hash": "612c30f0a34e0e2b45de6ee3bb94189f",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-notes-workspace.tsx": {
@@ -1320,9 +1320,9 @@
     "semantic_hash": ""
   },
   "tests/unit/notes-websocket-bridge.test.ts": {
-    "mtime": 1795401244.363315,
-    "seen": 1795401257.399927,
-    "ast_hash": "8e3fbbb625e94d8b478f914c0a6ba99b",
+    "mtime": 1795405893.8994844,
+    "seen": 1795405970.66668,
+    "ast_hash": "11379029501888a9ff995b23978a4da7",
     "semantic_hash": ""
   },
   "src/app/api/notes/events/route.ts": {

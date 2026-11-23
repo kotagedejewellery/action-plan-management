@@ -11,6 +11,7 @@ const app = next({ dev: process.env.NODE_ENV === "development", hostname: "0.0.0
 const handle = app.getRequestHandler();
 const databaseUrl = process.env.NOTES_DATABASE_URL;
 const collaborationSecret = process.env.NOTES_COLLABORATION_SECRET;
+const collaborationPath = "/_notes/collaboration";
 
 function readSession(token) {
   const [payload, received] = token.split(".");
@@ -89,36 +90,6 @@ function collaborationRuntime() {
   const websocket = new WebSocketServer({ noServer: true });
   websocket.on("connection", (socket, request) => {
     console.info("[notes-realtime] socket_opened");
-    if (process.env.NOTES_REALTIME_DEBUG === "1") {
-      for (const method of ["close", "terminate"]) {
-        const original = socket[method].bind(socket);
-        socket[method] = (...args) => {
-          console.warn("[DEBUG-notes-transport] socket_shutdown_requested", {
-            method,
-            code: typeof args[0] === "number" ? args[0] : undefined,
-            stack: new Error().stack?.split("\n").slice(1, 5),
-          });
-          return original(...args);
-        };
-      }
-      const transport = socket._socket;
-      if (transport) {
-        for (const method of ["end", "destroy"]) {
-          const original = transport[method].bind(transport);
-          transport[method] = (...args) => {
-            console.warn("[DEBUG-notes-transport] tcp_shutdown_requested", {
-              method,
-              stack: new Error().stack?.split("\n").slice(1, 5),
-            });
-            return original(...args);
-          };
-        }
-        transport.once("end", () => console.info("[DEBUG-notes-transport] tcp_end_received"));
-        transport.once("close", (hadError) => console.info("[DEBUG-notes-transport] tcp_closed", { hadError }));
-      }
-      socket.once("pong", () => console.info("[DEBUG-notes-transport] browser_round_trip_confirmed"));
-      socket.ping();
-    }
     let connection;
     try {
       connection = hocuspocus.handleConnection(socket, request);
@@ -159,7 +130,7 @@ if (collaboration) globalThis.__actionPlanNotesRuntime = {
 const server = createServer((request, response) => handle(request, response));
 
 server.on("upgrade", (request, socket, head) => {
-  if (collaboration && new URL(request.url ?? "/", "http://localhost").pathname === "/api/notes/collaboration") {
+  if (collaboration && new URL(request.url ?? "/", "http://localhost").pathname === collaborationPath) {
     collaboration.websocket.handleUpgrade(request, socket, head, (websocket) => {
       collaboration.websocket.emit("connection", websocket, request);
     });
