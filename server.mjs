@@ -90,6 +90,17 @@ function collaborationRuntime() {
   websocket.on("connection", (socket, request) => {
     console.info("[notes-realtime] socket_opened");
     if (process.env.NOTES_REALTIME_DEBUG === "1") {
+      for (const method of ["close", "terminate"]) {
+        const original = socket[method].bind(socket);
+        socket[method] = (...args) => {
+          console.warn("[DEBUG-notes-transport] socket_shutdown_requested", {
+            method,
+            code: typeof args[0] === "number" ? args[0] : undefined,
+            stack: new Error().stack?.split("\n").slice(1, 5),
+          });
+          return original(...args);
+        };
+      }
       socket.once("pong", () => console.info("[DEBUG-notes-transport] browser_round_trip_confirmed"));
       socket.ping();
     }
