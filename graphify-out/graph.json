@@ -17562,7 +17562,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/app-shell.tsx",
-      "source_location": "L112",
+      "source_location": "L113",
       "weight": 1.0
     },
     {
@@ -17574,7 +17574,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/app-shell.tsx",
-      "source_location": "L145",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -17586,7 +17586,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/app-shell.tsx",
-      "source_location": "L172",
+      "source_location": "L173",
       "weight": 1.0
     },
     {
@@ -17598,7 +17598,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/app-shell.tsx",
-      "source_location": "L195",
+      "source_location": "L196",
       "weight": 1.0
     },
     {
@@ -17634,7 +17634,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/presentation/components/app-shell.tsx",
-      "source_location": "L97",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -46003,5 +46003,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6c3c212fe7f73b74f13bbaf975574f279dcebcb2"
+  "built_at_commit": "cf5d421a72ff09d198cbad6ce01e80c0a894cbac"
 }

@@ -82,12 +82,13 @@ export function AppShell({
     <aside className="flex h-full w-60 flex-col overflow-y-auto border-r bg-white px-4 py-5 2xl:w-72">
       <div className="flex items-center justify-between px-2">
         <Link
-          className="flex min-w-0 flex-1 flex-col rounded-2xl bg-[#173c3a] px-3 py-3 text-white transition-colors hover:bg-[#0f302e] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#8fd8d0]"
+          className="flex min-w-0 flex-1 flex-col items-center rounded-xl px-2 py-1 transition-colors hover:bg-[#f7faf9] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#8fd8d0]"
           href={homeHref}
           onClick={() => { setMobileMenuOpen(false); if (pathname !== homeHref) setPendingHref(homeHref); }}
         >
-          <BrandLogo className="h-28 w-full" />
-          <span className="mt-1 text-center text-xs font-semibold tracking-[0.08em] text-[#d5e8e5]">ACTION PLAN MANAGEMENT</span>
+          <BrandLogo className="h-20 w-full max-w-40 2xl:h-24 2xl:max-w-44" />
+          <span className="mt-2 text-center text-xs font-semibold tracking-[0.1em] text-[#254846]">ACTION PLAN MANAGEMENT</span>
+          <span className="mt-2 h-px w-10 bg-[#c5a45f]" aria-hidden="true" />
         </Link>
         <button
           className="grid size-9 place-items-center rounded-lg text-[#667c7c] lg:hidden"
@@ -98,7 +99,7 @@ export function AppShell({
         </button>
       </div>
 
-      <nav className="mt-8 space-y-1" aria-label="Navigasi utama" aria-busy={isNavigating}>
+      <nav className="mt-6 space-y-1" aria-label="Navigasi utama" aria-busy={isNavigating}>
         {navigation.map(({ href, label, icon: Icon }) => {
           const active = pathname === href;
           return (
