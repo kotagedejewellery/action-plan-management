@@ -3,8 +3,8 @@ import { createServer } from "node:http";
 import next from "next";
 import { Database } from "@hocuspocus/extension-database";
 import { Hocuspocus } from "@hocuspocus/server";
-import crossws from "crossws/adapters/node";
 import { Pool } from "pg";
+import { WebSocketServer } from "ws";
 
 const port = Number(process.env.PORT ?? 3000);
 const app = next({ dev: process.env.NODE_ENV === "development", hostname: "0.0.0.0", port });
@@ -86,34 +86,33 @@ function collaborationRuntime() {
     connected: async () => { console.info("[notes-realtime] synchronized"); },
     onDisconnect: async () => { console.info("[notes-realtime] disconnected"); },
   });
-  const websocket = crossws({
-    hooks: {
-      open(peer) {
-        console.info("[notes-realtime] socket_opened");
-        try {
-          peer._collaboration = hocuspocus.handleConnection(peer.websocket, peer.request);
-          console.info("[notes-realtime] connection_handler_ready");
-        } catch (error) {
-          console.error("[notes-realtime] connection_handler_failed", error);
-          peer.close(1011, "Collaboration connection failed");
-        }
-      },
-      message(peer, message) {
-        const payload = message.uint8Array();
-        console.info("[notes-realtime] socket_message", { bytes: payload.byteLength });
-        try {
-          peer._collaboration?.handleMessage(payload);
-        } catch (error) {
-          console.error("[notes-realtime] message_handle_failed", error);
-          peer.close(1011, "Collaboration message failed");
-        }
-      },
-      close(peer, event) {
-        console.info("[notes-realtime] socket_closed", { code: event.code });
-        peer._collaboration?.handleClose({ code: event.code, reason: event.reason });
-      },
-      error(_peer, error) { console.error("[notes-realtime] websocket_failed", error); },
-    },
+  const websocket = new WebSocketServer({ noServer: true });
+  websocket.on("connection", (socket, request) => {
+    console.info("[notes-realtime] socket_opened");
+    let connection;
+    try {
+      connection = hocuspocus.handleConnection(socket, request);
+      console.info("[notes-realtime] connection_handler_ready");
+    } catch (error) {
+      console.error("[notes-realtime] connection_handler_failed", error);
+      socket.close(1011, "Collaboration connection failed");
+      return;
+    }
+    socket.on("pong", () => connection.touch());
+    socket.on("message", (payload) => {
+      console.info("[notes-realtime] socket_message", { bytes: payload.byteLength });
+      try {
+        connection.handleMessage(payload);
+      } catch (error) {
+        console.error("[notes-realtime] message_handle_failed", error);
+        socket.close(1011, "Collaboration message failed");
+      }
+    });
+    socket.on("close", (code, reason) => {
+      console.info("[notes-realtime] socket_closed", { code });
+      connection.handleClose({ code, reason: reason.toString() });
+    });
+    socket.on("error", (error) => console.error("[notes-realtime] websocket_failed", error));
   });
   return { pool, websocket, hocuspocus };
 }
@@ -131,7 +130,9 @@ const server = createServer((request, response) => handle(request, response));
 
 server.on("upgrade", (request, socket, head) => {
   if (collaboration && new URL(request.url ?? "/", "http://localhost").pathname === "/api/notes/collaboration") {
-    collaboration.websocket.handleUpgrade(request, socket, head);
+    collaboration.websocket.handleUpgrade(request, socket, head, (websocket) => {
+      collaboration.websocket.emit("connection", websocket, request);
+    });
     return;
   }
   socket.destroy();

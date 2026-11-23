@@ -1,9 +1,9 @@
 import { createServer, type Server as HttpServer } from "node:http";
 
-import crossws from "crossws/adapters/node";
 import { afterEach, expect, it } from "vitest";
 import { HocuspocusProvider } from "@hocuspocus/provider";
 import { Hocuspocus } from "@hocuspocus/server";
+import { WebSocketServer } from "ws";
 import * as Y from "yjs";
 
 const waitFor = async (predicate: () => boolean, message: string) => new Promise<void>((resolve, reject) => {
@@ -14,7 +14,6 @@ const waitFor = async (predicate: () => boolean, message: string) => new Promise
 let server: HttpServer | undefined;
 let hocuspocus: Hocuspocus | undefined;
 let providers: HocuspocusProvider[] = [];
-const connections = new WeakMap<object, { handleMessage(message: Uint8Array): void; handleClose(event: { code: number; reason: string }): void }>();
 
 afterEach(async () => {
   providers.forEach((provider) => provider.destroy());
@@ -26,18 +25,20 @@ afterEach(async () => {
   server = undefined;
 });
 
-it("synchronizes a note through the same CrossWS bridge used by the custom server", async () => {
+it("synchronizes a note through the same native WebSocket bridge used by the custom server", async () => {
   hocuspocus = new Hocuspocus({ onAuthenticate: async ({ token }) => ({ userId: token }) });
-  const websocket = crossws({
-    hooks: {
-      open(peer) { connections.set(peer, hocuspocus?.handleConnection(peer.websocket as never, peer.request) as { handleMessage(message: Uint8Array): void; handleClose(event: { code: number; reason: string }): void }); },
-      message(peer, message) { connections.get(peer)?.handleMessage(message.uint8Array()); },
-      close(peer, event) { connections.get(peer)?.handleClose({ code: event.code ?? 1000, reason: event.reason ?? "" }); },
-    },
+  const websocket = new WebSocketServer({ noServer: true });
+  websocket.on("connection", (socket, request) => {
+    const connection = hocuspocus?.handleConnection(socket as never, request as never);
+    socket.on("message", (message) => {
+      const payload = Array.isArray(message) ? Buffer.concat(message) : message instanceof ArrayBuffer ? Buffer.from(message) : message;
+      connection?.handleMessage(payload);
+    });
+    socket.on("close", (code, reason) => connection?.handleClose({ code, reason: reason.toString() }));
   });
   server = createServer((_request, response) => response.end());
   server.on("upgrade", (request, socket, head) => {
-    if (new URL(request.url ?? "/", "http://localhost").pathname === "/api/notes/collaboration") websocket.handleUpgrade(request, socket, head);
+    if (new URL(request.url ?? "/", "http://localhost").pathname === "/api/notes/collaboration") websocket.handleUpgrade(request, socket, head, (connection) => websocket.emit("connection", connection, request));
     else socket.destroy();
   });
   await new Promise<void>((resolve) => server?.listen(0, "127.0.0.1", resolve));
@@ -53,8 +54,8 @@ it("synchronizes a note through the same CrossWS bridge used by the custom serve
     new HocuspocusProvider({ url: `ws://127.0.0.1:${address.port}/api/notes/collaboration`, name: "note-1", document: second, token: "member", onSynced: () => { secondSynced = true; } }),
   ];
 
-  await waitFor(() => firstSynced && secondSynced, "CrossWS tidak menyelesaikan sinkronisasi editor.");
+  await waitFor(() => firstSynced && secondSynced, "Native WebSocket tidak menyelesaikan sinkronisasi editor.");
   first.getText("content").insert(0, "Tersinkron melalui bridge");
-  await waitFor(() => second.getText("content").toString() === "Tersinkron melalui bridge", "Perubahan tidak melewati CrossWS.");
+  await waitFor(() => second.getText("content").toString() === "Tersinkron melalui bridge", "Perubahan tidak melewati native WebSocket.");
   expect(second.getText("content").toString()).toBe("Tersinkron melalui bridge");
 });
