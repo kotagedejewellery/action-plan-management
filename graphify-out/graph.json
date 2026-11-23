@@ -3211,7 +3211,7 @@
       "file_type": "code",
       "norm_label": "shutdown()",
       "source_file": "server.mjs",
-      "source_location": "L142"
+      "source_location": "L146"
     },
     {
       "id": "src_app_api_health_route_get",
@@ -8168,7 +8168,7 @@
       "file_type": "code",
       "norm_label": "collaboration",
       "source_file": "server.mjs",
-      "source_location": "L121"
+      "source_location": "L125"
     },
     {
       "id": "server_handle",
@@ -8201,7 +8201,7 @@
       "file_type": "code",
       "norm_label": "server",
       "source_file": "server.mjs",
-      "source_location": "L129"
+      "source_location": "L133"
     },
     {
       "id": "ref_hocuspocus_extension_database",
@@ -12018,7 +12018,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "server.mjs",
-      "source_location": "L129",
+      "source_location": "L133",
       "weight": 1.0
     },
     {
@@ -19722,7 +19722,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "server.mjs",
-      "source_location": "L142",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -38131,7 +38131,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "server.mjs",
-      "source_location": "L121",
+      "source_location": "L125",
       "weight": 1.0
     },
     {
@@ -38142,7 +38142,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "server.mjs",
-      "source_location": "L129",
+      "source_location": "L133",
       "weight": 1.0
     },
     {
@@ -45326,7 +45326,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "server.mjs",
-      "source_location": "L133",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -45542,7 +45542,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "tests/unit/notes-websocket-bridge.test.ts",
-      "source_location": "L41",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -46003,5 +46003,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "112e36e3f168bbb4277774289140957f9c6c417b"
+  "built_at_commit": "81954c1eb40d9fd90528fda986fa3eee8b69b35b"
 }

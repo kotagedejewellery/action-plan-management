@@ -89,6 +89,10 @@ function collaborationRuntime() {
   const websocket = new WebSocketServer({ noServer: true });
   websocket.on("connection", (socket, request) => {
     console.info("[notes-realtime] socket_opened");
+    if (process.env.NOTES_REALTIME_DEBUG === "1") {
+      socket.once("pong", () => console.info("[DEBUG-notes-transport] browser_round_trip_confirmed"));
+      socket.ping();
+    }
     let connection;
     try {
       connection = hocuspocus.handleConnection(socket, request);

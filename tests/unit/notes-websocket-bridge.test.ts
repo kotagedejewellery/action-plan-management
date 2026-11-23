@@ -28,7 +28,10 @@ afterEach(async () => {
 it("synchronizes a note through the same native WebSocket bridge used by the custom server", async () => {
   hocuspocus = new Hocuspocus({ onAuthenticate: async ({ token }) => ({ userId: token }) });
   const websocket = new WebSocketServer({ noServer: true });
+  let controlFrameRoundTrip = false;
   websocket.on("connection", (socket, request) => {
+    socket.once("pong", () => { controlFrameRoundTrip = true; });
+    socket.ping();
     const connection = hocuspocus?.handleConnection(socket as never, request as never);
     socket.on("message", (message) => {
       const payload = Array.isArray(message) ? Buffer.concat(message) : message instanceof ArrayBuffer ? Buffer.from(message) : message;
@@ -54,7 +57,7 @@ it("synchronizes a note through the same native WebSocket bridge used by the cus
     new HocuspocusProvider({ url: `ws://127.0.0.1:${address.port}/api/notes/collaboration`, name: "note-1", document: second, token: "member", onSynced: () => { secondSynced = true; } }),
   ];
 
-  await waitFor(() => firstSynced && secondSynced, "Native WebSocket tidak menyelesaikan sinkronisasi editor.");
+  await waitFor(() => firstSynced && secondSynced && controlFrameRoundTrip, "Native WebSocket tidak menyelesaikan sinkronisasi editor atau kontrol frame.");
   first.getText("content").insert(0, "Tersinkron melalui bridge");
   await waitFor(() => second.getText("content").toString() === "Tersinkron melalui bridge", "Perubahan tidak melewati native WebSocket.");
   expect(second.getText("content").toString()).toBe("Tersinkron melalui bridge");
