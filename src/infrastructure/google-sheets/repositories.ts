@@ -256,13 +256,23 @@ export class GoogleSheetsStatusRepository implements StatusRepository {
   async update(status: ActionPlanStatus) { await this.ensureSchema(); const row = (await rows("Settings!A:F")).find((item) => item.values[0] === status.id); if (!row) throw new Error("Status tidak ditemukan."); await replace(`Settings!A${row.rowNumber}:F${row.rowNumber}`, [status.id, status.label, String(status.isActive), status.createdAt, status.updatedAt, String(status.isCompleted)]); return status; }
 }
 
-const DIVISION_HEADERS = ["id", "name", "bod_user_id", "status", "created_at", "updated_at", "approval_required"];
+const DIVISION_HEADERS = ["id", "name", "bod_user_id", "status", "created_at", "updated_at", "approval_required", "bod_monitor_user_ids"];
+const APPROVAL_DIVISION_HEADERS = DIVISION_HEADERS.slice(0, 7);
 const LEGACY_DIVISION_HEADERS = DIVISION_HEADERS.slice(0, 6);
+
+function monitorUserIdsFrom(value: string | undefined) {
+  if (!value) return [];
+  try {
+    const parsed: unknown = JSON.parse(value);
+    if (Array.isArray(parsed) && parsed.every((id) => typeof id === "string" && id)) return [...new Set(parsed)];
+  } catch { /* fall through */ }
+  throw new AppError("Data BOD Monitor pada Divisions tidak valid. Periksa sheet tanpa menghapus data existing.", "VALIDATION");
+}
 
 export class GoogleSheetsDivisionRepository implements DivisionRepository {
   async list(): Promise<Division[]> {
     let values: string[][];
-    try { values = await readValues("Divisions!A:G"); }
+    try { values = await readValues("Divisions!A:H"); }
     catch (error) {
       const status = Number((error as { code?: number; response?: { status?: number } }).response?.status ?? (error as { code?: number }).code);
       if (status !== 400) throw error;
@@ -273,13 +283,14 @@ export class GoogleSheetsDivisionRepository implements DivisionRepository {
     if (!values.length) return [];
     const headers = values[0];
     const isLegacy = LEGACY_DIVISION_HEADERS.every((header, index) => headers[index] === header) && !headers[6];
-    if (!isLegacy && DIVISION_HEADERS.some((header, index) => headers[index] !== header)) throw new AppError("Header Divisions tidak sesuai. Periksa sheet tanpa menghapus data existing.", "VALIDATION");
-    return values.slice(1).filter((row) => row[0]).map(([id, name, bodUserId, status, createdAt, updatedAt, approvalRequired]) => ({ id, name, bodUserId: bodUserId || undefined, status: status as Division["status"], createdAt, updatedAt, approvalRequired: approvalRequired === "true" }));
+    const hasApprovalHeader = APPROVAL_DIVISION_HEADERS.every((header, index) => headers[index] === header) && !headers[7];
+    if (!isLegacy && !hasApprovalHeader && DIVISION_HEADERS.some((header, index) => headers[index] !== header)) throw new AppError("Header Divisions tidak sesuai. Periksa sheet tanpa menghapus data existing.", "VALIDATION");
+    return values.slice(1).filter((row) => row[0]).map(([id, name, bodUserId, status, createdAt, updatedAt, approvalRequired, monitorUserIds]) => ({ id, name, bodUserId: bodUserId || undefined, monitorUserIds: monitorUserIdsFrom(monitorUserIds), status: status as Division["status"], createdAt, updatedAt, approvalRequired: approvalRequired === "true" }));
   }
-  private async ensureApprovalHeader() {
+  private async ensureDivisionHeaders() {
     await this.list();
-    const headers = (await readValues("Divisions!A:G"))[0] ?? [];
-    if (!headers[6]) await replace("Divisions!A1:G1", DIVISION_HEADERS);
+    const headers = (await readValues("Divisions!A:H"))[0] ?? [];
+    if (!headers[7]) await replace("Divisions!A1:H1", DIVISION_HEADERS);
   }
   async create(division: Division) {
     const metadata = await sheetsClient().spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });
@@ -287,18 +298,18 @@ export class GoogleSheetsDivisionRepository implements DivisionRepository {
       await sheetsClient().spreadsheets.batchUpdate({ spreadsheetId: spreadsheetId(), requestBody: { requests: [{ addSheet: { properties: { title: "Divisions", gridProperties: { frozenRowCount: 1 } } } }] } });
       clearReadCache();
     }
-    const values = await readValues("Divisions!A:G");
-    if (!values.length) await replace("Divisions!A1:G1", DIVISION_HEADERS);
+    const values = await readValues("Divisions!A:H");
+    if (!values.length) await replace("Divisions!A1:H1", DIVISION_HEADERS);
     else await this.list();
-    await this.ensureApprovalHeader();
-    await append("Divisions!A:G", [division.id, division.name, division.bodUserId ?? "", division.status, division.createdAt, division.updatedAt, String(Boolean(division.approvalRequired))]);
+    await this.ensureDivisionHeaders();
+    await append("Divisions!A:H", [division.id, division.name, division.bodUserId ?? "", division.status, division.createdAt, division.updatedAt, String(Boolean(division.approvalRequired)), JSON.stringify(division.monitorUserIds ?? [])]);
     return division;
   }
   async update(division: Division) {
-    await this.ensureApprovalHeader();
-    const row = (await rows("Divisions!A:G")).find((item) => item.values[0] === division.id);
+    await this.ensureDivisionHeaders();
+    const row = (await rows("Divisions!A:H")).find((item) => item.values[0] === division.id);
     if (!row) throw new AppError("Divisi tidak ditemukan.", "NOT_FOUND");
-    await replace(`Divisions!A${row.rowNumber}:G${row.rowNumber}`, [division.id, division.name, division.bodUserId ?? "", division.status, division.createdAt, division.updatedAt, String(Boolean(division.approvalRequired))]);
+    await replace(`Divisions!A${row.rowNumber}:H${row.rowNumber}`, [division.id, division.name, division.bodUserId ?? "", division.status, division.createdAt, division.updatedAt, String(Boolean(division.approvalRequired)), JSON.stringify(division.monitorUserIds ?? [])]);
     return division;
   }
 }

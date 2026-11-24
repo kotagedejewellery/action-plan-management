@@ -124,6 +124,7 @@ describe("managed user deletion", () => {
       setup({ target: { status: "active" } }),
       setup({ target: { sheetName: "action_plan_target" } }),
       setup({ divisions: [linkedDivision] }),
+      setup({ divisions: [{ ...linkedDivision, bodUserId: undefined, monitorUserIds: ["target"] }] }),
       setup({ weeklyPlans: [linkedWeeklyPlan] }),
       setup({ approvals: [linkedApproval] }),
       setup(),

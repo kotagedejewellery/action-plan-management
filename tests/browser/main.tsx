@@ -17,14 +17,17 @@ import "@/app/globals.css";
 const params = new URLSearchParams(window.location.search);
 const state = params.get("state");
 const bod = params.get("actor") === "bod";
-const scoped = params.get("divisionId") === "a" || bod;
+const bodMonitor = params.get("actor") === "bod-monitor";
+const divisionBod = bod || bodMonitor;
+const scoped = params.get("divisionId") === "a" || divisionBod;
 const baseAccountUsers = state === "legacy-bod" ? divisionUsers.map((user) => user.id === "member-legacy" ? { ...user, role: "bod" as const } : user) : divisionUsers;
 const accountUsers = state === "deletable-user" ? [...baseAccountUsers, { id: "temporary", name: "Akun Sementara", email: "temporary@example.test", role: "user" as const, status: "inactive" as const, sheetName: "", createdAt: "2026-11-24T00:00:00.000Z", updatedAt: "2026-11-24T00:00:00.000Z" }] : baseAccountUsers;
 const accountDivisions = state === "legacy-bod" ? divisionFixture.map((division) => division.id === "a" ? { ...division, bodUserId: "member-legacy" } : division) : divisionFixture;
 const empty = state === "empty" || state === "no-users";
 const data = {
   ...dashboardFixture,
-  canManageUsers: !bod,
+  canManageUsers: !divisionBod,
+  canApprove: bod,
   divisionId: scoped ? "a" : undefined,
   scopeLabel: scoped ? "Marketing" : undefined,
   today: params.get("today") ?? dashboardFixture.today,
@@ -37,8 +40,8 @@ const data = {
 createRoot(document.getElementById("root")!).render(
   <FeedbackProvider>
     <span className="fixed left-16 top-5 z-[80] text-[10px] text-[#59706f] lg:left-[580px]">Pengujian lokal · data sintetis</span>
-    <AppShell actor={{ id: "admin", name: "Admin KotaGede", email: "admin@example.test", role: bod ? "bod" : "admin", divisionId: bod ? "a" : undefined, divisionName: bod ? "Marketing" : undefined, status: "active", sheetName: "" }} workspacePeriod="Oktober 2026">
-      {state === "unassigned" ? <DivisionUnavailable /> : state === "loading" ? <DashboardLoading /> : window.location.pathname === "/divisions" ? <ConnectedDivisionWorkspace initialDivisions={state === "empty" ? [] : divisionFixture} initialEditingId={params.get("divisionId") ?? undefined} users={accountUsers} /> : window.location.pathname === "/users" ? <ConnectedUserManagementWorkspace initialUsers={accountUsers} divisions={accountDivisions} initialStatuses={[]} /> : window.location.pathname === "/monitoring" ? <ConnectedMonitoringWorkspace divisionFilter={!bod ? <DivisionFilter divisions={divisionFixture} selectedId={scoped ? "a" : ""} action="/monitoring" /> : undefined} canManageUsers={!bod} canApprove={bod} scopeLabel={scoped ? "Marketing" : undefined} users={state === "no-users" ? [] : scoped ? monitoringUsers.slice(0, 2) : monitoringUsers} initialPlans={state === "empty" ? [] : params.get("recordId")?.startsWith("p") ? data.plans.filter((plan) => plan.ownerId === params.get("userId")) : monitoringPlans} initialSelectedId={params.get("userId") ?? "u0"} initialRecordId={params.get("recordId") ?? ""} initialDateFrom={params.get("from") ?? ""} initialDateTo={params.get("to") ?? ""} initialScope={params.get("scope") === "active" ? "active" : params.get("scope") === "history" ? "history" : "all"} completedStatusLabels={["Selesai", "Final"]} today={params.get("today") ?? "2026-10-19"} /> : window.location.pathname === "/notes" ? <ConnectedNotesWorkspace actor={{ id: "admin", name: "Admin KotaGede" }} /> : <ConnectedDashboardWorkspace {...data} divisionFilter={!bod ? <DivisionFilter divisions={divisionFixture} selectedId={scoped ? "a" : ""} action="/dashboard" /> : undefined} />}
+    <AppShell actor={{ id: bodMonitor ? "bod-monitor" : bod ? "bod-a" : "admin", name: bodMonitor ? "BOD Monitor" : "Admin KotaGede", email: "admin@example.test", role: divisionBod ? "bod" : "admin", divisionId: divisionBod ? "a" : undefined, divisionName: divisionBod ? "Marketing" : undefined, status: "active", sheetName: "" }} workspacePeriod="Oktober 2026">
+      {state === "unassigned" ? <DivisionUnavailable /> : state === "loading" ? <DashboardLoading /> : window.location.pathname === "/divisions" ? <ConnectedDivisionWorkspace initialDivisions={state === "empty" ? [] : state === "missing-monitor" ? divisionFixture.map((division) => division.id === "a" ? { ...division, monitorUserIds: ["missing-bod"] } : division) : divisionFixture} initialEditingId={params.get("divisionId") ?? undefined} users={accountUsers} /> : window.location.pathname === "/users" ? <ConnectedUserManagementWorkspace initialUsers={accountUsers} divisions={accountDivisions} initialStatuses={[]} /> : window.location.pathname === "/monitoring" ? <ConnectedMonitoringWorkspace divisionFilter={!divisionBod ? <DivisionFilter divisions={divisionFixture} selectedId={scoped ? "a" : ""} action="/monitoring" /> : undefined} canManageUsers={!divisionBod} canViewApproval canApprove={bod} scopeLabel={scoped ? "Marketing" : undefined} users={state === "no-users" ? [] : scoped ? monitoringUsers.slice(0, 2) : monitoringUsers} initialPlans={state === "empty" ? [] : params.get("recordId")?.startsWith("p") ? data.plans.filter((plan) => plan.ownerId === params.get("userId")) : monitoringPlans} initialSelectedId={params.get("userId") ?? "u0"} initialRecordId={params.get("recordId") ?? ""} initialDateFrom={params.get("from") ?? ""} initialDateTo={params.get("to") ?? ""} initialScope={params.get("scope") === "active" ? "active" : params.get("scope") === "history" ? "history" : "all"} completedStatusLabels={["Selesai", "Final"]} today={params.get("today") ?? "2026-10-19"} /> : window.location.pathname === "/notes" ? <ConnectedNotesWorkspace actor={{ id: "admin", name: "Admin KotaGede" }} /> : <ConnectedDashboardWorkspace {...data} divisionFilter={!divisionBod ? <DivisionFilter divisions={divisionFixture} selectedId={scoped ? "a" : ""} action="/dashboard" /> : undefined} />}
     </AppShell>
   </FeedbackProvider>,
 );

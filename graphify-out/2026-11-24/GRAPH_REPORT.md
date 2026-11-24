@@ -1,7 +1,7 @@
 # Graph Report - action-plan-management  (2026-11-24)
 
 ## Corpus Check
-- 163 files · ~256,673 words
+- 163 files · ~256,697 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 5 file(s) not represented in the graph (top: (none) 3, .ico 1, .css 1)
 
@@ -359,11 +359,11 @@ Nodes (5): createNoteSession(), NoteSession, readNoteSession(), secret(), signat
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `next` connect `container.ts` to `apiError`, `vitest`, `connected-monitoring-workspace.tsx`, `connected-dashboard-workspace.tsx`, `connected-user-management-workspace.tsx`, `icons.tsx`, `server.mjs`, `package.json`, `currentActor`, `users/[userId]/route.ts`, `connected-weekly-plan-workspace.tsx`, `models.ts`, `action-plans/page.tsx`, `notes-api.test.ts`?**
-  _High betweenness centrality (0.105) - this node is a cross-community bridge._
+  _High betweenness centrality (0.101) - this node is a cross-community bridge._
 - **Why does `Users()` connect `Users` to `Setup Action Plan Management`, `Brief Proyek Action Plan Management`, `3. Keputusan implementasi utama`, `icons.tsx`, `System Architecture — Action Plan Management System`, `Tech Stack — Action Plan Management System`, `AGENTS.md`, `Product Requirements Document — Action Plan Management System`?**
-  _High betweenness centrality (0.100) - this node is a cross-community bridge._
+  _High betweenness centrality (0.099) - this node is a cross-community bridge._
 - **Why does `vitest` connect `vitest` to `note-session.ts`, `divisions.ts`, `repositories.ts`, `connected-monitoring-workspace.tsx`, `notes.ts`, `container.ts`, `approvals.ts`, `AppError`, `collaborative-note-editor.tsx`, `user-deletion.test.ts`, `package.json`, `currentActor`, `users/[userId]/route.ts`, `notes-websocket-bridge.test.ts`, `models.ts`, `note-workspace-events.ts`, `dashboard-analytics.ts`, `notes-api.test.ts`?**
-  _High betweenness centrality (0.060) - this node is a cross-community bridge._
+  _High betweenness centrality (0.057) - this node is a cross-community bridge._
 - **Are the 4 inferred relationships involving `currentActor()` (e.g. with `Isolasi divisi` and `Otorisasi multi-divisi`) actually correct?**
   _`currentActor()` has 4 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**

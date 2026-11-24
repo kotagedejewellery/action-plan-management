@@ -20,6 +20,7 @@ export type Division = {
   id: string;
   name: string;
   bodUserId?: string;
+  monitorUserIds?: string[];
   status: AccountStatus;
   createdAt: string;
   updatedAt: string;

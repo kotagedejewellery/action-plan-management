@@ -88,6 +88,19 @@ test("member switching hides old rows during load and ignores an older response"
   await expect(page.getByText("Rekap pesanan Bima", { exact: true })).toHaveCount(0);
 });
 
+test("BOD Monitor sees the current approval state without approval controls", async ({ page }) => {
+  await page.goto("/monitoring?actor=bod-monitor");
+  await page.route("**/api/action-plans?userId=u1&scope=all", (route) => route.fulfill({ json: bimaPlans }));
+  await page.route("**/api/approvals?userId=u1", (route) => route.fulfill({ json: { b1: { status: "menunggu", approvalId: "approval-1" } } }));
+  const approvalRequest = page.waitForRequest("**/api/approvals?userId=u1");
+  await page.getByRole("complementary", { name: "Pemilih anggota" }).getByRole("button", { name: /Bima Pratama/ }).click();
+  await approvalRequest;
+  await page.getByRole("button", { name: "Lihat detail: Rekap pesanan Bima", exact: true }).click();
+  const detail = page.getByRole("dialog");
+  await expect(detail).toContainText("Menunggu approval");
+  await expect(detail.getByRole("button", { name: "Setujui", exact: true })).toHaveCount(0);
+});
+
 test("failed member load never exposes the previous member and retry works", async ({ page }) => {
   let calls = 0;
   await page.route("**/api/action-plans?**", (route) => ++calls === 1 ? route.fulfill({ status: 503, json: { error: "Layanan sementara tidak tersedia." } }) : route.fulfill({ json: bimaPlans }));

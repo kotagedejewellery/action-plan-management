@@ -5,19 +5,51 @@ import { dashboardFixture } from "./fixture";
 test("division reassignment confirms revoked access and retains failures for retry", async ({ page }) => {
   await page.goto("/divisions");
   await page.getByRole("button", { name: "Kelola Marketing", exact: true }).click();
-  await page.getByLabel("BOD penanggung jawab").selectOption("bod-new");
-  await expect(page.getByLabel("BOD penanggung jawab").getByRole("option", { name: /BOD B/ })).toHaveCount(0);
+  await page.getByLabel("Lead BOD").selectOption("bod-new");
+  await expect(page.getByLabel("Lead BOD").getByRole("option", { name: /BOD B/ })).toHaveCount(0);
   await page.getByRole("button", { name: "Simpan divisi", exact: true }).click();
   await expect(page.getByRole("alertdialog")).toContainText("BOD sebelumnya akan kehilangan akses");
   await page.route("**/api/divisions/a", (route) => route.fulfill({ status: 409, json: { error: "Divisi telah berubah. Muat ulang sebelum menyimpan." } }));
   await page.getByRole("button", { name: "Simpan perubahan", exact: true }).click();
   await expect(page.getByRole("dialog").getByRole("alert")).toContainText("Muat ulang");
-  await expect(page.getByLabel("BOD penanggung jawab")).toHaveValue("bod-new");
+  await expect(page.getByLabel("Lead BOD")).toHaveValue("bod-new");
   await page.route("**/api/divisions/a", (route) => route.fulfill({ json: { ...divisionFixture[0], bodUserId: "bod-new" } }));
   await page.getByRole("button", { name: "Simpan divisi", exact: true }).click();
   await page.getByRole("button", { name: "Simpan perubahan", exact: true }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.getByRole("article").filter({ has: page.getByRole("heading", { name: "Marketing", exact: true }) })).toContainText("BOD Pengganti");
+});
+
+test("BOD Monitor is recorded separately from the Lead BOD", async ({ page }) => {
+  await page.goto("/divisions");
+  await page.getByRole("button", { name: "Kelola Marketing", exact: true }).click();
+  await expect(page.getByRole("checkbox", { name: /BOD Monitor/ })).toBeChecked();
+  await page.getByRole("checkbox", { name: /BOD Pengganti/ }).check();
+  await page.route("**/api/divisions/a", async (route) => {
+    expect(route.request().postDataJSON()).toMatchObject({ bodUserId: "bod-a", monitorUserIds: ["bod-monitor", "bod-new"] });
+    await route.fulfill({ json: { ...divisionFixture[0], monitorUserIds: ["bod-monitor", "bod-new"] } });
+  });
+  await page.getByRole("button", { name: "Simpan divisi", exact: true }).click();
+  await page.getByRole("button", { name: "Simpan perubahan", exact: true }).click();
+  await expect(page.getByRole("article").filter({ has: page.getByRole("heading", { name: "Marketing", exact: true }) })).toContainText("BOD Monitor, BOD Pengganti");
+});
+
+test("removing a BOD Monitor makes the lost monitoring access explicit", async ({ page }) => {
+  await page.goto("/divisions");
+  await page.getByRole("button", { name: "Kelola Marketing", exact: true }).click();
+  await page.getByRole("checkbox", { name: /BOD Monitor/ }).uncheck();
+  await page.getByRole("button", { name: "Simpan divisi", exact: true }).click();
+  await expect(page.getByRole("alertdialog")).toContainText("BOD Monitor sebelumnya akan kehilangan akses");
+});
+
+test("missing BOD Monitor mappings are visible to SuperAdmin", async ({ page }) => {
+  await page.goto("/divisions?state=missing-monitor");
+  await expect(page.getByRole("article").filter({ has: page.getByRole("heading", { name: "Marketing", exact: true }) })).toContainText("penugasan BOD Monitor tidak ditemukan");
+});
+
+test("user list distinguishes Lead BOD from BOD Monitor", async ({ page }) => {
+  await page.goto("/users");
+  await expect(page.getByText("Marketing · BOD Monitor", { exact: true })).toBeVisible();
 });
 
 test("legacy account mapping names the new scope and then locks division transfers", async ({ page }) => {
@@ -50,6 +82,14 @@ test("BOD navigation exposes only review surfaces and a named division", async (
   await expect(navigation.getByRole("link", { name: "Divisi", exact: true })).toHaveCount(0);
   await expect(page.locator("main")).toContainText("Marketing");
   await expect(page.locator("main").getByRole("combobox", { name: "Divisi", exact: true })).toHaveCount(0);
+});
+
+test("BOD Monitor dashboard labels the approval queue as read-only review", async ({ page }) => {
+  await page.goto("/?actor=bod-monitor&state=approval-queue");
+  const queue = page.getByLabel("Antrean approval");
+  await expect(queue.getByRole("heading", { name: "2 approval menunggu review", exact: true })).toBeVisible();
+  await expect(queue).toContainText("meninjau bukti dan status approval");
+  await expect(queue).not.toContainText("memberi keputusan BOD");
 });
 
 test("SuperAdmin dashboard refresh preserves the selected division", async ({ page }) => {

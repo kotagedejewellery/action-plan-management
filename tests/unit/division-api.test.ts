@@ -45,6 +45,10 @@ beforeEach(() => {
   vi.mocked(users.list).mockResolvedValue(records);
   vi.mocked(users.findById).mockImplementation(async (id) => records.find((user) => user.id === id) ?? null);
   vi.mocked(divisions.list).mockImplementation(async () => scope);
+  vi.mocked(divisions.update).mockImplementation(async (division) => {
+    scope = scope.map((item) => item.id === division.id ? division : item);
+    return division;
+  });
   vi.mocked(actionPlans.list).mockImplementation(async (sheet) => [{ id: sheet, task: sheet, date: "2026-11-18", morningStatus: "On Progress", createdAt: "", updatedAt: "" }]);
   vi.mocked(weeklyPlans.list).mockResolvedValue(["ua", "ub", "old"].map((userId) => ({ id: userId, userId, title: userId, weekStart: "2026-11-16", weekEnd: "2026-11-22", plannedActionPlanIds: [], createdAt: "", updatedAt: "" })));
   vi.mocked(statuses.list).mockResolvedValue([]);
@@ -102,6 +106,19 @@ it("rechecks canonical BOD assignment for every request and fails closed after d
   expect((await plans(request("action-plans?userId=ua"))).status).toBe(403);
   scope = scope.map((division) => ({ ...division, status: "inactive" }));
   expect((await dashboard(request("dashboard"))).status).toBe(403);
+});
+
+it("preserves approval configuration when a division update omits it", async () => {
+  login("sa");
+  scope = scope.map((division) => division.id === "a" ? { ...division, approvalRequired: true } : division);
+
+  const response = await updateDivision(
+    request("divisions/a", { name: "Divisi a", status: "active", bodUserId: "ba" }),
+    { params: Promise.resolve({ divisionId: "a" }) },
+  );
+
+  expect(response.status).toBe(200);
+  expect((await response.json()).approvalRequired).toBe(true);
 });
 
 it("keeps SuperAdmin global visibility and preserves User isolation", async () => {

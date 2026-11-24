@@ -85,4 +85,15 @@ describe("dashboard refresh", () => {
     const body = await (await GET()).json();
     expect(body.pendingApprovals).toMatchObject([{ id: "p1", ownerId: "u1" }]);
   });
+
+  it("exposes approval authority only to the Lead BOD", async () => {
+    const division = { id: "executive", name: "Executive Team", bodUserId: "bod-lead", monitorUserIds: ["bod-monitor"], status: "active" as const, approvalRequired: true, createdAt: "", updatedAt: "" };
+    vi.mocked(users.list).mockResolvedValue([{ ...member, divisionId: division.id }]);
+    vi.mocked(divisions.list).mockResolvedValue([division]);
+    vi.mocked(currentActor).mockResolvedValue({ ...admin, id: "bod-lead", role: "bod", divisionId: division.id });
+    expect((await (await GET()).json()).canApprove).toBe(true);
+
+    vi.mocked(currentActor).mockResolvedValue({ ...admin, id: "bod-monitor", role: "bod", divisionId: division.id });
+    expect((await (await GET()).json()).canApprove).toBe(false);
+  });
 });

@@ -22,14 +22,14 @@ export function requireUserWorkspace(actor: Actor): void {
 
 export function requireApprovalBod(actor: Actor | null, division: Division): asserts actor is Actor & { role: "bod" } {
   requireActiveActor(actor);
-  if (actor.role !== "bod" || actor.divisionId !== division.id || !division.approvalRequired) throw new AppError("Approval hanya tersedia untuk BOD pada divisi yang diaktifkan SuperAdmin.", "FORBIDDEN");
+  if (actor.role !== "bod" || actor.divisionId !== division.id || actor.id !== division.bodUserId || !division.approvalRequired) throw new AppError("Approval hanya tersedia untuk Lead BOD pada divisi yang diaktifkan SuperAdmin.", "FORBIDDEN");
 }
 
 export function resolveActor(user: User, divisions: Division[]): Actor {
   const actor: Actor = { id: user.id, name: user.name, email: user.email, role: user.role, status: user.status, sheetName: user.sheetName };
   requireActiveActor(actor);
   if (user.role === "admin") return actor;
-  const assigned = user.role === "bod" ? divisions.filter((division) => division.bodUserId === user.id) : divisions.filter((division) => division.id === user.divisionId);
+  const assigned = user.role === "bod" ? divisions.filter((division) => division.bodUserId === user.id || division.monitorUserIds?.includes(user.id)) : divisions.filter((division) => division.id === user.divisionId);
   if (assigned.length === 1 && assigned[0].status === "active") return { ...actor, divisionId: assigned[0].id, divisionName: assigned[0].name };
   return actor;
 }

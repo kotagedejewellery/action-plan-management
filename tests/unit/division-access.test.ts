@@ -9,7 +9,7 @@ const division = (id: string, bodUserId?: string): Division => ({ id, name: id, 
 const admin = account("admin", "admin");
 
 function setup() {
-  const people = [admin, account("bod-a", "bod"), account("bod-b", "bod"), account("bod-new", "bod"), account("user-a", "user", "division-a"), account("user-b", "user", "division-b"), account("legacy", "user")];
+  const people = [admin, account("bod-a", "bod"), account("bod-b", "bod"), account("bod-new", "bod"), account("user-a", "user", "division-a"), account("user-b", "user", "division-b"), account("legacy", "user"), account("bod-monitor", "bod")];
   const records = [division("division-a", "bod-a"), division("division-b", "bod-b")];
   const users: UserRepository = {
     list: async () => [...people], findById: async (id) => people.find((user) => user.id === id) ?? null,
@@ -32,6 +32,14 @@ describe("division isolation", () => {
     expect(() => assertCanReadMember(actor, people[5])).toThrow("di luar divisi");
     expect(() => visibleMembers(actor, people, "division-b")).toThrow("ditolak");
     expect(() => requireUserWorkspace(actor)).toThrow();
+  });
+
+  it("gives a BOD Monitor the same read scope without making them the Lead BOD", () => {
+    const { people, records } = setup();
+    records[0].monitorUserIds = ["bod-monitor"];
+    const actor = resolveActor(people[7], records);
+    expect(actor.divisionId).toBe("division-a");
+    expect(visibleMembers(actor, people).map((user) => user.id)).toEqual(["user-a"]);
   });
 
   it("keeps unassigned or ambiguously assigned BOD accounts out of team data", () => {
@@ -65,6 +73,14 @@ describe("division isolation", () => {
     expect(records.filter((record) => record.bodUserId === "bod-new")).toHaveLength(1);
   });
 
+  it("rejects assigning a BOD Monitor to another division and duplicate monitor IDs", async () => {
+    const { users, divisions, records } = setup();
+    await saveDivision(divisions, users, admin, { name: "division-a", status: "active", bodUserId: "bod-a", monitorUserIds: ["bod-monitor"] }, "division-a");
+    await expect(saveDivision(divisions, users, admin, { name: "New B", status: "active", bodUserId: "bod-new", monitorUserIds: ["bod-monitor"] })).rejects.toMatchObject({ code: "CONFLICT" });
+    await expect(saveDivision(divisions, users, admin, { name: "New C", status: "active", bodUserId: "bod-new", monitorUserIds: ["bod-monitor", "bod-monitor"] })).rejects.toMatchObject({ code: "VALIDATION" });
+    expect(records.find((record) => record.id === "division-a")?.monitorUserIds).toEqual(["bod-monitor"]);
+  });
+
   it("requires active divisions to have an active BOD", async () => {
     const { users, divisions } = setup();
     await expect(saveDivision(divisions, users, admin, { name: "Empty", status: "active" })).rejects.toMatchObject({ code: "VALIDATION" });
@@ -77,6 +93,8 @@ describe("division isolation", () => {
     const actor: Actor = resolveActor(people[1], records);
     await expect(saveManagedUser(users, divisions, actor, { ...people[4], name: "Changed" }, "user-a")).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(saveManagedUser(users, divisions, admin, { ...people[1], status: "inactive" }, "bod-a")).rejects.toMatchObject({ code: "VALIDATION" });
+    records[0].monitorUserIds = ["bod-monitor"];
+    await expect(saveManagedUser(users, divisions, admin, { ...people[7], status: "inactive" }, "bod-monitor")).rejects.toMatchObject({ code: "VALIDATION" });
   });
 
   it("keeps BOD assignment valid even while its division is inactive", async () => {

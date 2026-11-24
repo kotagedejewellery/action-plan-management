@@ -53,7 +53,8 @@ export const divisionInputSchema = z.object({
   name: z.string().trim().min(2, "Nama divisi minimal 2 karakter.").max(100),
   status: z.enum(["active", "inactive"]),
   bodUserId: z.union([z.string().min(1), z.literal("")]).optional(),
-  approvalRequired: z.boolean().optional().default(false),
+  monitorUserIds: z.array(z.string().min(1)).refine((ids) => new Set(ids).size === ids.length, "BOD Monitor tidak boleh duplikat.").optional(),
+  approvalRequired: z.boolean().optional(),
   updatedAt: z.string().datetime().optional(),
 });
 

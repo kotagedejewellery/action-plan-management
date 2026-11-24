@@ -64,18 +64,31 @@ it("creates only a missing Divisions tab and invalidates the cached assignment a
   const { GoogleSheetsDivisionRepository } = await import("@/infrastructure/google-sheets/repositories");
   const repository = new GoogleSheetsDivisionRepository();
   await repository.create(division);
-  expect(await repository.list()).toEqual([{ ...division, approvalRequired: false }]);
+  expect(await repository.list()).toEqual([{ ...division, approvalRequired: false, monitorUserIds: [] }]);
   expect(google.batchUpdate).toHaveBeenCalledWith(expect.objectContaining({ requestBody: { requests: [{ addSheet: { properties: { title: "Divisions", gridProperties: { frozenRowCount: 1 } } } }] } }));
   expect(google.update).toHaveBeenCalledTimes(1);
-  expect(google.update.mock.calls[0][0].range).toBe("Divisions!A1:G1");
+  expect(google.update.mock.calls[0][0].range).toBe("Divisions!A1:H1");
   expect(google.append).toHaveBeenCalledTimes(1);
 });
 
 it("reads the legacy six-column Divisions sheet without changing approval configuration", async () => {
   google.get.mockResolvedValue({ data: { values: [["id", "name", "bod_user_id", "status", "created_at", "updated_at"], ["division-a", "Marketing", "bod-a", "active", "created", "updated"]] } });
   const { GoogleSheetsDivisionRepository } = await import("@/infrastructure/google-sheets/repositories");
-  await expect(new GoogleSheetsDivisionRepository().list()).resolves.toEqual([{ ...division, approvalRequired: false }]);
+  await expect(new GoogleSheetsDivisionRepository().list()).resolves.toEqual([{ ...division, approvalRequired: false, monitorUserIds: [] }]);
   expect(google.update).not.toHaveBeenCalled();
+});
+
+it("adds the monitor header only when a SuperAdmin explicitly updates a legacy division", async () => {
+  const values = [["id", "name", "bod_user_id", "status", "created_at", "updated_at", "approval_required"], ["division-a", "Marketing", "bod-a", "active", "created", "updated", "false"]];
+  google.get.mockImplementation(async () => ({ data: { values } }));
+  google.update.mockImplementation(async ({ range, requestBody }) => {
+    if (range === "Divisions!A1:H1") values[0] = requestBody.values[0];
+    return {};
+  });
+  const { GoogleSheetsDivisionRepository } = await import("@/infrastructure/google-sheets/repositories");
+  await new GoogleSheetsDivisionRepository().update({ ...division, monitorUserIds: ["bod-monitor"] });
+  expect(google.update).toHaveBeenCalledWith(expect.objectContaining({ range: "Divisions!A1:H1", requestBody: { values: [["id", "name", "bod_user_id", "status", "created_at", "updated_at", "approval_required", "bod_monitor_user_ids"]] } }));
+  expect(google.update).toHaveBeenCalledWith(expect.objectContaining({ range: "Divisions!A2:H2", requestBody: expect.objectContaining({ values: [expect.arrayContaining(["[\"bod-monitor\"]"])] }) }));
 });
 
 it("refuses a pre-existing approval tab with unknown headers before appending an event", async () => {

@@ -44,8 +44,8 @@ function PlanStatus({ status, completedStatusLabels }: { status?: string; comple
   return status ? <span className="break-words md:whitespace-nowrap"><StatusBadge status={status} completedStatusLabels={completedStatusLabels} /></span> : <span className="text-xs text-[#516967]">Belum diisi</span>;
 }
 
-export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelectedId, initialRecordId, initialDateFrom, initialDateTo, initialScope = "all", completedStatusLabels, today, scopeLabel, divisionFilter, canManageUsers = false, canApprove = false, initialApprovalStates = {} }: {
-  scopeLabel?: string; divisionFilter?: ReactNode; canManageUsers?: boolean; canApprove?: boolean; initialApprovalStates?: Record<string, ApprovalState>;
+export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelectedId, initialRecordId, initialDateFrom, initialDateTo, initialScope = "all", completedStatusLabels, today, scopeLabel, divisionFilter, canManageUsers = false, canViewApproval = false, canApprove = false, initialApprovalStates = {} }: {
+  scopeLabel?: string; divisionFilter?: ReactNode; canManageUsers?: boolean; canViewApproval?: boolean; canApprove?: boolean; initialApprovalStates?: Record<string, ApprovalState>;
   users: SafeUser[]; initialPlans: ActionPlan[]; initialSelectedId: string; initialRecordId: string;
   initialDateFrom: string; initialDateTo: string; initialScope?: Scope; completedStatusLabels: string[]; today: string;
 }) {
@@ -146,7 +146,7 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
       }
       if (!Array.isArray(body)) throw new Error("Invalid response");
       setData({ userId, plans: body });
-      if (canApprove) {
+      if (canViewApproval) {
         const approvalResponse = await fetch(`/api/approvals?userId=${encodeURIComponent(userId)}`, { signal: controller.signal });
         const states = approvalResponse.ok ? await approvalResponse.json().catch(() => null) : null;
         if (states && currentRequestId === requestId.current) setApprovalStates(states);

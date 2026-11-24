@@ -6,21 +6,21 @@
     "semantic_hash": ""
   },
   "docs/DATABASE_DESIGN.md": {
-    "mtime": 1795481963.635495,
-    "seen": 1795482592.278551,
-    "ast_hash": "a9dae87013ea3f105b497be5d9c938f7",
+    "mtime": 1795485083.2076354,
+    "seen": 1795485372.4034584,
+    "ast_hash": "5d95974aece0e1d07403034c01b9d691",
     "semantic_hash": ""
   },
   "docs/PRD.md": {
-    "mtime": 1794985527.2817416,
-    "seen": 1794985725.257809,
-    "ast_hash": "1e4d9312cc433e11bd7eb599e3896d3d",
+    "mtime": 1795485218.95092,
+    "seen": 1795485372.4034634,
+    "ast_hash": "06b741a6424dd6d64027388a7272d826",
     "semantic_hash": ""
   },
   "docs/SYSTEM_ARCHITECTURE.md": {
-    "mtime": 1795424152.8431115,
-    "seen": 1795424388.4786716,
-    "ast_hash": "7aedc40fab9e3706b15fd7f24995d929",
+    "mtime": 1795485083.2112055,
+    "seen": 1795485372.4034705,
+    "ast_hash": "81f266c879e89125a63b20823e2ef5a5",
     "semantic_hash": ""
   },
   "docs/TECH_STACK.md": {
@@ -30,9 +30,9 @@
     "semantic_hash": ""
   },
   "PRODUCT.md": {
-    "mtime": 1794985527.281206,
-    "seen": 1794985725.2578,
-    "ast_hash": "ed4b5bc4953800cb14219a30d2815494",
+    "mtime": 1795485061.0526776,
+    "seen": 1795485372.4034507,
+    "ast_hash": "0075e42987c73ed7321e6ec748ca423b",
     "semantic_hash": ""
   },
   "eslint.config.mjs": {
@@ -126,9 +126,9 @@
     "semantic_hash": ""
   },
   "src/app/(dashboard)/monitoring/page.tsx": {
-    "mtime": 1795055099.6612585,
-    "seen": 1795055290.5686293,
-    "ast_hash": "54f01e1320304b6bcb7c38b4240662bb",
+    "mtime": 1795484953.2180085,
+    "seen": 1795485372.4031222,
+    "ast_hash": "62e8339a3ba89bf52e653a5a9070ac28",
     "semantic_hash": ""
   },
   "src/app/(dashboard)/users/page.tsx": {
@@ -252,9 +252,9 @@
     "semantic_hash": ""
   },
   "src/application/schemas.ts": {
-    "mtime": 1795427216.4255083,
-    "seen": 1795428069.7938788,
-    "ast_hash": "306cacf95ac214103bf3ab5374c6e474",
+    "mtime": 1795485505.6142302,
+    "seen": 1795485541.6799443,
+    "ast_hash": "3eea3c63244cd937eb911f4e5b41db87",
     "semantic_hash": ""
   },
   "src/application/use-cases.ts": {
@@ -270,9 +270,9 @@
     "semantic_hash": ""
   },
   "src/domain/models.ts": {
-    "mtime": 1795422303.117602,
-    "seen": 1795422785.6581266,
-    "ast_hash": "b75eaffafcbb969fa0237ce61d9978c6",
+    "mtime": 1795484540.7904098,
+    "seen": 1795485372.4032202,
+    "ast_hash": "5d04d2d07edb80a19391b71679d187c2",
     "semantic_hash": ""
   },
   "src/infrastructure/container.ts": {
@@ -288,9 +288,9 @@
     "semantic_hash": ""
   },
   "src/infrastructure/google-sheets/repositories.ts": {
-    "mtime": 1795427216.4234848,
-    "seen": 1795428069.7938988,
-    "ast_hash": "f645fcb38ae59ced5a3c2f9a22b7e54f",
+    "mtime": 1795484540.7954073,
+    "seen": 1795485372.4032366,
+    "ast_hash": "4a62c27904d44f1be6f6cf9be5bdc9ff",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-action-plan-workspace.tsx": {
@@ -306,9 +306,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-user-management-workspace.tsx": {
-    "mtime": 1795481963.633482,
-    "seen": 1795482592.278373,
-    "ast_hash": "c4f764901125346440b83f7b0609674a",
+    "mtime": 1795485108.150949,
+    "seen": 1795485372.403265,
+    "ast_hash": "8cc81baf51a4b2c6b3da13de6130bd45",
     "semantic_hash": ""
   },
   "src/presentation/components/login-form.tsx": {
@@ -582,9 +582,9 @@
     "semantic_hash": ""
   },
   "tests/browser/main.tsx": {
-    "mtime": 1795481774.7915804,
-    "seen": 1795482592.278431,
-    "ast_hash": "612a57e4ac98a968c050f325d72cc6ed",
+    "mtime": 1795485239.7875698,
+    "seen": 1795485372.4033222,
+    "ast_hash": "681e4c2d6bedb200a9742cebbd7ff268",
     "semantic_hash": ""
   },
   "tests/browser/vite.config.ts": {
@@ -708,21 +708,21 @@
     "semantic_hash": ""
   },
   "src/application/access.ts": {
-    "mtime": 1795054717.2286608,
-    "seen": 1795055290.5687156,
-    "ast_hash": "774255fecf688a2358843f7edbeed8f2",
+    "mtime": 1795484569.5083716,
+    "seen": 1795485372.4032013,
+    "ast_hash": "0a39f7575ca565e2393ef49b9b96b380",
     "semantic_hash": ""
   },
   "src/application/divisions.ts": {
-    "mtime": 1795481963.6201108,
-    "seen": 1795482592.2783005,
-    "ast_hash": "6d804c35f490056cf042fec9bd1dfa9b",
+    "mtime": 1795485218.9479146,
+    "seen": 1795485372.4032066,
+    "ast_hash": "87fdcf32438b528c3245c30c4e9f1c09",
     "semantic_hash": ""
   },
   "src/presentation/components/connected-division-workspace.tsx": {
-    "mtime": 1795481963.6273456,
-    "seen": 1795482592.2783656,
-    "ast_hash": "c92b0396cc69f1090120ff5458970eee",
+    "mtime": 1795484818.5463712,
+    "seen": 1795485372.403259,
+    "ast_hash": "3ecd5a959e8def5dceead39518275454",
     "semantic_hash": ""
   },
   "src/presentation/components/division-filter.tsx": {
@@ -738,21 +738,21 @@
     "semantic_hash": ""
   },
   "tests/browser/division-fixture.ts": {
-    "mtime": 1794985385.9940166,
-    "seen": 1794985725.2577548,
-    "ast_hash": "56b5e12bdc6b1f83ffcde0ec6fdc7d45",
+    "mtime": 1795485218.9529192,
+    "seen": 1795485372.40331,
+    "ast_hash": "adf0be917bdf6cb84ed5b9bcbfc74c03",
     "semantic_hash": ""
   },
   "tests/browser/divisions.spec.ts": {
-    "mtime": 1794985651.986198,
-    "seen": 1794985725.2577562,
-    "ast_hash": "26255be10e329fdd4e09a013f4bf5852",
+    "mtime": 1795485218.9549162,
+    "seen": 1795485372.4033167,
+    "ast_hash": "c1d6d5f32ea4a95a41074b78ad954ac4",
     "semantic_hash": ""
   },
   "tests/unit/division-access.test.ts": {
-    "mtime": 1795481797.549512,
-    "seen": 1795482592.2784626,
-    "ast_hash": "07189d677b8b74e41b3371a73c7faef3",
+    "mtime": 1795484994.4810352,
+    "seen": 1795485372.4033582,
+    "ast_hash": "94ff8fd27213562200e5e265e9aa020e",
     "semantic_hash": ""
   },
   "tests/unit/division-api.test.ts": {
@@ -762,9 +762,9 @@
     "semantic_hash": ""
   },
   "tests/unit/division-sheets.test.ts": {
-    "mtime": 1795056837.028419,
-    "seen": 1795057286.7412255,
-    "ast_hash": "ce912c69b5338a56169edefaf8fa7fba",
+    "mtime": 1795485429.1837113,
+    "seen": 1795485487.0165598,
+    "ast_hash": "47c8963db36fdba2e3aedbf4e2d1d7aa",
     "semantic_hash": ""
   },
   ".impeccable/multi-division-brief.md": {
@@ -774,9 +774,9 @@
     "semantic_hash": ""
   },
   "docs/MULTI_DIVISION_ROLLOUT.md": {
-    "mtime": 1794987636.4177,
-    "seen": 1794987762.308395,
-    "ast_hash": "5d39889c9f6dc7e095e382f7b6ea9d44",
+    "mtime": 1795485097.007651,
+    "seen": 1795485372.4034612,
+    "ast_hash": "8a6893f726e61bd225b76385525f335d",
     "semantic_hash": ""
   },
   ".impeccable/review/divisions/bod-dashboard-desktop.png": {
@@ -1116,15 +1116,15 @@
     "semantic_hash": ""
   },
   "tests/unit/approvals.test.ts": {
-    "mtime": 1795427659.970845,
-    "seen": 1795428069.7940247,
-    "ast_hash": "1c9e46b450e29e55e7311ef93ab94788",
+    "mtime": 1795484994.4810352,
+    "seen": 1795485372.4033468,
+    "ast_hash": "cdf6f00a2cb3a90edcf363324f556cec",
     "semantic_hash": ""
   },
   "GLOSSARY.md": {
-    "mtime": 1795055234.8129373,
-    "seen": 1795055290.5689485,
-    "ast_hash": "7d06e666f7e7dbcd3790625ee2ee4a88",
+    "mtime": 1795485045.062652,
+    "seen": 1795485372.403449,
+    "ast_hash": "a13b7ee681f8fb342681415e9dadc30b",
     "semantic_hash": ""
   },
   "public/kotagede-jewellery-logo.png": {
@@ -1296,9 +1296,9 @@
     "semantic_hash": ""
   },
   "tests/unit/user-note-revocation.test.ts": {
-    "mtime": 1795481774.787064,
-    "seen": 1795482592.2785013,
-    "ast_hash": "c14a16d8476ad40e96521a36d78bbf07",
+    "mtime": 1795482628.4464948,
+    "seen": 1795482682.299836,
+    "ast_hash": "818c898f9674f889fa7aa0d468ac7e5b",
     "semantic_hash": ""
   },
   "tests/unit/notes-realtime.test.ts": {
@@ -1380,9 +1380,9 @@
     "semantic_hash": ""
   },
   "tests/unit/user-deletion.test.ts": {
-    "mtime": 1795427690.4617028,
-    "seen": 1795428069.7940636,
-    "ast_hash": "17464ddb2a044dc966b8b1b90fead124",
+    "mtime": 1795484994.4968772,
+    "seen": 1795485372.4034116,
+    "ast_hash": "7ba73cd08cebbe5db1a6d0fe75729cfb",
     "semantic_hash": ""
   }
 }

@@ -22,8 +22,10 @@ export async function loadDashboard(actor: Actor, divisionId?: string) {
   const approvalEnabledMembers = new Set(userList.filter((user) => divisionList.some((division) => division.id === user.divisionId && division.approvalRequired)).map((user) => user.id));
   const approvalEvents = await approvals.list();
   const pendingApprovals = plans.filter((plan) => approvalEnabledMembers.has(plan.ownerId) && approvalState(plan, approvalEvents).status === "menunggu");
+  const canApprove = actor.role === "bod" && divisionList.some((division) => division.id === actor.divisionId && division.bodUserId === actor.id && division.approvalRequired);
   return {
     canManageUsers: actor.role === "admin",
+    canApprove,
     users: userList.map(toSafeUser), plans,
     pendingApprovals,
     weeklyPlans: (await weeklyPlans.list()).filter((plan) => ownerIds.has(plan.userId)),

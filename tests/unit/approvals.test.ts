@@ -34,6 +34,14 @@ describe("Executive Team approvals", () => {
     await expect(decideApproval(fixture.approvals, fixture.plans, fixture.users, fixture.divisions, bodActor, submitted.id, "approved", "Sesuai bukti")).resolves.toMatchObject({ decision: "approved", ownerId: owner.id });
   });
 
+  it("does not grant approval authority to a BOD Monitor", async () => {
+    const fixture = setup();
+    fixture.divisions.list = async () => [{ ...division, monitorUserIds: ["bod-monitor"] }];
+    const submitted = await submitForApproval(fixture.approvals, fixture.plans, fixture.divisions, userActor, "plan-1");
+    const monitorActor: Actor = { ...bodActor, id: "bod-monitor", divisionId: division.id };
+    await expect(decideApproval(fixture.approvals, fixture.plans, fixture.users, fixture.divisions, monitorActor, submitted.id, "approved")).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+
   it("rejects a decision after the submitted Action Plan was edited", async () => {
     const fixture = setup();
     const submitted = await submitForApproval(fixture.approvals, fixture.plans, fixture.divisions, userActor, "plan-1");

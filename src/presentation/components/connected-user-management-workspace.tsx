@@ -65,7 +65,8 @@ export function ConnectedUserManagementWorkspace({
                 divisions.some(
                   (division) =>
                     division.id === divisionFilter &&
-                    division.bodUserId === member.id,
+                    (division.bodUserId === member.id ||
+                      division.monitorUserIds?.includes(member.id)),
                 ))),
       ),
     [members, query, divisionFilter, divisions],
@@ -228,8 +229,10 @@ export function ConnectedUserManagementWorkspace({
               </tr>
             </thead>
             <tbody>
-              {filteredMembers.map((member) => (
-                <tr
+              {filteredMembers.map((member) => {
+                const bodDivision = member.role === "bod" ? divisions.find((division) => division.bodUserId === member.id || division.monitorUserIds?.includes(member.id)) : undefined;
+                const divisionLabel = bodDivision ? `${bodDivision.name} · ${bodDivision.bodUserId === member.id ? "Lead BOD" : "BOD Monitor"}` : member.role === "admin" ? "Seluruh divisi" : member.role === "bod" ? "Belum ditugaskan" : divisions.find((division) => division.id === member.divisionId)?.name ?? "Belum dipetakan";
+                return <tr
                   key={member.id}
                   className="border-b last:border-0 hover:bg-[#fbfcfc]"
                 >
@@ -254,16 +257,7 @@ export function ConnectedUserManagementWorkspace({
                     </span>
                   </td>
                   <td className="px-5 py-4 text-sm text-[#516967]">
-                    {(member.role === "bod"
-                      ? divisions.find(
-                          (division) => division.bodUserId === member.id,
-                        )?.name
-                      : divisions.find(
-                          (division) => division.id === member.divisionId,
-                        )?.name) ??
-                      (member.role === "admin"
-                        ? "Seluruh divisi"
-                        : "Belum dipetakan")}
+                    {divisionLabel}
                     {member.sheetName && !member.divisionId && (
                       <span className="mt-1 block text-xs text-[#80501b]">
                         Riwayat belum dipetakan
@@ -308,8 +302,8 @@ export function ConnectedUserManagementWorkspace({
                       </button>
                     </div>
                   </td>
-                </tr>
-              ))}
+                </tr>;
+              })}
             </tbody>
           </table>
         </div>
@@ -587,7 +581,11 @@ function UserForm({
   const [accessConfirmationOpen, setAccessConfirmationOpen] = useState(false);
   const [role, setRole] = useState<UserRole>(member?.role ?? "user");
   const assignedDivision = member
-    ? divisions.find((division) => division.bodUserId === member.id)
+    ? divisions.find(
+        (division) =>
+          division.bodUserId === member.id ||
+          division.monitorUserIds?.includes(member.id),
+      )
     : undefined;
   const [pendingInput, setPendingInput] = useState<UserInput | null>(null);
   const [accessChanges, setAccessChanges] = useState<string[]>([]);
@@ -811,9 +809,16 @@ function UserForm({
               <p className="mt-1 text-[#516967]">
                 {assignedDivision?.name ?? "Belum ditugaskan"}
               </p>
+              {assignedDivision && (
+                <p className="mt-1 text-xs font-semibold text-[#176d69]">
+                  {assignedDivision.bodUserId === member?.id
+                    ? "Lead BOD"
+                    : "BOD Monitor"}
+                </p>
+              )}
               <p className="mt-2 text-xs leading-5 text-[#667c7c]">
-                Penugasan BOD dikelola dari Divisi agar satu divisi hanya
-                memiliki satu BOD aktif.
+                Lead BOD dan BOD Monitor dikelola dari Divisi. Hanya Lead BOD
+                yang dapat menyetujui hasil kerja.
               </p>
               <a
                 href={
@@ -994,6 +999,10 @@ function roleLabel(role: UserRole) {
 }
 
 function divisionManagementHref(divisions: Division[], bodUserId: string) {
-  const division = divisions.find((candidate) => candidate.bodUserId === bodUserId);
+  const division = divisions.find(
+    (candidate) =>
+      candidate.bodUserId === bodUserId ||
+      candidate.monitorUserIds?.includes(bodUserId),
+  );
   return division ? `/divisions?divisionId=${encodeURIComponent(division.id)}` : "/divisions";
 }
