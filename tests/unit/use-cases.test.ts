@@ -11,14 +11,14 @@ const user = async (overrides: Partial<User> = {}): Promise<User> => ({ id: "use
 describe("access and account use cases", () => {
   it("rejects inactive accounts even with the correct password", async () => {
     const inactive = await user({ status: "inactive" });
-    const repository: UserRepository = { list: async () => [inactive], findById: async () => inactive, findByEmail: async () => inactive, create: async () => inactive, update: async () => inactive, createActionPlanSheet: async () => undefined };
+    const repository: UserRepository = { list: async () => [inactive], findById: async () => inactive, findByEmail: async () => inactive, create: async () => inactive, update: async () => inactive, remove: async () => undefined, createActionPlanSheet: async () => undefined };
     await expect(authenticateUser(repository, inactive.email, "password123")).resolves.toBeNull();
   });
 
   it("hashes a new user password and creates a private Action Plan sheet", async () => {
     const stored: User[] = [];
     const sheets: string[] = [];
-    const repository: UserRepository = { list: async () => stored, findById: async () => null, findByEmail: async () => null, create: async (item) => { stored.push(item); return item; }, update: async (item) => item, createActionPlanSheet: async (name) => { sheets.push(name); } };
+    const repository: UserRepository = { list: async () => stored, findById: async () => null, findByEmail: async () => null, create: async (item) => { stored.push(item); return item; }, update: async (item) => item, remove: async () => undefined, createActionPlanSheet: async (name) => { sheets.push(name); } };
     const created = await createUser(repository, { id: "user-2", name: "New User", email: " NEW@COMPANY.TEST ", role: "user", status: "active", password: "password123" });
     expect(created.email).toBe("new@company.test");
     expect("passwordHash" in created).toBe(false);
@@ -33,7 +33,7 @@ describe("access and account use cases", () => {
 
   it("prevents deactivating or demoting the last active admin", async () => {
     const admin = await user({ id: "admin-1", role: "admin", sheetName: "" });
-    const repository: UserRepository = { list: async () => [admin], findById: async () => admin, findByEmail: async () => null, create: async (item) => item, update: async (item) => item, createActionPlanSheet: async () => undefined };
+    const repository: UserRepository = { list: async () => [admin], findById: async () => admin, findByEmail: async () => null, create: async (item) => item, update: async (item) => item, remove: async () => undefined, createActionPlanSheet: async () => undefined };
     await expect(updateUser(repository, admin, { status: "inactive" })).rejects.toMatchObject({ code: "VALIDATION" });
     await expect(updateUser(repository, admin, { role: "user" })).rejects.toMatchObject({ code: "VALIDATION" });
   });

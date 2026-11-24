@@ -15,7 +15,7 @@ function setup(overrides: Partial<ActionPlan> = {}) {
   const approvals: ActionPlanApprovalRepository = { list: async () => events, create: async (event) => { events.push(event); return event; } };
   const plans: ActionPlanRepository = { list: async () => [plan], findById: async (_sheet, id) => id === plan.id ? plan : null, create: async (_sheet, item) => item, createMany: async (_sheet, items) => items, update: async (_sheet, item) => item, softDelete: async () => undefined, hardDelete: async () => undefined };
   const divisions: DivisionRepository = { list: async () => [division], create: async (item) => item, update: async (item) => item };
-  const users: UserRepository = { list: async () => [owner], findById: async (id) => id === owner.id ? owner : null, findByEmail: async () => null, create: async (item) => item, update: async (item) => item, createActionPlanSheet: async () => undefined };
+  const users: UserRepository = { list: async () => [owner], findById: async (id) => id === owner.id ? owner : null, findByEmail: async () => null, create: async (item) => item, update: async (item) => item, remove: async () => undefined, createActionPlanSheet: async () => undefined };
   return { approvals, plans, divisions, users, events, changePlan: (next: ActionPlan) => { plan = next; } };
 }
 

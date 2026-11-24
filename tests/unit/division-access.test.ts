@@ -15,7 +15,9 @@ function setup() {
     list: async () => [...people], findById: async (id) => people.find((user) => user.id === id) ?? null,
     findByEmail: async (email) => people.find((user) => user.email === email) ?? null,
     create: async (user) => { people.push(user); return user; },
-    update: async (user) => { people[people.findIndex((item) => item.id === user.id)] = user; return user; }, createActionPlanSheet: async () => undefined,
+    update: async (user) => { people[people.findIndex((item) => item.id === user.id)] = user; return user; },
+    remove: async (id) => { const index = people.findIndex((item) => item.id === id); if (index >= 0) people.splice(index, 1); },
+    createActionPlanSheet: async () => undefined,
   };
   const divisions: DivisionRepository = { list: async () => [...records], create: async (item) => { records.push(item); return item; }, update: async (item) => { records[records.findIndex((record) => record.id === item.id)] = item; return item; } };
   return { users, divisions, people, records };
@@ -75,6 +77,15 @@ describe("division isolation", () => {
     const actor: Actor = resolveActor(people[1], records);
     await expect(saveManagedUser(users, divisions, actor, { ...people[4], name: "Changed" }, "user-a")).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(saveManagedUser(users, divisions, admin, { ...people[1], status: "inactive" }, "bod-a")).rejects.toMatchObject({ code: "VALIDATION" });
+  });
+
+  it("keeps BOD assignment valid even while its division is inactive", async () => {
+    const { users, divisions, people, records } = setup();
+    records[0].status = "inactive";
+    people[1].divisionId = "division-a";
+
+    await expect(saveManagedUser(users, divisions, admin, { ...people[1], role: "user" }, "bod-a")).rejects.toMatchObject({ code: "VALIDATION" });
+    expect((await users.findById("bod-a"))?.role).toBe("bod");
   });
 
   it("maps legacy users once without changing IDs, sheet, hash or prior data", async () => {

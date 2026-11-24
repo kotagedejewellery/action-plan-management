@@ -9,9 +9,9 @@ import { AccountStatus, ConfirmDialog, DialogFrame, PageHeading } from "./worksp
 const field = "mt-2 block h-11 w-full rounded-xl border bg-white px-3 text-sm";
 const button = "min-h-11 rounded-xl border bg-white px-4 text-sm font-semibold text-[#176d69] disabled:opacity-60";
 
-export function ConnectedDivisionWorkspace({ initialDivisions, users }: { initialDivisions: Division[]; users: SafeUser[] }) {
+export function ConnectedDivisionWorkspace({ initialDivisions, initialEditingId, users }: { initialDivisions: Division[]; initialEditingId?: string; users: SafeUser[] }) {
   const [divisions, setDivisions] = useState(initialDivisions);
-  const [editing, setEditing] = useState<Division | "new" | null>(null);
+  const [editing, setEditing] = useState<Division | "new" | null>(() => initialDivisions.find((division) => division.id === initialEditingId) ?? null);
   const { notify } = useFeedback();
   const unmapped = users.filter((user) => Boolean(user.sheetName) && !user.divisionId).length;
   async function save(input: Pick<Division, "name" | "status" | "bodUserId" | "approvalRequired"> & { updatedAt?: string }, existing?: Division) {

@@ -8,7 +8,7 @@ test("a legacy BOD remains findable and its history can be mapped only to its as
   const opener = page.getByRole("button", { name: "Edit Anggota Lama", exact: true });
   await expect(opener).toBeVisible();
   await opener.click();
-  const division = page.getByRole("combobox", { name: /Divisi anggota/ });
+  const division = page.getByRole("combobox", { name: /Divisi riwayat pekerjaan/ });
   await expect(division).toBeVisible();
   await expect(division.getByRole("option", { name: "Produksi", exact: true })).toHaveCount(0);
   await division.selectOption("a");
@@ -22,8 +22,35 @@ test("a legacy BOD remains findable and its history can be mapped only to its as
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.getByLabel("Filter divisi akun").selectOption("a");
   await opener.click();
-  await expect(page.getByRole("textbox", { name: /Divisi anggota/ })).toHaveValue("Marketing");
-  await expect(page.getByRole("textbox", { name: /Divisi anggota/ })).toHaveAttribute("readonly", "");
+  await expect(page.getByRole("textbox", { name: /Divisi riwayat pekerjaan/ })).toHaveValue("Marketing");
+  await expect(page.getByRole("textbox", { name: /Divisi riwayat pekerjaan/ })).toHaveAttribute("readonly", "");
+});
+
+test("BOD division shortcut opens its assigned division and account deletion gives actionable feedback", async ({ page }) => {
+  await page.goto("/users");
+  const bodRow = page.getByRole("row").filter({ hasText: "BOD A" });
+  await expect(bodRow.getByRole("link", { name: "Divisi", exact: true })).toHaveAttribute("href", "/divisions?divisionId=a");
+  await bodRow.getByRole("link", { name: "Divisi", exact: true }).click();
+  await expect(page).toHaveURL(/\/divisions\?divisionId=a/);
+  await expect(page.getByRole("dialog")).toContainText("Kelola divisi");
+  await expect(page.getByLabel("BOD penanggung jawab")).toHaveValue("bod-a");
+
+  await page.goto("/users?state=deletable-user");
+  await expect(page.getByRole("button", { name: "Hapus Anggota A", exact: true })).toBeDisabled();
+  await page.getByRole("button", { name: "Hapus Akun Sementara", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog.getByRole("button", { name: "Tutup dialog", exact: true })).toBeFocused();
+  await dialog.getByLabel("Email akun untuk konfirmasi").fill("temporary@example.test");
+  let attempt = 0;
+  await page.route("**/api/users/temporary", async (route) => {
+    attempt += 1;
+    await route.fulfill(attempt === 1 ? { status: 400, json: { error: "Akun masih memiliki data terkait." } } : { status: 204 });
+  });
+  await dialog.getByRole("button", { name: "Hapus akun permanen", exact: true }).click();
+  await expect(dialog.getByRole("alert")).toContainText("Akun masih memiliki data terkait.");
+  await dialog.getByRole("button", { name: "Hapus akun permanen", exact: true }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByText("Akun Sementara", { exact: true })).toHaveCount(0);
 });
 
 for (const route of ["/", "/monitoring"]) {
@@ -83,9 +110,9 @@ test("fixed division states and legacy BOD mapping remain usable at all shipped 
     await expect(page.getByRole("button", { name: "Edit Anggota Lama", exact: true })).toBeVisible();
     await page.screenshot({ path: `.impeccable/review/division-gaps/legacy-filter-${suffix}.png`, fullPage: true, animations: "disabled" });
     await page.getByRole("button", { name: "Edit Anggota Lama", exact: true }).click();
-    await expect(page.getByRole("combobox", { name: /Divisi anggota/ })).toBeVisible();
+    await expect(page.getByRole("combobox", { name: /Divisi riwayat pekerjaan/ })).toBeVisible();
     await page.screenshot({ path: `.impeccable/review/division-gaps/legacy-form-${suffix}.png`, fullPage: true, animations: "disabled" });
-    await page.getByRole("combobox", { name: /Divisi anggota/ }).selectOption("a");
+    await page.getByRole("combobox", { name: /Divisi riwayat pekerjaan/ }).selectOption("a");
     await page.getByRole("button", { name: "Simpan User", exact: true }).click();
     await expect(page.getByRole("alertdialog")).toBeVisible();
     await page.screenshot({ path: `.impeccable/review/division-gaps/legacy-confirm-${suffix}.png`, fullPage: true, animations: "disabled" });

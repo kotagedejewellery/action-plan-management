@@ -51,7 +51,7 @@ function setup() {
     trash: async (id) => { trashed.push(id); },
     restore: async (id) => { restored.push(id); },
   };
-  const userRepository: UserRepository = { list: async () => users, findById: async (id) => users.find((item) => item.id === id) ?? null, findByEmail: async (email) => users.find((item) => item.email === email) ?? null, create: async (item) => item, update: async (item) => item, createActionPlanSheet: async () => undefined };
+  const userRepository: UserRepository = { list: async () => users, findById: async (id) => users.find((item) => item.id === id) ?? null, findByEmail: async (email) => users.find((item) => item.email === email) ?? null, create: async (item) => item, update: async (item) => item, remove: async () => undefined, createActionPlanSheet: async () => undefined };
   return { workspaces, members, notes, images, trashed, restored, workspaceRepository, noteRepository, imageRepository, imageStorage, userRepository };
 }
 

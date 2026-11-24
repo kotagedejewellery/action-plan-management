@@ -3,17 +3,19 @@ import type { User, Division } from "@/domain/models";
 
 vi.mock("@/auth", () => ({ auth: vi.fn() }));
 vi.mock("@/infrastructure/container", () => ({
-  users: { list: vi.fn(), findById: vi.fn(), create: vi.fn(), update: vi.fn() },
+  users: { list: vi.fn(), findById: vi.fn(), create: vi.fn(), update: vi.fn(), remove: vi.fn() },
   divisions: { list: vi.fn(), create: vi.fn(), update: vi.fn() },
   actionPlans: { list: vi.fn(), findById: vi.fn(), create: vi.fn(), update: vi.fn(), softDelete: vi.fn() },
   weeklyPlans: { list: vi.fn(), update: vi.fn(), hardDelete: vi.fn() },
   approvals: { list: vi.fn(), create: vi.fn() },
   statuses: { list: vi.fn(), create: vi.fn() },
   attachments: { download: vi.fn(), upload: vi.fn(), trash: vi.fn() },
+  noteWorkspaces: { listForUser: vi.fn() },
+  notes: {},
 }));
 
 import { auth } from "@/auth";
-import { users, divisions, actionPlans, weeklyPlans, attachments, statuses, approvals } from "@/infrastructure/container";
+import { users, divisions, actionPlans, weeklyPlans, attachments, statuses, approvals, noteWorkspaces } from "@/infrastructure/container";
 import { GET as dashboard } from "@/app/api/dashboard/route";
 import { GET as plans, POST as createPlan } from "@/app/api/action-plans/route";
 import { PATCH as updatePlan, DELETE as deletePlan } from "@/app/api/action-plans/[recordId]/route";
@@ -23,7 +25,7 @@ import { GET as image, DELETE as removeImage } from "@/app/api/action-plans/[rec
 import { GET as accounts, POST as createAccount } from "@/app/api/users/route";
 import { GET as divisionList, POST as createDivision } from "@/app/api/divisions/route";
 import { PATCH as updateDivision } from "@/app/api/divisions/[divisionId]/route";
-import { PATCH as updateAccount } from "@/app/api/users/[userId]/route";
+import { DELETE as deleteAccount, PATCH as updateAccount } from "@/app/api/users/[userId]/route";
 import { DELETE as deleteWeek } from "@/app/api/weekly-plans/[weeklyPlanId]/route";
 import { POST as createStatus } from "@/app/api/statuses/route";
 import { currentActor } from "@/presentation/server/actor";
@@ -47,6 +49,7 @@ beforeEach(() => {
   vi.mocked(weeklyPlans.list).mockResolvedValue(["ua", "ub", "old"].map((userId) => ({ id: userId, userId, title: userId, weekStart: "2026-11-16", weekEnd: "2026-11-22", plannedActionPlanIds: [], createdAt: "", updatedAt: "" })));
   vi.mocked(statuses.list).mockResolvedValue([]);
   vi.mocked(approvals.list).mockResolvedValue([]);
+  vi.mocked(noteWorkspaces.listForUser).mockResolvedValue([]);
   vi.mocked(actionPlans.findById).mockResolvedValue({ id: "pa", task: "Review", date: "2026-11-18", morningStatus: "On Progress", createdAt: "", updatedAt: "", attachments: [{ id: "img", name: "evidence.png", mimeType: "image/png" }] });
   vi.mocked(attachments.download).mockResolvedValue(Buffer.from([1, 2, 3]));
   login("ba");
@@ -124,4 +127,19 @@ it("rejects an approval decision from a BOD outside the configured division", as
   const response = await decideApproval(new Request("http://localhost/api/approvals/" + submitted.id, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ decision: "approved" }) }), { params: Promise.resolve({ approvalId: submitted.id }) });
   expect(response.status).toBe(403);
   expect(approvals.create).toHaveBeenCalledTimes(1);
+});
+
+it("requires an exact email confirmation and an inactive account before permanent user deletion", async () => {
+  login("sa");
+  const removable = { ...account("temporary", "user"), status: "inactive" as const, sheetName: "" };
+  records.push(removable);
+  const context = { params: Promise.resolve({ userId: removable.id }) };
+
+  const rejected = await deleteAccount(new Request("http://localhost", { method: "DELETE", headers: { "content-type": "application/json" }, body: JSON.stringify({ confirmationEmail: "wrong@example.test" }) }), context);
+  expect(rejected.status).toBe(400);
+  expect(users.remove).not.toHaveBeenCalled();
+
+  const accepted = await deleteAccount(new Request("http://localhost", { method: "DELETE", headers: { "content-type": "application/json" }, body: JSON.stringify({ confirmationEmail: removable.email }) }), context);
+  expect(accepted.status).toBe(204);
+  expect(users.remove).toHaveBeenCalledWith(removable.id);
 });

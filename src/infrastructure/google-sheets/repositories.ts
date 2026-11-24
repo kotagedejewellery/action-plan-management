@@ -156,6 +156,11 @@ export class GoogleSheetsUserRepository implements UserRepository {
     await replace(`Users!A${row.rowNumber}:J${row.rowNumber}`, [user.id, user.name, user.email, user.passwordHash, user.role, user.status, user.sheetName, user.createdAt, user.updatedAt, user.divisionId ?? ""]);
     return user;
   }
+  async remove(id: string) {
+    const row = (await userRows()).find((item) => item.values[0] === id);
+    if (!row) throw new Error("User tidak ditemukan.");
+    await deleteRow("Users", row.rowNumber);
+  }
   async createActionPlanSheet(sheetName: string) {
     const api = sheetsClient();
     const existing = await api.spreadsheets.get({ spreadsheetId: spreadsheetId(), fields: "sheets.properties" });

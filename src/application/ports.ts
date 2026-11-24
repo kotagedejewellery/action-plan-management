@@ -17,6 +17,7 @@ export interface UserRepository {
   findByEmail(email: string): Promise<User | null>;
   create(user: User): Promise<User>;
   update(user: User): Promise<User>;
+  remove(id: string): Promise<void>;
   createActionPlanSheet(sheetName: string): Promise<void>;
 }
 

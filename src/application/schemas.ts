@@ -18,6 +18,7 @@ export const userInputSchema = z.object({
 });
 
 export const createUserInputSchema = userInputSchema.extend({ password: z.string().min(8, "Password minimal 8 karakter.") });
+export const deleteUserInputSchema = z.object({ confirmationEmail: z.string().trim().email("Ketik email akun yang valid untuk mengonfirmasi.") });
 
 export const actionPlanInputSchema = z.object({
   id: z.string().uuid().optional(),
