@@ -582,9 +582,9 @@
     "semantic_hash": ""
   },
   "tests/browser/main.tsx": {
-    "mtime": 1795486215.7542531,
-    "seen": 1795486451.3155134,
-    "ast_hash": "6085005dcbd1d24b932650adea4fc6d6",
+    "mtime": 1795488327.261871,
+    "seen": 1795488426.6490378,
+    "ast_hash": "cd99e798bec4d6c3eaa47982777c8718",
     "semantic_hash": ""
   },
   "tests/browser/vite.config.ts": {
@@ -720,9 +720,9 @@
     "semantic_hash": ""
   },
   "src/presentation/components/connected-division-workspace.tsx": {
-    "mtime": 1795486191.3215327,
-    "seen": 1795486451.3154733,
-    "ast_hash": "9155a08cd8a8db1de0f1ffde503896af",
+    "mtime": 1795488327.2588756,
+    "seen": 1795488426.6489604,
+    "ast_hash": "4110b5118bebdfa796b3724f2566cb86",
     "semantic_hash": ""
   },
   "src/presentation/components/division-filter.tsx": {
