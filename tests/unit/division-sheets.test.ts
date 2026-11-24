@@ -2,8 +2,8 @@ import { beforeEach, expect, it, vi } from "vitest";
 import type { Division } from "@/domain/models";
 import type { ActionPlanApproval } from "@/domain/models";
 
-const google = vi.hoisted(() => ({ get: vi.fn(), update: vi.fn(), append: vi.fn(), metadata: vi.fn(), batchUpdate: vi.fn() }));
-vi.mock("@/infrastructure/google-sheets/client", () => ({ spreadsheetId: () => "synthetic-sheet", sheetsClient: () => ({ spreadsheets: { values: { get: google.get, update: google.update, append: google.append }, get: google.metadata, batchUpdate: google.batchUpdate } }) }));
+const google = vi.hoisted(() => ({ get: vi.fn(), batchGet: vi.fn(), update: vi.fn(), append: vi.fn(), metadata: vi.fn(), batchUpdate: vi.fn() }));
+vi.mock("@/infrastructure/google-sheets/client", () => ({ spreadsheetId: () => "synthetic-sheet", sheetsClient: () => ({ spreadsheets: { values: { get: google.get, batchGet: google.batchGet, update: google.update, append: google.append }, get: google.metadata, batchUpdate: google.batchUpdate } }) }));
 
 beforeEach(() => { vi.resetModules(); vi.resetAllMocks(); google.update.mockResolvedValue({}); google.append.mockResolvedValue({}); google.batchUpdate.mockResolvedValue({}); });
 const legacyHeaders = ["id", "name", "email", "password_hash", "role", "status", "sheet_name", "created_at", "updated_at"];
@@ -18,6 +18,41 @@ it("reads nine-column Users without writes or implicit division assignment", asy
   expect(users[0]).toMatchObject({ id: "u-old", sheetName: "legacy_plan_sheet", passwordHash: "unchanged-hash" });
   expect(users[0].divisionId).toBeUndefined();
   expect(google.update).not.toHaveBeenCalled(); expect(google.batchUpdate).not.toHaveBeenCalled();
+});
+
+it("batch reads current Action Plan sheets without triggering a schema write", async () => {
+  google.batchGet.mockResolvedValue({ data: { valueRanges: [
+    { values: [["tanggal", "action_plan", "status_pagi", "status_sore", "link_hasil", "catatan", "record_id", "created_at", "updated_at", "deleted_at", "deleted_by", "weekly_plan_id", "lampiran"], ["2026-11-18", "Review", "Open", "", "", "", "plan-1", "created", "updated"]] },
+    { values: [["tanggal", "action_plan", "status_pagi", "status_sore", "link_hasil", "catatan", "record_id", "created_at", "updated_at", "deleted_at", "deleted_by", "weekly_plan_id", "lampiran"], ["2026-11-17", "Publish", "Open", "", "", "", "plan-2", "created", "updated"]] },
+  ] } });
+  const { GoogleSheetsActionPlanRepository } = await import("@/infrastructure/google-sheets/repositories");
+  const plans = await new GoogleSheetsActionPlanRepository().listMany(["action_plan_a", "action_plan_b"]);
+  expect(plans.get("action_plan_a")?.map((plan) => plan.id)).toEqual(["plan-1"]);
+  expect(plans.get("action_plan_b")?.map((plan) => plan.id)).toEqual(["plan-2"]);
+  expect(google.batchGet).toHaveBeenCalledWith(expect.objectContaining({ spreadsheetId: "synthetic-sheet", ranges: ["action_plan_a!A:M", "action_plan_b!A:M"] }));
+  expect(google.get).not.toHaveBeenCalled(); expect(google.update).not.toHaveBeenCalled(); expect(google.batchUpdate).not.toHaveBeenCalled();
+});
+
+it("splits large Dashboard reads into bounded Google Sheets batches", async () => {
+  google.batchGet.mockImplementation(async ({ ranges }: { ranges: string[] }) => ({ data: { valueRanges: ranges.map(() => ({ values: [["tanggal"], ["2026-11-18", "Task", "Open", "", "", "", "record-id", "created", "updated"]] })) } }));
+  const sheetNames = Array.from({ length: 101 }, (_, index) => `action_plan_${index}`);
+  const { GoogleSheetsActionPlanRepository } = await import("@/infrastructure/google-sheets/repositories");
+
+  const plans = await new GoogleSheetsActionPlanRepository().listMany(sheetNames);
+
+  expect(plans.size).toBe(101);
+  expect(google.batchGet).toHaveBeenCalledTimes(2);
+  expect(google.batchGet.mock.calls.map(([request]) => request.ranges.length)).toEqual([100, 1]);
+});
+
+it("keeps legacy Action Plan sheets read-only during a Dashboard batch read", async () => {
+  google.batchGet.mockResolvedValue({ data: { valueRanges: [{ values: [["tanggal", "action_plan"], ["2026-11-18", "Task legacy", "Open"]] }] } });
+  const { GoogleSheetsActionPlanRepository } = await import("@/infrastructure/google-sheets/repositories");
+
+  const plans = await new GoogleSheetsActionPlanRepository().listMany(["action_plan_legacy"]);
+
+  expect(plans.get("action_plan_legacy")?.[0]).toMatchObject({ id: "legacy:action_plan_legacy:2", task: "Task legacy" });
+  expect(google.get).not.toHaveBeenCalled(); expect(google.update).not.toHaveBeenCalled(); expect(google.batchUpdate).not.toHaveBeenCalled();
 });
 
 it("adds only the new header and existing User affiliation, retaining ID, hash and sheet mapping", async () => {

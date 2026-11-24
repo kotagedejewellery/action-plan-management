@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("month preset follows the new month after refreshing", async ({ page }) => {
-  await page.route("**/api/dashboard", (route) => route.fulfill({ json: { ...dashboardFixture, today: "2026-11-01", loadedAt: "2026-11-01T01:00:00.000Z" } }));
+  await page.route("**/api/dashboard**", (route) => route.fulfill({ json: { ...dashboardFixture, today: "2026-11-01", loadedAt: "2026-11-01T01:00:00.000Z" } }));
   await page.getByRole("button", { name: "Perbarui data", exact: true }).click();
   await expect(page.getByText("Dashboard diperbarui", { exact: true })).toBeVisible();
   await expect(page.locator("p[role=status]")).toContainText("1 Nov 2026 – 1 Nov 2026");
@@ -15,9 +15,8 @@ test("month preset follows the new month after refreshing", async ({ page }) => 
 });
 
 test("week preset follows a new week after refreshing", async ({ page }) => {
+  await page.route("**/api/dashboard**", (route) => route.fulfill({ json: { ...dashboardFixture, today: "2026-11-02", loadedAt: "2026-11-02T01:00:00.000Z" } }));
   await page.getByRole("button", { name: "Minggu ini", exact: true }).click();
-  await page.route("**/api/dashboard", (route) => route.fulfill({ json: { ...dashboardFixture, today: "2026-11-02", loadedAt: "2026-11-02T01:00:00.000Z" } }));
-  await page.getByRole("button", { name: "Perbarui data", exact: true }).click();
   await expect(page.getByText("Dashboard diperbarui", { exact: true })).toBeVisible();
   await expect(page.locator("p[role=status]")).toContainText("2 Nov 2026 – 2 Nov 2026");
 });
@@ -25,7 +24,7 @@ test("week preset follows a new week after refreshing", async ({ page }) => {
 test("custom filter chosen during a refresh is preserved", async ({ page }) => {
   let release!: () => void;
   const pending = new Promise<void>((resolve) => { release = resolve; });
-  await page.route("**/api/dashboard", async (route) => {
+  await page.route("**/api/dashboard**", async (route) => {
     await pending;
     await route.fulfill({ json: { ...dashboardFixture, today: "2026-11-01" } });
   });
@@ -42,7 +41,7 @@ test("custom filter chosen during a refresh is preserved", async ({ page }) => {
 for (const status of [401, 403]) {
   test(`access error ${status} offers sign-in and account guidance`, async ({ page }) => {
     const before = await page.locator("p[role=status]").innerText();
-    await page.route("**/api/dashboard", (route) => route.fulfill({ status, json: { error: "Sesi atau hak akses tidak berlaku lagi." } }));
+    await page.route("**/api/dashboard**", (route) => route.fulfill({ status, json: { error: "Sesi atau hak akses tidak berlaku lagi." } }));
     await page.getByRole("button", { name: "Perbarui data", exact: true }).click();
     const alert = page.getByRole("alert");
     await expect(alert).toContainText("Hubungi Admin");
@@ -55,7 +54,7 @@ for (const status of [401, 403]) {
 test("temporary failure retains results and can be retried successfully", async ({ page }) => {
   const before = await page.locator("p[role=status]").innerText();
   let requests = 0;
-  await page.route("**/api/dashboard", (route) => {
+  await page.route("**/api/dashboard**", (route) => {
     requests++;
     return requests === 1 ? route.fulfill({ status: 503, json: { error: "Google Sheets sedang mencapai batas permintaan." } }) : route.fulfill({ json: dashboardFixture });
   });
@@ -92,7 +91,7 @@ test("mobile chart has usable touch targets and responds to keyboard and touch",
 test("unfinished date drafts survive a refresh across the month boundary", async ({ page }) => {
   await page.getByRole("button", { name: "Rentang khusus", exact: true }).click();
   await page.getByLabel("Dari tanggal").fill("2026-10-12");
-  await page.route("**/api/dashboard", (route) => route.fulfill({ json: { ...dashboardFixture, today: "2026-11-01" } }));
+  await page.route("**/api/dashboard**", (route) => route.fulfill({ json: { ...dashboardFixture, today: "2026-11-01" } }));
   await page.getByRole("button", { name: "Perbarui data", exact: true }).click();
   await expect(page.getByText("Dashboard diperbarui", { exact: true })).toBeVisible();
   await expect(page.locator("p[role=status]")).toContainText("1 Nov 2026 – 1 Nov 2026");

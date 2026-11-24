@@ -22,6 +22,7 @@ type DashboardData = {
   weeklyPlans: WeeklyPlan[];
   completedStatusLabels: string[];
   today: string;
+  period?: { from: string; to: string };
   loadedAt: string;
 };
 type Preset = "week" | "month" | "custom";
@@ -54,14 +55,20 @@ function monitoringHref(userId: string | undefined, from: string, to: string, re
   return `/monitoring?${params}`;
 }
 
+function dashboardRecordId(plan: DashboardPlan) {
+  return plan.id.startsWith("legacy:") ? undefined : plan.id;
+}
+
 export function ConnectedDashboardWorkspace(initialData: DashboardData) {
   const [data, setData] = useState(initialData);
   const { users, plans, pendingApprovals = [], weeklyPlans, completedStatusLabels, today, loadedAt, divisionId } = data;
   const { notify } = useFeedback();
   const [{ preset, period, draft }, setFilters] = useState(() => {
-    const period = presetPeriod("month", today);
+    const period = initialData.period ?? presetPeriod("month", today);
     return { preset: "month" as Preset, period, draft: period };
   });
+  const refreshTarget = useRef({ preset, period });
+  const refreshInFlight = useRef(false);
   const [customOpen, setCustomOpen] = useState(false);
   const [dateErrors, setDateErrors] = useState<{ from?: string; to?: string }>({});
   const [scope, setScope] = useState<Scope | null>(null);
@@ -95,8 +102,8 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
 
   function selectPeriod(nextPreset: Exclude<Preset, "custom">) {
     const next = presetPeriod(nextPreset, today);
-    setFilters({ preset: nextPreset, period: next, draft: next });
     setDateErrors({});
+    void refresh({ preset: nextPreset, period: next });
   }
 
   function applyPeriod(event: FormEvent<HTMLFormElement>) {
@@ -112,39 +119,52 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
       return;
     }
     setDateErrors({});
-    setFilters((current) => ({ ...current, period: parsed.data, preset: "custom" }));
+    void refresh({ preset: "custom", period: parsed.data });
   }
 
-  async function refresh() {
-    if (refreshing) return;
+  async function refresh(target = { preset, period }) {
+    refreshTarget.current = target;
+    if (refreshInFlight.current) return;
+    refreshInFlight.current = true;
+    const requestTarget = target;
     setRefreshing(true);
     setRefreshError(null);
     try {
-      const response = await fetch(initialData.divisionId ? `/api/dashboard?divisionId=${encodeURIComponent(initialData.divisionId)}` : "/api/dashboard", { cache: "no-store", signal: AbortSignal.timeout(30_000) });
+      const params = new URLSearchParams();
+      if (initialData.divisionId) params.set("divisionId", initialData.divisionId);
+      if (target.preset === "custom") {
+        params.set("from", target.period.from);
+        params.set("to", target.period.to);
+      } else params.set("preset", target.preset);
+      const response = await fetch(`/api/dashboard${params.size ? `?${params}` : ""}`, { cache: "no-store", signal: AbortSignal.timeout(30_000) });
       const result = await response.json();
       if (!response.ok) {
         setRefreshError({ message: result.error ?? "Data belum dapat diperbarui. Coba lagi.", accessDenied: response.status === 401 || response.status === 403 });
         return;
       }
+      if (refreshTarget.current.preset !== requestTarget.preset || refreshTarget.current.period.from !== requestTarget.period.from || refreshTarget.current.period.to !== requestTarget.period.to) return;
       setData(result);
       setFilters((current) => {
-        if (current.preset === "custom") return current;
-        const next = presetPeriod(current.preset, result.today);
         const editing = current.draft.from !== current.period.from || current.draft.to !== current.period.to;
-        return { ...current, period: next, draft: editing ? current.draft : next };
+        const next = result.period ?? (requestTarget.preset === "custom" ? requestTarget.period : presetPeriod(requestTarget.preset, result.today));
+        return { preset: requestTarget.preset, period: next, draft: editing ? current.draft : next };
       });
+      if (requestTarget.preset === "custom") setCustomOpen(false);
       notify("success", "Dashboard diperbarui", "Ringkasan tim berhasil dimuat kembali.");
     } catch (error) {
       setRefreshError({ message: error instanceof Error && error.name === "Error" ? error.message : "Koneksi terputus atau terlalu lama. Coba lagi beberapa saat lagi.", accessDenied: false });
     } finally {
+      refreshInFlight.current = false;
       setRefreshing(false);
+      const next = refreshTarget.current;
+      if (next.preset !== requestTarget.preset || next.period.from !== requestTarget.period.from || next.period.to !== requestTarget.period.to) void refresh(next);
     }
   }
 
   return (
     <section className="w-full min-w-0 pb-2">
       <PageHeading title="Dashboard Tim" description="Satu pandangan untuk memahami progres dan hasil kerja seluruh tim." action={
-        <button type="button" onClick={refresh} disabled={refreshing} className={`${quietButton} h-11 shrink-0`}>
+        <button type="button" onClick={() => void refresh()} disabled={refreshing} className={`${quietButton} h-11 shrink-0`}>
           <RefreshCw className={`size-4 ${refreshing ? "motion-safe:animate-spin" : ""}`} aria-hidden="true" />
           {refreshing ? "Memperbarui…" : "Perbarui data"}
         </button>
@@ -155,7 +175,7 @@ export function ConnectedDashboardWorkspace(initialData: DashboardData) {
         <span>Dimuat {new Intl.DateTimeFormat("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Bangkok" }).format(new Date(loadedAt))} WIB</span>
         <span aria-hidden="true">·</span><span>Perubahan terbaru dapat memerlukan hingga 30 detik.</span>
       </div>
-      {refreshError && <div role="alert" className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#e4c8c2] bg-[#fff4f1] p-4 text-sm text-[#813d32]"><div className="max-w-3xl"><p>{refreshError.message} Data sebelumnya tetap ditampilkan.</p>{refreshError.accessDenied && <p className="mt-1">Masuk kembali untuk memeriksa sesi Anda. Hubungi Admin jika akun dinonaktifkan atau hak akses berubah.</p>}</div>{refreshError.accessDenied ? <Link href="/login" className="inline-flex min-h-10 items-center rounded-lg px-3 font-semibold underline underline-offset-4">Masuk kembali</Link> : <button type="button" disabled={refreshing} onClick={refresh} className="min-h-10 rounded-lg px-3 font-semibold underline underline-offset-4 disabled:opacity-60">Coba lagi</button>}</div>}
+      {refreshError && <div role="alert" className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#e4c8c2] bg-[#fff4f1] p-4 text-sm text-[#813d32]"><div className="max-w-3xl"><p>{refreshError.message} Data sebelumnya tetap ditampilkan.</p>{refreshError.accessDenied && <p className="mt-1">Masuk kembali untuk memeriksa sesi Anda. Hubungi Admin jika akun dinonaktifkan atau hak akses berubah.</p>}</div>{refreshError.accessDenied ? <Link href="/login" className="inline-flex min-h-10 items-center rounded-lg px-3 font-semibold underline underline-offset-4">Masuk kembali</Link> : <button type="button" disabled={refreshing} onClick={() => void refresh()} className="min-h-10 rounded-lg px-3 font-semibold underline underline-offset-4 disabled:opacity-60">Coba lagi</button>}</div>}
 
       <form onSubmit={applyPeriod} noValidate className="mt-3 border-y bg-white px-4 py-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -242,7 +262,7 @@ function Progress({ value, label }: { value: number; label: string }) {
 function PlanList({ plans, from, to, completedStatusLabels, divisionId }: { plans: DashboardPlan[]; from: string; to: string; completedStatusLabels: string[]; divisionId?: string }) {
   const [limit, setLimit] = useState(5);
   if (!plans.length) return <p className="py-5 text-sm text-[#59706f]">Tidak ada pekerjaan pada daftar ini.</p>;
-  return <><ul className="mt-2 divide-y">{plans.slice(0, limit).map((plan) => <li key={plan.id} className="flex flex-wrap items-start justify-between gap-3 py-4"><div className="min-w-0 flex-1 basis-48"><Link href={monitoringHref(plan.ownerId, from, to, plan.id, divisionId)} className="break-words text-sm font-semibold text-[#176d68] underline-offset-4 hover:underline">{plan.task}<span className="sr-only"> — lihat detail</span></Link><p className="mt-1 text-xs leading-5 text-[#59706f]">{plan.ownerName} · {displayDate(plan.date, true)}</p></div><div className="flex shrink-0 flex-col items-start gap-1.5 text-xs"><span className="flex items-center gap-2"><span className="w-8 text-[#59706f]">Pagi</span><StatusBadge completedStatusLabels={completedStatusLabels} status={plan.morningStatus} /></span><span className="flex items-center gap-2"><span className="w-8 text-[#59706f]">Sore</span>{plan.afternoonStatus ? <StatusBadge completedStatusLabels={completedStatusLabels} status={plan.afternoonStatus} /> : <span className="text-[#59706f]">Belum diisi</span>}</span></div></li>)}</ul>{plans.length > limit && <button type="button" className="mb-2 inline-flex min-h-10 items-center gap-2 rounded-lg px-2 text-sm font-semibold text-[#137d79] hover:bg-[#e3f3f0]" onClick={() => setLimit(limit + 5)}>Tampilkan lebih banyak ({plans.length - limit})<ArrowDown className="size-4" aria-hidden="true" /></button>}</>;
+  return <><ul className="mt-2 divide-y">{plans.slice(0, limit).map((plan) => <li key={plan.id} className="flex flex-wrap items-start justify-between gap-3 py-4"><div className="min-w-0 flex-1 basis-48"><Link href={monitoringHref(plan.ownerId, from, to, dashboardRecordId(plan), divisionId)} className="break-words text-sm font-semibold text-[#176d68] underline-offset-4 hover:underline">{plan.task}<span className="sr-only"> — lihat detail</span></Link><p className="mt-1 text-xs leading-5 text-[#59706f]">{plan.ownerName} · {displayDate(plan.date, true)}</p></div><div className="flex shrink-0 flex-col items-start gap-1.5 text-xs"><span className="flex items-center gap-2"><span className="w-8 text-[#59706f]">Pagi</span><StatusBadge completedStatusLabels={completedStatusLabels} status={plan.morningStatus} /></span><span className="flex items-center gap-2"><span className="w-8 text-[#59706f]">Sore</span>{plan.afternoonStatus ? <StatusBadge completedStatusLabels={completedStatusLabels} status={plan.afternoonStatus} /> : <span className="text-[#59706f]">Belum diisi</span>}</span></div></li>)}</ul>{plans.length > limit && <button type="button" className="mb-2 inline-flex min-h-10 items-center gap-2 rounded-lg px-2 text-sm font-semibold text-[#137d79] hover:bg-[#e3f3f0]" onClick={() => setLimit(limit + 5)}>Tampilkan lebih banyak ({plans.length - limit})<ArrowDown className="size-4" aria-hidden="true" /></button>}</>;
 }
 
 function DailyTrend({ trend }: { trend: { date: string; total: number; completed: number }[] }) {

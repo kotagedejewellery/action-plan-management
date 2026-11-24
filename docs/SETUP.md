@@ -55,6 +55,18 @@ docker compose up -d --force-recreate --wait
 docker compose logs --tail=100 app
 ```
 
+### Migrasi record Action Plan lama
+
+Dashboard membaca banyak sheet sekaligus dan tidak menulis ke Spreadsheet. Jika ada sheet Action Plan lama tanpa `record_id`, periksa terlebih dahulu lalu jalankan migrasi **secara eksplisit** setelah backup Spreadsheet tersedia:
+
+```bash
+docker compose run --rm app npm run check:action-plans
+docker compose run --rm app npm run migrate:action-plans
+docker compose run --rm app npm run check:action-plans
+```
+
+Perintah `check` hanya membaca dan melaporkan jumlah record legacy. `migrate:action-plans` hanya mengisi kolom teknis G:I (`record_id`, `created_at`, `updated_at`) untuk baris Action Plan yang memiliki tanggal tetapi belum memiliki `record_id`; enam kolom bisnis tidak diubah, dan tidak ada sheet, record, atau file Drive yang dihapus. Perintah ini tidak pernah dijalankan oleh startup, deploy, atau CI. Untuk pengukuran sementara di produksi, tambahkan `DASHBOARD_PERF_DEBUG=1` di environment lalu lihat log `[dashboard-perf]`; hapus kembali setelah pengukuran selesai.
+
 Push ke `main` akan menjalankan TypeScript, lint, dan Vitest sebelum GitHub Actions deploy melalui SSH. GitHub Secrets yang dibutuhkan: `VPS_HOST`, `VPS_USER`, dan `VPS_SSH_KEY`.
 
 ### Mengaktifkan Catatan Kolaboratif

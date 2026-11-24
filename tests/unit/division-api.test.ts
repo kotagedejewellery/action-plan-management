@@ -5,7 +5,7 @@ vi.mock("@/auth", () => ({ auth: vi.fn() }));
 vi.mock("@/infrastructure/container", () => ({
   users: { list: vi.fn(), findById: vi.fn(), create: vi.fn(), update: vi.fn(), remove: vi.fn() },
   divisions: { list: vi.fn(), create: vi.fn(), update: vi.fn() },
-  actionPlans: { list: vi.fn(), findById: vi.fn(), create: vi.fn(), update: vi.fn(), softDelete: vi.fn() },
+  actionPlans: { list: vi.fn(), listMany: vi.fn(), findById: vi.fn(), create: vi.fn(), update: vi.fn(), softDelete: vi.fn() },
   weeklyPlans: { list: vi.fn(), update: vi.fn(), hardDelete: vi.fn() },
   approvals: { list: vi.fn(), create: vi.fn() },
   statuses: { list: vi.fn(), create: vi.fn() },
@@ -50,6 +50,7 @@ beforeEach(() => {
     return division;
   });
   vi.mocked(actionPlans.list).mockImplementation(async (sheet) => [{ id: sheet, task: sheet, date: "2026-11-18", morningStatus: "On Progress", createdAt: "", updatedAt: "" }]);
+  vi.mocked(actionPlans.listMany).mockImplementation(async (sheetNames) => new Map(sheetNames.map((sheet) => [sheet, [{ id: sheet, task: sheet, date: "2026-11-18", morningStatus: "On Progress", createdAt: "", updatedAt: "" }]])));
   vi.mocked(weeklyPlans.list).mockResolvedValue(["ua", "ub", "old"].map((userId) => ({ id: userId, userId, title: userId, weekStart: "2026-11-16", weekEnd: "2026-11-22", plannedActionPlanIds: [], createdAt: "", updatedAt: "" })));
   vi.mocked(statuses.list).mockResolvedValue([]);
   vi.mocked(approvals.list).mockResolvedValue([]);
@@ -68,8 +69,8 @@ it("scopes actual dashboard JSON and weekly plans before reading other sheets, i
   expect(data.plans.map((plan: { id: string }) => plan.id)).toEqual(["sheet_ua"]);
   expect(data.weeklyPlans.map((plan: { userId: string }) => plan.userId)).toEqual(["ua"]);
   expect(JSON.stringify(data)).not.toMatch(/sheet_ub|passwordHash|bb@example/);
-  expect(actionPlans.list).toHaveBeenCalledTimes(1);
-  expect(actionPlans.list).toHaveBeenCalledWith("sheet_ua");
+  expect(actionPlans.listMany).toHaveBeenCalledTimes(1);
+  expect(actionPlans.listMany).toHaveBeenCalledWith(["sheet_ua"]);
   expect((await dashboard(request("dashboard?divisionId=b"))).status).toBe(403);
 });
 

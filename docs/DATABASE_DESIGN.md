@@ -68,7 +68,7 @@ Enam kolom bisnis existing dipertahankan di awal agar data lama tetap kompatibel
 ### Kompatibilitas data existing
 
 - Baris lama dengan enam kolom tetap dapat dibaca dan ditampilkan.
-- Saat sheet lama pertama kali dibaca, baris tanpa `record_id` dimigrasikan batch dengan UUID dan timestamp pada kolom G:I; waktu asal yang tidak tersedia memakai waktu migrasi.
+- Gunakan `npm run check:action-plans` lalu `npm run migrate:action-plans` secara eksplisit untuk mengisi `record_id` dan timestamp pada baris lama secara batch. Compatibility fallback lama tetap berlaku bila sheet legacy diakses langsung, tetapi Dashboard tidak menjalankan migrasi ini.
 - Aplikasi mencari record berdasarkan `record_id`, bukan nomor baris. Nomor baris spreadsheet bukan primary key karena dapat berubah ketika pengguna spreadsheet menyisipkan/menghapus baris.
 - Header lama yang menggunakan label tampilan (`Tanggal`, `Action Plan`, dan seterusnya) dipetakan di adapter Sheets. Header fisik tidak perlu diubah jika sudah dipakai tim.
 

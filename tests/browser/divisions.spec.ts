@@ -94,8 +94,8 @@ test("BOD Monitor dashboard labels the approval queue as read-only review", asyn
 
 test("SuperAdmin dashboard refresh preserves the selected division", async ({ page }) => {
   await page.goto("/?divisionId=a");
-  await page.route("**/api/dashboard?divisionId=a", (route) => route.fulfill({ json: { ...dashboardFixture, divisionId: "a", scopeLabel: "Marketing" } }));
-  const request = page.waitForRequest("**/api/dashboard?divisionId=a");
+  await page.route(/\/api\/dashboard\?divisionId=a(?:&|$)/, (route) => route.fulfill({ json: { ...dashboardFixture, divisionId: "a", scopeLabel: "Marketing" } }));
+  const request = page.waitForRequest(/\/api\/dashboard\?divisionId=a(?:&|$)/);
   await page.getByRole("button", { name: "Perbarui data", exact: true }).click();
   await request;
   await expect(page.getByRole("combobox", { name: "Divisi", exact: true })).toHaveValue("a");

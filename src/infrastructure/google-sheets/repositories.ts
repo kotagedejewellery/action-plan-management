@@ -13,14 +13,18 @@ const APPROVAL_HEADERS = ["id", "action_plan_id", "owner_id", "division_id", "pl
 type Row = { values: string[]; rowNumber: number };
 const value = (input: unknown) => String(input ?? "");
 const READ_CACHE_TTL_MS = 30_000;
+const MAX_BATCH_RANGES = 100;
 const USER_READ_CACHE_TTL_MS = 5_000;
 type CachedRead = { expiresAt: number; value: Promise<string[][]> };
 const readCache = new Map<string, CachedRead>();
+type CachedBatchRead = { expiresAt: number; value: Promise<string[][][]> };
+const batchReadCache = new Map<string, CachedBatchRead>();
 const legacyPlanMigrations = new Map<string, Promise<void>>();
 
 // ponytail: local cache assumes one app container; use a shared cache if replicas are added.
 function clearReadCache() {
   readCache.clear();
+  batchReadCache.clear();
 }
 
 function readValues(range: string): Promise<string[][]> {
@@ -37,6 +41,24 @@ function readValues(range: string): Promise<string[][]> {
       throw error;
     });
   readCache.set(key, entry);
+  return entry.value;
+}
+
+function readManyValues(ranges: string[]): Promise<string[][][]> {
+  const key = `batch:${ranges.join("\u0001")}`;
+  const cached = batchReadCache.get(key);
+  if (cached && cached.expiresAt > Date.now()) return cached.value;
+
+  const entry: CachedBatchRead = { expiresAt: Date.now() + READ_CACHE_TTL_MS, value: Promise.resolve([]) };
+  const chunks = Array.from({ length: Math.ceil(ranges.length / MAX_BATCH_RANGES) }, (_, index) => ranges.slice(index * MAX_BATCH_RANGES, (index + 1) * MAX_BATCH_RANGES));
+  entry.value = Promise.all(chunks.map((chunk) => sheetsClient().spreadsheets.values.batchGet({ spreadsheetId: spreadsheetId(), ranges: chunk })
+    .then((response) => chunk.map((_, index) => (response.data.valueRanges?.[index]?.values ?? []).map((row) => row.map(value))))))
+    .then((values) => values.flat())
+    .catch((error: unknown) => {
+      if (batchReadCache.get(key) === entry) batchReadCache.delete(key);
+      throw error;
+    });
+  batchReadCache.set(key, entry);
   return entry.value;
 }
 
@@ -117,6 +139,13 @@ function planFrom(row: Row): ActionPlan {
   return { id, date, task, morningStatus, afternoonStatus: afternoonStatus || undefined, resultLink: resultLink || undefined, note: note || undefined, weeklyPlanId: weeklyPlanId || undefined, attachments: Array.isArray(parsedAttachments) ? parsedAttachments : [], deletedAt: deletedAt || undefined, deletedBy: deletedBy || undefined, createdAt, updatedAt };
 }
 
+function dashboardPlanFrom(values: string[], rowNumber: number, sheetName: string) {
+  if (values[6]) return planFrom({ values, rowNumber });
+  const legacyValues = [...values];
+  legacyValues[6] = `legacy:${sheetName}:${rowNumber}`;
+  return planFrom({ values: legacyValues, rowNumber });
+}
+
 function weeklyPlanFrom(row: Row): WeeklyPlan {
   const [id, userId, title, weekStart, weekEnd, note, createdAt, updatedAt, deletedAt, deletedBy, plannedActionPlanIds] = row.values;
   let plannedIds: string[] = [];
@@ -174,6 +203,13 @@ export class GoogleSheetsUserRepository implements UserRepository {
 export class GoogleSheetsActionPlanRepository implements ActionPlanRepository {
   private async ensureSchema(sheetName: string) { await ensureHeaders(sheetName, PLAN_HEADERS); }
   async list(sheetName: string) { await this.ensureSchema(sheetName); await migrateLegacyPlanRecords(sheetName); return (await rows(`${rangeSheetName(sheetName)}!A:M`)).filter((row) => row.values[6]).map(planFrom).sort((a, b) => b.date.localeCompare(a.date)); }
+  async listMany(sheetNames: string[]) {
+    const names = [...new Set(sheetNames)];
+    if (!names.length) return new Map<string, ActionPlan[]>();
+    const valuesBySheet = await readManyValues(names.map((sheetName) => `${rangeSheetName(sheetName)}!A:M`));
+    // Dashboard reads must never migrate legacy sheets as a side effect.
+    return new Map(names.map((sheetName, index) => [sheetName, valuesBySheet[index].slice(1).filter((row) => row[0]).map((values, rowIndex) => dashboardPlanFrom(values, rowIndex + 2, sheetName)).sort((a, b) => b.date.localeCompare(a.date))]));
+  }
   async findById(sheetName: string, id: string) { return (await this.list(sheetName)).find((plan) => plan.id === id) ?? null; }
   async create(sheetName: string, plan: ActionPlan) { await this.ensureSchema(sheetName); await append(`${rangeSheetName(sheetName)}!A:M`, [plan.date, plan.task, plan.morningStatus, plan.afternoonStatus ?? "", plan.resultLink ?? "", plan.note ?? "", plan.id, plan.createdAt, plan.updatedAt, plan.deletedAt ?? "", plan.deletedBy ?? "", plan.weeklyPlanId ?? "", JSON.stringify(plan.attachments ?? [])]); return plan; }
   async createMany(sheetName: string, plans: ActionPlan[]) { await this.ensureSchema(sheetName); await appendMany(`${rangeSheetName(sheetName)}!A:M`, plans.map((plan) => [plan.date, plan.task, plan.morningStatus, plan.afternoonStatus ?? "", plan.resultLink ?? "", plan.note ?? "", plan.id, plan.createdAt, plan.updatedAt, plan.deletedAt ?? "", plan.deletedBy ?? "", plan.weeklyPlanId ?? "", JSON.stringify(plan.attachments ?? [])])); return plans; }

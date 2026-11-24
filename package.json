@@ -11,7 +11,9 @@
     "test:ui": "playwright test",
     "bootstrap:admin": "node scripts/bootstrap-admin.mjs",
     "migrate:notes": "node scripts/migrate-notes.mjs",
-    "check:notes": "node scripts/check-notes-schema.mjs"
+    "check:notes": "node scripts/check-notes-schema.mjs",
+    "check:action-plans": "node scripts/migrate-action-plan-records.mjs",
+    "migrate:action-plans": "node scripts/migrate-action-plan-records.mjs --apply"
   },
   "dependencies": {
     "@hocuspocus/extension-database": "^4.8.0",
