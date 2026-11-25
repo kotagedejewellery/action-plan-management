@@ -5,6 +5,7 @@ import { useMemo, useRef, useState, type FormEvent } from "react";
 import type { ActionPlan, ActionPlanAttachment, WeeklyPlan } from "@/domain/models";
 import type { ApprovalState } from "@/application/approvals";
 import { bangkokDate } from "@/lib/bangkok-date";
+import { ApprovalStatusBadge } from "./approval-status";
 import { useFeedback } from "./feedback";
 import { Close, ExternalLink, Pencil, Plus, Search, Trash } from "./icons";
 import { ConfirmDialog, DialogFrame, PageHeading, StatusBadge } from "./workspace-ui";
@@ -98,10 +99,11 @@ export function ConnectedActionPlanWorkspace({ initialPlans, weeklyPlans, status
   function approvalControl(plan: ActionPlan) {
     if (!approvalRequired) return null;
     const state = approvalStates[plan.id] ?? { status: "belum_diajukan" as const };
-    const label = { belum_diajukan: "Belum diajukan", menunggu: "Menunggu approval", disetujui: "Disetujui", ditolak: "Perlu revisi" }[state.status];
-    const color = state.status === "disetujui" ? "bg-[#daf2e5] text-[#206b43]" : state.status === "ditolak" ? "bg-[#fff1d7] text-[#9a5b16]" : state.status === "menunggu" ? "bg-[#e6efff] text-[#245da6]" : "bg-[#eef3f2] text-[#516967]";
     const hasEvidence = Boolean(plan.resultLink || plan.attachments?.length);
-    return <div className="mt-2 flex flex-wrap items-center gap-2"><span className={`rounded-full px-2 py-1 text-xs font-semibold ${color}`}>{label}</span>{state.note && <span className="text-xs text-[#9a5b16]">Catatan BOD: {state.note}</span>}{state.status !== "menunggu" && state.status !== "disetujui" && <button type="button" disabled={!hasEvidence || submittingId === plan.id} onClick={() => void submitApproval(plan)} className="min-h-9 rounded-lg border px-3 text-xs font-semibold text-[#137d79] hover:bg-[#eef4f3] disabled:cursor-not-allowed disabled:opacity-50" title={hasEvidence ? undefined : "Tambahkan link hasil atau lampiran sebelum mengajukan approval."}>{submittingId === plan.id ? "Mengajukan…" : "Kirim untuk approval"}</button>}{!hasEvidence && state.status !== "menunggu" && state.status !== "disetujui" && <span className="text-xs text-[#516967]">Tambahkan bukti terlebih dahulu.</span>}</div>;
+    const isCompleted = Boolean(plan.afternoonStatus && completedStatusLabels.includes(plan.afternoonStatus));
+    const canSubmit = isCompleted && hasEvidence;
+    const blocker = !isCompleted ? "Selesaikan status sore sebelum mengajukan approval." : "Tambahkan bukti terlebih dahulu.";
+    return <div className="mt-2 flex flex-wrap items-center gap-2"><ApprovalStatusBadge state={state} />{state.note && <span className="text-xs text-[#9a5b16]">Catatan BOD: {state.note}</span>}{state.status !== "menunggu" && state.status !== "disetujui" && <button type="button" disabled={!canSubmit || submittingId === plan.id} onClick={() => void submitApproval(plan)} className="min-h-9 rounded-lg border px-3 text-xs font-semibold text-[#137d79] hover:bg-[#eef4f3] disabled:cursor-not-allowed disabled:opacity-50" title={canSubmit ? undefined : blocker}>{submittingId === plan.id ? "Mengajukan…" : "Kirim untuk approval"}</button>}{!canSubmit && state.status !== "menunggu" && state.status !== "disetujui" && <span className="text-xs text-[#516967]">{blocker}</span>}</div>;
   }
 
   async function removePlan() {

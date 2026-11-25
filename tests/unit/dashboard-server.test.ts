@@ -140,4 +140,20 @@ describe("dashboard refresh", () => {
     vi.mocked(currentActor).mockResolvedValue({ ...admin, id: "bod-monitor", role: "bod", divisionId: division.id });
     expect((await (await GET()).json()).canApprove).toBe(false);
   });
+
+  it("does not include a BOD's retained legacy sheet in team progress", async () => {
+    const division = { id: "executive", name: "Executive Team", bodUserId: "bod-lead", status: "active" as const, createdAt: "", updatedAt: "" };
+    const leadBod = { ...member, id: "bod-lead", name: "Joko Wardiyanto", role: "bod" as const, sheetName: "legacy_joko", divisionId: division.id };
+    const teamMember = { ...member, divisionId: division.id };
+    vi.mocked(divisions.list).mockResolvedValue([division]);
+    vi.mocked(users.list).mockResolvedValue([leadBod, teamMember]);
+    vi.mocked(currentActor).mockResolvedValue({ ...admin, id: leadBod.id, name: leadBod.name, role: "bod", divisionId: division.id, divisionName: division.name });
+
+    const response = await GET();
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.users).toMatchObject([{ id: teamMember.id }]);
+    expect(actionPlans.listMany).toHaveBeenCalledWith([teamMember.sheetName]);
+  });
 });

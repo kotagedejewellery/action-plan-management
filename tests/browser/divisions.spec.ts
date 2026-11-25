@@ -76,12 +76,34 @@ test("legacy account mapping names the new scope and then locks division transfe
 test("BOD navigation exposes only review surfaces and a named division", async ({ page }) => {
   await page.goto("/?actor=bod");
   const navigation = page.getByRole("navigation", { name: "Navigasi utama" });
+  await expect(navigation.getByRole("link")).toHaveText(["Dashboard", "Monitoring", "Catatan"]);
   await expect(navigation.getByRole("link", { name: "Dashboard", exact: true })).toBeVisible();
   await expect(navigation.getByRole("link", { name: "Monitoring", exact: true })).toBeVisible();
   await expect(navigation.getByRole("link", { name: "Users", exact: true })).toHaveCount(0);
   await expect(navigation.getByRole("link", { name: "Divisi", exact: true })).toHaveCount(0);
   await expect(page.locator("main")).toContainText("Marketing");
   await expect(page.locator("main").getByRole("combobox", { name: "Divisi", exact: true })).toHaveCount(0);
+});
+
+test("SuperAdmin navigation keeps management routes before Catatan", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("navigation", { name: "Navigasi utama" }).getByRole("link")).toHaveText([
+    "Dashboard",
+    "Monitoring",
+    "Divisi",
+    "Users",
+    "Catatan",
+  ]);
+});
+
+test("User navigation keeps planning routes before Catatan", async ({ page }) => {
+  await page.goto("/action-plans?actor=user");
+  await expect(page.getByRole("navigation", { name: "Navigasi utama" }).getByRole("link")).toHaveText([
+    "Action Plan",
+    "Rencana Mingguan",
+    "Riwayat",
+    "Catatan",
+  ]);
 });
 
 test("BOD Monitor dashboard labels the approval queue as read-only review", async ({ page }) => {

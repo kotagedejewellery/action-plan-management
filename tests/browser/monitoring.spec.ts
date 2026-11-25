@@ -101,6 +101,29 @@ test("BOD Monitor sees the current approval state without approval controls", as
   await expect(detail.getByRole("button", { name: "Setujui", exact: true })).toHaveCount(0);
 });
 
+test("completed Executive work keeps its work result and shows its separate approval state", async ({ page }) => {
+  await page.goto("/monitoring?actor=bod");
+  const row = page.locator("tbody tr").filter({ hasText: "Finalisasi katalog cincin" });
+  await expect(page.getByRole("columnheader", { name: "Approval", exact: true })).toBeVisible();
+  await expect(row).toContainText("Final");
+  await expect(row).toContainText("Menunggu approval");
+  const search = page.getByRole("textbox", { name: "Cari pekerjaan, catatan, atau status", exact: true });
+  await search.fill("Pemeriksaan koleksi 03");
+  await expect(page.locator("tbody tr")).toContainText("Disetujui");
+  await search.fill("Pemeriksaan koleksi 06");
+  await expect(page.locator("tbody tr")).toContainText("Perlu revisi");
+});
+
+test("SuperAdmin shows approval only for members in a division with approval", async ({ page }) => {
+  await page.goto("/monitoring?approval=scope&userId=u1");
+  await expect(page.getByRole("columnheader", { name: "Approval", exact: true })).toHaveCount(0);
+  await page.route("**/api/action-plans?userId=u0&scope=all", (route) => route.fulfill({ json: monitoringPlans }));
+  await page.route("**/api/approvals?userId=u0", (route) => route.fulfill({ json: { m0: { status: "menunggu", approvalId: "approval-m0" } } }));
+  await page.getByRole("complementary", { name: "Pemilih anggota" }).getByRole("button", { name: /Alya Putri/ }).click();
+  await expect(page.getByRole("columnheader", { name: "Approval", exact: true })).toBeVisible();
+  await expect(page.locator("tbody tr").filter({ hasText: "Finalisasi katalog cincin" })).toContainText("Menunggu approval");
+});
+
 test("failed member load never exposes the previous member and retry works", async ({ page }) => {
   let calls = 0;
   await page.route("**/api/action-plans?**", (route) => ++calls === 1 ? route.fulfill({ status: 503, json: { error: "Layanan sementara tidak tersedia." } }) : route.fulfill({ json: bimaPlans }));
@@ -197,6 +220,13 @@ test.describe("mobile inspection", () => {
     expect(await panel.evaluate((element) => element.contains(document.activeElement))).toBe(true);
     await panel.getByRole("button", { name: "Tutup detail", exact: true }).tap();
     await expect(opener).toBeFocused();
+  });
+
+  test("completed Executive work exposes its approval state below the work statuses", async ({ page }) => {
+    await page.goto("/monitoring?actor=bod");
+    const card = page.getByRole("article").filter({ hasText: "Finalisasi katalog cincin" });
+    await expect(card).toContainText("Approval");
+    await expect(card).toContainText("Menunggu approval");
   });
 });
 

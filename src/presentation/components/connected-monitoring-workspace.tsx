@@ -5,6 +5,7 @@ import { dashboardPeriodInputSchema } from "@/application/schemas";
 import type { ApprovalState } from "@/application/approvals";
 import type { ActionPlan, SafeUser } from "@/domain/models";
 import { bangkokDate } from "@/lib/bangkok-date";
+import { ApprovalStatusBadge } from "./approval-status";
 import { useFeedback } from "./feedback";
 import { ExternalLink, Search } from "./icons";
 import { MonitoringDetailPanel } from "./monitoring-detail-panel";
@@ -44,8 +45,13 @@ function PlanStatus({ status, completedStatusLabels }: { status?: string; comple
   return status ? <span className="break-words md:whitespace-nowrap"><StatusBadge status={status} completedStatusLabels={completedStatusLabels} /></span> : <span className="text-xs text-[#516967]">Belum diisi</span>;
 }
 
-export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelectedId, initialRecordId, initialDateFrom, initialDateTo, initialScope = "all", completedStatusLabels, today, scopeLabel, divisionFilter, canManageUsers = false, canViewApproval = false, canApprove = false, initialApprovalStates = {} }: {
-  scopeLabel?: string; divisionFilter?: ReactNode; canManageUsers?: boolean; canViewApproval?: boolean; canApprove?: boolean; initialApprovalStates?: Record<string, ApprovalState>;
+function ApprovalStatus({ state, unavailable = false }: { state?: ApprovalState; unavailable?: boolean }) {
+  if (unavailable) return <span className="text-xs text-[#516967]">Status belum dimuat</span>;
+  return <ApprovalStatusBadge state={state} />;
+}
+
+export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelectedId, initialRecordId, initialDateFrom, initialDateTo, initialScope = "all", completedStatusLabels, today, scopeLabel, divisionFilter, canManageUsers = false, canViewApproval = false, canApprove = false, approvalUserIds = [], initialApprovalStates = {} }: {
+  scopeLabel?: string; divisionFilter?: ReactNode; canManageUsers?: boolean; canViewApproval?: boolean; canApprove?: boolean; approvalUserIds?: string[]; initialApprovalStates?: Record<string, ApprovalState>;
   users: SafeUser[]; initialPlans: ActionPlan[]; initialSelectedId: string; initialRecordId: string;
   initialDateFrom: string; initialDateTo: string; initialScope?: Scope; completedStatusLabels: string[]; today: string;
 }) {
@@ -67,6 +73,7 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<{ message: string; accessDenied: boolean } | null>(null);
   const [approvalStates, setApprovalStates] = useState(initialApprovalStates);
+  const [approvalUnavailable, setApprovalUnavailable] = useState(false);
   const requestId = useRef(0);
   const requestController = useRef<AbortController | null>(null);
   const detailOpener = useRef<HTMLButtonElement | null>(null);
@@ -74,6 +81,7 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
   const memberToggle = useRef<HTMLButtonElement>(null);
   const list = useRef<HTMLDivElement>(null);
   const selected = users.find((user) => user.id === selectedId);
+  const showApproval = canViewApproval && approvalUserIds.includes(selectedId);
   const sameMember = data.userId === selectedId;
   const showData = sameMember && !loading && !error?.accessDenied;
   const visibleMembers = users.filter((user) => `${user.name} ${user.email}`.toLowerCase().includes(memberQuery.trim().toLowerCase()));
@@ -135,7 +143,7 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
     requestController.current?.abort();
     const controller = new AbortController();
     requestController.current = controller;
-    setLoading(true); setError((current) => current?.accessDenied ? current : null); setApprovalStates({}); setDetailId("");
+    setLoading(true); setError((current) => current?.accessDenied ? current : null); setApprovalStates({}); setApprovalUnavailable(false); setDetailId("");
     try {
       const response = await fetch(`/api/action-plans?userId=${encodeURIComponent(userId)}&scope=all`, { signal: controller.signal });
       const body = await response.json().catch(() => null);
@@ -146,11 +154,11 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
       }
       if (!Array.isArray(body)) throw new Error("Invalid response");
       setData({ userId, plans: body });
-      if (canViewApproval) {
+      if (canViewApproval && approvalUserIds.includes(userId)) {
         const approvalResponse = await fetch(`/api/approvals?userId=${encodeURIComponent(userId)}`, { signal: controller.signal });
         const states = approvalResponse.ok ? await approvalResponse.json().catch(() => null) : null;
         if (states && currentRequestId === requestId.current) setApprovalStates(states);
-        else if (currentRequestId === requestId.current) notify("error", "Status approval belum dimuat", "Data pekerjaan tetap tampil. Muat ulang untuk melihat status approval terbaru.");
+        else if (currentRequestId === requestId.current) { setApprovalUnavailable(true); notify("error", "Status approval belum dimuat", "Data pekerjaan tetap tampil. Muat ulang untuk melihat status approval terbaru."); }
       }
       setError(null);
       const dateHeader = response.headers.get("x-workspace-date");
@@ -252,19 +260,19 @@ export function ConnectedMonitoringWorkspace({ users, initialPlans, initialSelec
         <div ref={list} aria-busy={loading} aria-label="Pekerjaan anggota">
           {loading ? <div role="status" className="p-5 sm:p-6"><p className="text-sm text-[#516967]">Memuat pekerjaan {selected?.name}…</p><div className="mt-5 space-y-5 motion-safe:animate-pulse" aria-hidden="true">{[0, 1, 2, 3].map((row) => <div key={row} className="flex gap-5 border-t pt-5"><span className="h-4 w-20 rounded bg-[#eef3f2]" /><span className="h-4 flex-1 rounded bg-[#eef3f2]" /><span className="h-4 w-16 rounded bg-[#eef3f2]" /></div>)}</div></div> : showData && filtered.length > 0 ? <>
             <div className="hidden max-h-[640px] overflow-auto md:block" tabIndex={0} aria-label="Tabel pekerjaan, dapat digulir">
-              <table className="w-full min-w-[760px] text-left text-sm"><caption className="sr-only">Action Plan {selected?.name}, {periodLabel(period)}</caption><thead className="sticky top-0 z-10 border-b bg-[#f7faf9] text-xs text-[#516967]"><tr>{["Tanggal", "Action Plan", "Pagi", "Sore", "Hasil", "Detail"].map((label) => <th key={label} scope="col" className="px-4 py-4 font-semibold">{label}</th>)}</tr></thead>
+              <table className={`w-full ${showApproval ? "min-w-[880px]" : "min-w-[760px]"} text-left text-sm`}><caption className="sr-only">Action Plan {selected?.name}, {periodLabel(period)}</caption><thead className="sticky top-0 z-10 border-b bg-[#f7faf9] text-xs text-[#516967]"><tr>{["Tanggal", "Action Plan", "Pagi", "Sore", ...(showApproval ? ["Approval"] : []), "Hasil", "Detail"].map((label) => <th key={label} scope="col" className="px-4 py-4 font-semibold">{label}</th>)}</tr></thead>
                 <tbody>{pagePlans.map((plan) => <tr key={plan.id} data-plan-row={plan.id} className={`border-t transition-colors hover:bg-[#f7faf9] ${detailId === plan.id ? "bg-[#e3f3f0]" : ""}`} aria-selected={detailId === plan.id}>
                   <td className="px-4 py-4 align-top">{renderDate(plan)}</td><td className="w-full min-w-52 max-w-lg px-4 py-4 align-top"><p className="break-words font-medium text-[#173c3a]">{plan.task}</p>{plan.note && <p className="mt-1 line-clamp-2 break-words text-xs leading-5 text-[#516967]">{plan.note}</p>}</td>
-                  <td className="px-4 py-4 align-top"><PlanStatus status={plan.morningStatus} completedStatusLabels={completedStatusLabels} /></td><td className="px-4 py-4 align-top"><PlanStatus status={plan.afternoonStatus} completedStatusLabels={completedStatusLabels} /></td><td className="px-4 py-3 align-top">{renderResult(plan)}</td><td className="px-3 py-3 align-top"><button type="button" onClick={(event) => openDetail(plan.id, event.currentTarget)} data-plan-detail={plan.id} aria-label={`Lihat detail: ${plan.task}`} className={`${quietButton} text-[#137d79]`}>Lihat detail</button></td>
+                  <td className="px-4 py-4 align-top"><PlanStatus status={plan.morningStatus} completedStatusLabels={completedStatusLabels} /></td><td className="px-4 py-4 align-top"><PlanStatus status={plan.afternoonStatus} completedStatusLabels={completedStatusLabels} /></td>{showApproval && <td className="px-4 py-4 align-top">{plan.afternoonStatus && completedStatusLabels.includes(plan.afternoonStatus) ? <ApprovalStatus state={approvalStates[plan.id]} unavailable={approvalUnavailable} /> : <span className="text-xs text-[#516967]">â€”</span>}</td>}<td className="px-4 py-3 align-top">{renderResult(plan)}</td><td className="px-3 py-3 align-top"><button type="button" onClick={(event) => openDetail(plan.id, event.currentTarget)} data-plan-detail={plan.id} aria-label={`Lihat detail: ${plan.task}`} className={`${quietButton} text-[#137d79]`}>Lihat detail</button></td>
                 </tr>)}</tbody>
               </table>
             </div>
-            <div className="divide-y md:hidden">{pagePlans.map((plan) => <article key={plan.id} data-plan-row={plan.id} className={`p-5 ${detailId === plan.id ? "bg-[#e3f3f0]" : ""}`}><div>{renderDate(plan)}</div><h3 className="mt-2 break-words text-sm font-semibold leading-6 text-[#173c3a]">{plan.task}</h3><dl className="mt-4 grid grid-cols-2 gap-3 text-xs text-[#516967]"><div><dt>Pagi</dt><dd className="mt-1"><PlanStatus status={plan.morningStatus} completedStatusLabels={completedStatusLabels} /></dd></div><div><dt>Sore</dt><dd className="mt-1"><PlanStatus status={plan.afternoonStatus} completedStatusLabels={completedStatusLabels} /></dd></div></dl>{plan.note && <p className="mt-3 line-clamp-2 break-words text-xs leading-5 text-[#516967]">{plan.note}</p>}<div className="mt-3 flex items-end justify-between gap-3">{renderResult(plan)}<button type="button" onClick={(event) => openDetail(plan.id, event.currentTarget)} data-plan-detail={plan.id} aria-label={`Lihat detail: ${plan.task}`} className={`${quietButton} shrink-0 text-[#137d79]`}>Lihat detail</button></div></article>)}</div>
+            <div className="divide-y md:hidden">{pagePlans.map((plan) => <article key={plan.id} data-plan-row={plan.id} className={`p-5 ${detailId === plan.id ? "bg-[#e3f3f0]" : ""}`}><div>{renderDate(plan)}</div><h3 className="mt-2 break-words text-sm font-semibold leading-6 text-[#173c3a]">{plan.task}</h3><dl className="mt-4 grid grid-cols-2 gap-3 text-xs text-[#516967]"><div><dt>Pagi</dt><dd className="mt-1"><PlanStatus status={plan.morningStatus} completedStatusLabels={completedStatusLabels} /></dd></div><div><dt>Sore</dt><dd className="mt-1"><PlanStatus status={plan.afternoonStatus} completedStatusLabels={completedStatusLabels} /></dd></div></dl>{showApproval && plan.afternoonStatus && completedStatusLabels.includes(plan.afternoonStatus) && <dl className="mt-3 text-xs text-[#516967]"><div><dt>Approval</dt><dd className="mt-1"><ApprovalStatus state={approvalStates[plan.id]} unavailable={approvalUnavailable} /></dd></div></dl>}{plan.note && <p className="mt-3 line-clamp-2 break-words text-xs leading-5 text-[#516967]">{plan.note}</p>}<div className="mt-3 flex items-end justify-between gap-3">{renderResult(plan)}<button type="button" onClick={(event) => openDetail(plan.id, event.currentTarget)} data-plan-detail={plan.id} aria-label={`Lihat detail: ${plan.task}`} className={`${quietButton} shrink-0 text-[#137d79]`}>Lihat detail</button></div></article>)}</div>
             <nav aria-label="Halaman pekerjaan" className="flex flex-wrap items-center justify-between gap-3 border-t p-4 sm:px-6"><p className="text-xs tabular-nums text-[#516967]">{(currentPage - 1) * pageSize + 1}–{Math.min(currentPage * pageSize, filtered.length)} dari {filtered.length} pekerjaan</p><div className="flex items-center gap-2"><button type="button" className={quietButton} disabled={currentPage === 1} onClick={() => { setPage(currentPage - 1); setDetailId(""); }}>Sebelumnya</button><span className="text-xs tabular-nums text-[#516967]">{currentPage}/{pageCount}</span><button type="button" className={quietButton} disabled={currentPage === pageCount} onClick={() => { setPage(currentPage + 1); setDetailId(""); }}>Berikutnya</button></div></nav>
           </> : !error && <div className="p-10 text-center"><h3 className="text-sm font-semibold text-[#173c3a]">{data.plans.length === 0 ? "Belum ada pekerjaan untuk anggota ini" : "Tidak ada pekerjaan yang sesuai filter"}</h3><p className="mt-2 text-sm leading-6 text-[#516967]">{data.plans.length === 0 ? "Rencana dan hasil kerja akan tampil setelah anggota menambahkan Action Plan." : "Coba ubah periode, status, atau kata pencarian."}</p>{hasFilters && <button type="button" className={`${quietButton} mt-3 text-[#137d79]`} onClick={clearFilters}>Hapus filter</button>}</div>}
         </div>
       </div>
     </div>}
-    {selectedPlan && <MonitoringDetailPanel plan={selectedPlan} userId={selectedId} memberName={selected?.name ?? "Anggota"} completedStatusLabels={completedStatusLabels} approvalState={approvalStates[selectedPlan.id]} canApprove={canApprove} onDecision={decideApproval} onClose={closeDetail} />}
+    {selectedPlan && <MonitoringDetailPanel plan={selectedPlan} userId={selectedId} memberName={selected?.name ?? "Anggota"} completedStatusLabels={completedStatusLabels} approvalState={approvalStates[selectedPlan.id]} approvalUnavailable={showApproval && approvalUnavailable} showApproval={showApproval} canApprove={canApprove} onDecision={decideApproval} onClose={closeDetail} />}
   </section>;
 }

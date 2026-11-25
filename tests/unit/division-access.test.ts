@@ -147,7 +147,7 @@ describe("division isolation", () => {
     expect(resolveActor(people[1], records).divisionId).toBe("division-a");
   });
 
-  it("recovers legacy work after promotion before mapping, preserving identity and fixed affiliation", async () => {
+  it("preserves legacy work after promotion without treating the BOD as a work owner", async () => {
     const { users, divisions, people, records } = setup();
     const legacy = { ...people[6] };
     await saveManagedUser(users, divisions, admin, { ...legacy, role: "bod" }, legacy.id);
@@ -156,7 +156,10 @@ describe("division isolation", () => {
     const mapped = await saveManagedUser(users, divisions, admin, { ...promoted, divisionId: assigned.id }, promoted.id);
     expect(mapped).toMatchObject({ id: legacy.id, role: "bod", sheetName: legacy.sheetName, divisionId: assigned.id });
     expect((await users.findById(legacy.id))?.passwordHash).toBe(legacy.passwordHash);
-    expect(visibleMembers(resolveActor((await users.findById(legacy.id))!, records), people).map((user) => user.id)).toEqual([legacy.id]);
+    const promotedBod = (await users.findById(legacy.id))!;
+    const actor = resolveActor(promotedBod, records);
+    expect(visibleMembers(actor, people).map((user) => user.id)).toEqual([]);
+    expect(() => assertCanReadMember(actor, promotedBod)).toThrow("Pekerjaan tidak ditemukan");
     await expect(saveManagedUser(users, divisions, admin, { ...mapped, divisionId: "division-b" }, mapped.id)).rejects.toThrow("Perpindahan divisi");
   });
 });

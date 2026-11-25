@@ -29,11 +29,11 @@ const baseNavigation = [
   },
   { href: "/weekly-plans", label: "Rencana Mingguan", icon: Calendar, roles: ["user"] },
   { href: "/history", label: "Riwayat", icon: History, roles: ["user"] },
-  { href: "/notes", label: "Catatan", icon: Note, roles: ["admin", "bod", "user"] },
   { href: "/dashboard", label: "Dashboard", icon: Chart, roles: ["admin", "bod"] },
   { href: "/monitoring", label: "Monitoring", icon: Grid, roles: ["admin", "bod"] },
   { href: "/divisions", label: "Divisi", icon: Grid, roles: ["admin"] },
   { href: "/users", label: "Users", icon: Users, roles: ["admin"] },
+  { href: "/notes", label: "Catatan", icon: Note, roles: ["admin", "bod", "user"], separateBefore: true },
 ];
 
 export function AppShell({
@@ -100,20 +100,21 @@ export function AppShell({
       </div>
 
       <nav className="mt-6 space-y-1" aria-label="Navigasi utama" aria-busy={isNavigating}>
-        {navigation.map(({ href, label, icon: Icon }) => {
+        {navigation.map(({ href, label, icon: Icon, separateBefore }) => {
           const active = pathname === href;
           return (
-            <Link
-              key={href}
-              className={`flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition ${active ? "bg-[#e3f3f0] text-[#116b67]" : "text-[#59706f] hover:bg-[#f1f5f4] hover:text-[#244542]"}`}
-              href={href}
-              aria-current={active ? "page" : undefined}
-              onClick={() => { setMobileMenuOpen(false); if (!active) setPendingHref(href); }}
-            >
-              <Icon className="size-[18px]" />
-              {label}
-              {isNavigating && pendingHref === href && <span className="ml-auto inline-flex items-center gap-1 text-xs font-semibold" role="status"><span className="size-3 animate-spin rounded-full border-2 border-current border-t-transparent" aria-hidden="true" /><span className="sr-only">Memuat {label}</span></span>}
-            </Link>
+            <div key={href} className={separateBefore ? "mt-4 border-t border-[#dce5e4] pt-4" : undefined}>
+              <Link
+                className={`flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition ${active ? "bg-[#e3f3f0] text-[#116b67]" : "text-[#59706f] hover:bg-[#f1f5f4] hover:text-[#244542]"}`}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                onClick={() => { setMobileMenuOpen(false); if (!active) setPendingHref(href); }}
+              >
+                <Icon className="size-[18px]" />
+                {label}
+                {isNavigating && pendingHref === href && <span className="ml-auto inline-flex items-center gap-1 text-xs font-semibold" role="status"><span className="size-3 animate-spin rounded-full border-2 border-current border-t-transparent" aria-hidden="true" /><span className="sr-only">Memuat {label}</span></span>}
+              </Link>
+            </div>
           );
         })}
       </nav>

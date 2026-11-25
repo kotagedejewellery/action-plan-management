@@ -52,10 +52,10 @@ beforeEach(() => {
   vi.mocked(actionPlans.list).mockImplementation(async (sheet) => [{ id: sheet, task: sheet, date: "2026-11-18", morningStatus: "On Progress", createdAt: "", updatedAt: "" }]);
   vi.mocked(actionPlans.listMany).mockImplementation(async (sheetNames) => new Map(sheetNames.map((sheet) => [sheet, [{ id: sheet, task: sheet, date: "2026-11-18", morningStatus: "On Progress", createdAt: "", updatedAt: "" }]])));
   vi.mocked(weeklyPlans.list).mockResolvedValue(["ua", "ub", "old"].map((userId) => ({ id: userId, userId, title: userId, weekStart: "2026-11-16", weekEnd: "2026-11-22", plannedActionPlanIds: [], createdAt: "", updatedAt: "" })));
-  vi.mocked(statuses.list).mockResolvedValue([]);
+  vi.mocked(statuses.list).mockResolvedValue([{ id: "done", label: "Selesai", isActive: true, isCompleted: true, createdAt: "", updatedAt: "" }]);
   vi.mocked(approvals.list).mockResolvedValue([]);
   vi.mocked(noteWorkspaces.listForUser).mockResolvedValue([]);
-  vi.mocked(actionPlans.findById).mockResolvedValue({ id: "pa", task: "Review", date: "2026-11-18", morningStatus: "On Progress", createdAt: "", updatedAt: "", attachments: [{ id: "img", name: "evidence.png", mimeType: "image/png" }] });
+  vi.mocked(actionPlans.findById).mockResolvedValue({ id: "pa", task: "Review", date: "2026-11-18", morningStatus: "On Progress", afternoonStatus: "Selesai", createdAt: "", updatedAt: "", attachments: [{ id: "img", name: "evidence.png", mimeType: "image/png" }] });
   vi.mocked(attachments.download).mockResolvedValue(Buffer.from([1, 2, 3]));
   login("ba");
 });

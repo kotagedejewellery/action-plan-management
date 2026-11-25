@@ -34,9 +34,13 @@ export function resolveActor(user: User, divisions: Division[]): Actor {
   return actor;
 }
 
+function isWorkOwner(user: User): boolean {
+  return user.role === "user" && Boolean(user.sheetName);
+}
+
 export function assertCanReadMember(actor: Actor, target: User | null): asserts target is User {
   requireMonitorActor(actor);
-  if (!target || !target.sheetName) throw new AppError("Pekerjaan tidak ditemukan.", "NOT_FOUND");
+  if (!target || !isWorkOwner(target)) throw new AppError("Pekerjaan tidak ditemukan.", "NOT_FOUND");
   if (actor.role === "bod" && target.divisionId !== actor.divisionId) throw new AppError("Akses pekerjaan di luar divisi ditolak.", "FORBIDDEN");
 }
 
@@ -44,5 +48,5 @@ export function visibleMembers(actor: Actor, users: User[], divisionId?: string)
   requireMonitorActor(actor);
   if (actor.role === "bod" && divisionId && divisionId !== actor.divisionId) throw new AppError("Akses divisi ditolak.", "FORBIDDEN");
   const scope = actor.role === "bod" ? actor.divisionId : divisionId;
-  return users.filter((user) => Boolean(user.sheetName) && (!scope || user.divisionId === scope));
+  return users.filter((user) => isWorkOwner(user) && (!scope || user.divisionId === scope));
 }
